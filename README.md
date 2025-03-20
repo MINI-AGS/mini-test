@@ -11,7 +11,7 @@ To run the project, you need to have the following installed:
 - Node.js
 - npm
 
-Before running the expo project, please contact Yeyo to get the .env file and the firebase config file, and place them in the root of the project.
+Before running the expo project, please contact Yeyo to get the .env file, and place it in the root of the project.
 
 To run the project, follow these steps:
 

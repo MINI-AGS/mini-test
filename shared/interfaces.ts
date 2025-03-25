@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 interface Usuario {
 	//Datos del usuario
 	name?: string;

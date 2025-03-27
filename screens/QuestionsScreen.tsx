@@ -17,56 +17,56 @@ interface Question {
 }
 
 const QuestionsScreen = ({ navigation }: { navigation: any }) => {
-  const questions: Question[] = [
+const questions: Question[] = [
     {
       id: 1,
-      text: "¿Cuál es la capital de España?",
+      text: "Cual es la capital de Espana?",
       options: ["Madrid", "Barcelona", "Valencia", "Sevilla"]
     },
     {
       id: 2,
-      text: "¿Cuántos continentes hay en el mundo?",
+      text: "Cuantos continentes hay en el mundo?",
       options: ["5", "6", "7", "8"]
     },
     {
       id: 3,
-      text: "¿Cuál es el río más largo del mundo?",
-      options: ["Amazonas", "Nilo", "Misisipi", "Yangtsé"]
+      text: "Cual es el rio mas largo del mundo?",
+      options: ["Amazonas", "Nilo", "Misisipi", "Yangtse"]
     },
     {
       id: 4,
-      text: "¿Cuál es el planeta más grande del sistema solar?",
-      options: ["Tierra", "Marte", "Júpiter", "Saturno"]
+      text: "Cual es el planeta mas grande del sistema solar?",
+      options: ["Tierra", "Marte", "Jupiter", "Saturno"]
     },
     {
       id: 5,
-      text: "¿En qué año comenzó la Segunda Guerra Mundial?",
+      text: "En que ano comenzo la Segunda Guerra Mundial?",
       options: ["1935", "1939", "1941", "1945"]
     },
     {
       id: 6,
-      text: "¿Cuál es el metal más abundante en la corteza terrestre?",
+      text: "Cual es el metal mas abundante en la corteza terrestre?",
       options: ["Oro", "Plata", "Hierro", "Aluminio"]
     },
     {
       id: 7,
-      text: "¿Cuál es el país más poblado del mundo?",
+      text: "Cual es el pais mas poblado del mundo?",
       options: ["India", "Estados Unidos", "Indonesia", "China"]
     },
     {
       id: 8,
-      text: "¿Cuál es el idioma más hablado en el mundo?",
-      options: ["Inglés", "Español", "Mandarín", "Hindi"]
+      text: "Cual es el idioma mas hablado en el mundo?",
+      options: ["Ingles", "Espanol", "Mandarin", "Hindi"]
     },
     {
       id: 9,
-      text: "¿Cuál es el océano más grande?",
-      options: ["Atlántico", "Índico", "Ártico", "Pacífico"]
+      text: "Cual es el oceano mas grande?",
+      options: ["Atlantico", "Indico", "Artico", "Pacifico"]
     },
     {
       id: 10,
-      text: "¿Cuál es el elemento químico más abundante en el universo?",
-      options: ["Oxígeno", "Carbono", "Helio", "Hidrógeno"]
+      text: "Cual es el elemento quimico mas abundante en el universo?",
+      options: ["Oxigeno", "Carbono", "Helio", "Hidrogeno"]
     }
   ];
 

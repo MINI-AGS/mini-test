@@ -11,68 +11,29 @@ import {
 const { width, height } = Dimensions.get('window');
 
 interface Question {
-  id: number;
+  id: string;
   text: string;
   options: string[];
 }
 
 const QuestionsScreen = ({ navigation }: { navigation: any }) => {
-const questions: Question[] = [
-    {
-      id: 1,
-      text: "Cual es la capital de Espana?",
-      options: ["Madrid", "Barcelona", "Valencia", "Sevilla"]
-    },
-    {
-      id: 2,
-      text: "Cuantos continentes hay en el mundo?",
-      options: ["5", "6", "7", "8"]
-    },
-    {
-      id: 3,
-      text: "Cual es el rio mas largo del mundo?",
-      options: ["Amazonas", "Nilo", "Misisipi", "Yangtse"]
-    },
-    {
-      id: 4,
-      text: "Cual es el planeta mas grande del sistema solar?",
-      options: ["Tierra", "Marte", "Jupiter", "Saturno"]
-    },
-    {
-      id: 5,
-      text: "En que ano comenzo la Segunda Guerra Mundial?",
-      options: ["1935", "1939", "1941", "1945"]
-    },
-    {
-      id: 6,
-      text: "Cual es el metal mas abundante en la corteza terrestre?",
-      options: ["Oro", "Plata", "Hierro", "Aluminio"]
-    },
-    {
-      id: 7,
-      text: "Cual es el pais mas poblado del mundo?",
-      options: ["India", "Estados Unidos", "Indonesia", "China"]
-    },
-    {
-      id: 8,
-      text: "Cual es el idioma mas hablado en el mundo?",
-      options: ["Ingles", "Espanol", "Mandarin", "Hindi"]
-    },
-    {
-      id: 9,
-      text: "Cual es el oceano mas grande?",
-      options: ["Atlantico", "Indico", "Artico", "Pacifico"]
-    },
-    {
-      id: 10,
-      text: "Cual es el elemento quimico mas abundante en el universo?",
-      options: ["Oxigeno", "Carbono", "Helio", "Hidrogeno"]
-    }
+  const questions: Question[] = [
+    { id: '1', text: "Madrid es la capital de Espana?", options: ["si", "no"] },
+    { id: '2', text: "Hay 7 continentes en el mundo?", options: ["si", "no"] },
+    { id: '3', text: "El rio Amazonas es el mas largo del mundo?", options: ["si", "no"] },
+    { id: '4', text: "Jupiter es el planeta mas grande del sistema solar?", options: ["si", "no"] },
+    { id: '5', text: "La Segunda Guerra Mundial comenzo en 1939?", options: ["si", "no"] },
+    { id: '6', text: "El aluminio es el metal mas abundante en la corteza terrestre?", options: ["si", "no"] },
+    { id: '7', text: "China es el pais mas poblado del mundo?", options: ["si", "no"] },
+    { id: '8', text: "El Mandarin es el idioma mas hablado en el mundo?", options: ["si", "no"] },
+    { id: '9', text: "El oceano Pacifico es el mas grande?", options: ["si", "no"] },
+    { id: '10', text: "El hidrogeno es el elemento quimico mas abundante en el universo?", options: ["si", "no"] }
   ];
+
 
   const [selectedAnswers, setSelectedAnswers] = useState<{[key: number]: string}>({});
 
-  const handleAnswerSelect = (questionId: number, answer: string) => {
+  const handleAnswerSelect = (questionId: string, answer: string) => {
     setSelectedAnswers(prev => ({
       ...prev,
       [questionId]: answer

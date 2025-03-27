@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   View, 
@@ -13,23 +14,48 @@ const { width, height } = Dimensions.get('window');
 interface Question {
   id: string;
   text: string;
-  options: string[];
+}
+
+class QuestionWithOption implements Question {
+  id: string;
+  text: string;
+  requiredOption: string;
+
+  constructor(id: string, text: string, requiredOption: string) {
+    this.id = id;
+    this.text = text;
+    this.requiredOption = requiredOption;
+  }
+}
+
+class QuestionWithText implements Question {
+  id: string;
+  text: string;
+  additionalText: string;
+
+  constructor(id: string, text: string, additionalText: string) {
+    this.id = id;
+    this.text = text;
+    this.additionalText = additionalText;
+  }
 }
 
 const QuestionsScreen = ({ navigation }: { navigation: any }) => {
-  const questions: Question[] = [
-    { id: '1', text: "Madrid es la capital de Espana?", options: ["si", "no"] },
-    { id: '2', text: "Hay 7 continentes en el mundo?", options: ["si", "no"] },
-    { id: '3', text: "El rio Amazonas es el mas largo del mundo?", options: ["si", "no"] },
-    { id: '4', text: "Jupiter es el planeta mas grande del sistema solar?", options: ["si", "no"] },
-    { id: '5', text: "La Segunda Guerra Mundial comenzo en 1939?", options: ["si", "no"] },
-    { id: '6', text: "El aluminio es el metal mas abundante en la corteza terrestre?", options: ["si", "no"] },
-    { id: '7', text: "China es el pais mas poblado del mundo?", options: ["si", "no"] },
-    { id: '8', text: "El Mandarin es el idioma mas hablado en el mundo?", options: ["si", "no"] },
-    { id: '9', text: "El oceano Pacifico es el mas grande?", options: ["si", "no"] },
-    { id: '10', text: "El hidrogeno es el elemento quimico mas abundante en el universo?", options: ["si", "no"] }
+  const exampleQuestionsWithText: QuestionWithText[] = [
+    new QuestionWithText('1', 'Cual es la capital de Espana?', 'Es una pregunta geografica sobre el pais de Espana'),
+    new QuestionWithText('2', 'Cuantos continentes hay en el mundo?', 'Esta es una pregunta general sobre geografia mundial'),
+    new QuestionWithText('3', 'Cual es el rio mas largo del mundo?', 'Pregunta sobre el curso de agua mas largo'),
+    new QuestionWithText('4', 'Cual es el planeta mas grande del sistema solar?', 'Se refiere a la dimension del planeta mas grande del sistema solar'),
+    new QuestionWithText('5', 'En que ano comenzo la Segunda Guerra Mundial?', 'Pregunta sobre la historia del conflicto global de la Segunda Guerra Mundial'),
   ];
 
+  const exampleQuestionsWithOption: QuestionWithOption[] = [
+    new QuestionWithOption('1', "Es el sol una estrella?", "si"),
+    new QuestionWithOption('2', "El agua es un compuesto qmico?", "si"),
+    new QuestionWithOption('3', "La luna es un salite natural de la Tierra?", "si"),
+    new QuestionWithOption('4', "El Everest es la monta ms alta del mundo?", "si"),
+    new QuestionWithOption('5', "El l vive en la selva?", "no")
+  ];
 
   const [selectedAnswers, setSelectedAnswers] = useState<{[key: number]: string}>({});
 
@@ -41,7 +67,7 @@ const QuestionsScreen = ({ navigation }: { navigation: any }) => {
   };
 
   const isAllQuestionsAnswered = () => {
-    return Object.keys(selectedAnswers).length === questions.length;
+    return Object.keys(selectedAnswers).length === exampleQuestionsWithOption.length;
   };
 
   return (
@@ -51,11 +77,11 @@ const QuestionsScreen = ({ navigation }: { navigation: any }) => {
     >
       <Text style={styles.title}>Cuestionario de Conocimientos</Text>
       
-      {questions.map((question) => (
+      {exampleQuestionsWithOption.map((question) => (
         <View key={question.id} style={styles.questionContainer}>
           <Text style={styles.questionText}>{question.text}</Text>
           <View style={styles.optionsContainer}>
-            {question.options.map((option) => (
+            {['si', 'no'].map((option) => (
               <TouchableOpacity
                 key={option}
                 style={[

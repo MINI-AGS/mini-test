@@ -1,21 +1,18 @@
-import React, { useEffect } from "react";
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import example from "./backend/example.ts";
-import AppNavigator from './navigator/AppNavigator';
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import HomeScreen from "./screens/HomeScreen";
+import QuestionsScreen from "./screens/QuestionsScreen/index";
+
+const Stack = createStackNavigator();
 
 export default function App() {
-  useEffect(() => {
-    example();
-  }, []);
-  return <AppNavigator />;
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Questions" component={QuestionsScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

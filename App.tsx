@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "./screens/HomeScreen";
 import QuestionsScreen from "./screens/QuestionsScreen/index";
+import QuestionDisplay from "./screens/QuestionsScreen/prueba";
 
 const Stack = createStackNavigator();
 
@@ -11,7 +12,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Questions" component={QuestionsScreen} />
+        <Stack.Screen name="Questions" component={QuestionDisplay} />
       </Stack.Navigator>
     </NavigationContainer>
   );

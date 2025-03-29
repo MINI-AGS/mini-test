@@ -3,13 +3,18 @@ export interface Question {
   id: string;
   text: string;
   options?: string[]; // Opciones para las preguntas, si las tiene
+  //idea para el modulo
+  module: string;
 }
+
+if question.module == module.id? show : hide
 
 export interface Module {
   id: string;
   title: string;
   questions: Question[]; // Lista de preguntas en el módulo
   defaultAnswer?: string; // Respuesta predeterminada (si la hay)
+  ShowIf?: bool;
 }
 
 // Función para determinar si se deben mostrar las preguntas A4a
@@ -76,13 +81,17 @@ export const modules = (selectedAnswers: {
   // Definición de los módulos y sus preguntas
   return [
     {
+      //id del modulo
       id: "datosPersonales",
+      //Titulo del modulo
       title: "Datos personales",
+      //Las preguntas de ese modulo
       questions: [
         { id: "1", text: "¿Cuál es tu nombre?" },
         { id: "2", text: "¿Cuál es tu edad?" },
         { id: "3", text: "¿Te gusta programar?", options: ["si", "no"] },
       ],
+      ShowIf: true
     },
     {
       id: "moduloA",

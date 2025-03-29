@@ -1,6 +1,24 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
-  }
+    "strict": true,
+    "baseUrl": ".", // Establece la ruta base para las importaciones
+    "paths": {
+       "@shared/*": ["./shared/*"], // Mapeo de ruta para importaciones desde @shared
+       "@interfaces/*": ["./shared/interfaces/*"], //Mapeo especifico para interfaces
+       "@backend/*": ["./backend/*"], // Mapeo de ruta para importaciones desde @backend
+    },
+    "target": "es2020",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": [
+    "**/*.ts", // Incluye todos los archivos .ts
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

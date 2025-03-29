@@ -156,6 +156,7 @@ service cloud.firestore {
         data.questionD3b is string &&
         data.questionD3c is string &&
         data.questionD3d is string &&
+        data.questionD3e is string &&
         data.questionD3f is string &&
         data.questionD4 is string;
     }

@@ -1,6 +1,6 @@
 import { Timestamp } from "firebase/firestore";
 
-interface Usuario {
+export interface Usuario {
 	//Datos del usuario
 	name?: string;
   gender: string; //No puede ser opcional por que influye en el diagnostico

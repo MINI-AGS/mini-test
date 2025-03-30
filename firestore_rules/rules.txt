@@ -101,7 +101,14 @@ service cloud.firestore {
         data.interviewDate is timestamp &&
         data.startTimeInterview is string &&
         data.endTimeInterview is string &&
-        data.durationInterview is string;
+        data.durationInterview is string &&
+
+        //Campos opcionales
+        (!("name" in data) || data.name is string) &&
+        (!("birthdate" in data) || data.birthdate is timestamp) &&
+        (!("nameInterviewer" in data) || data.nameInterviewer is string) &&
+        (!("sexualPreference" in data) || data.sexualPreference is string) &&
+        (!("stateResidence" in data) || data.stateResidence is string);
     }
 
     function isValidSectionA(data) {
@@ -158,6 +165,7 @@ service cloud.firestore {
         data.questionD3d is string &&
         data.questionD3e is string &&
         data.questionD3f is string &&
+        data.questionD3g is string &&
         data.questionD4 is string;
     }
 

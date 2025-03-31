@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import data from "./backend/data";
+import dataTest from "./backend/dataTest";
 
 export default function App() {
   useEffect(() => {
-    data();
+    console.log("App: useEffect");
+    dataTest();
   }, []);
 
   return (

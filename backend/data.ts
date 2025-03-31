@@ -4,28 +4,115 @@ import { Usuario } from "@shared/interfaces";
 import UserFirestoreService from "@backend/user_firestore_service";
 import db from "../firebaseConfig";
 
-// Función de ejemplo para demostrar el uso del servicio
-async function exampleClinicalDataManagementSurvey() {
+// Función principal para ejecutar pruebas de validación y operaciones CRUD
+async function testUserFirestoreService() {
   // Crear una instancia del servicio de Firestore con la base de datos importada
   const userFirestoreService = new UserFirestoreService(db);
   
-  // Modificar el nombre de la colección dentro del servicio (para usar "data" en lugar de "ejemplos")
+  // Asegurar que estamos usando la colección "data" según las reglas de Firestore
   userFirestoreService.collectionName = "data";
 
-  // Crear un identificador único para el usuario
-  const userId = `paciente_${Date.now()}`;
+  // 1. PRUEBA DE CREACIÓN CON DATOS VÁLIDOS
+  console.log('--------------- PRUEBA 1: Crear usuario con datos válidos ---------------');
+  const validUserId = `paciente_valid_${Date.now()}`;
+  const validUserData = createValidUserData();
+  
+  try {
+    // Crear usuario usando la función con validación
+    const createResult = await userFirestoreService.createUserWithValidation(validUserId, validUserData);
+    console.log('Resultado de creación con validación:', createResult);
+    
+    if (createResult.success) {
+      // Obtener el usuario para verificar que se guardó correctamente
+      const retrievedUser = await userFirestoreService.getUser(validUserId);
+      console.log('Usuario recuperado:', retrievedUser ? 'Éxito' : 'No encontrado');
+    }
+  } catch (error) {
+    console.error('Error en prueba 1:', error);
+  }
 
-  // Preparar datos de ejemplo siguiendo la interfaz Usuario
-  const data: Usuario = {
+  // 3. PRUEBA DE LISTAR USUARIOS
+  console.log('--------------- PRUEBA 3: Listar usuarios ---------------');
+  try {
+    const users = await userFirestoreService.listUsers();
+    console.log(`Se encontraron ${users.length} usuarios en la base de datos`);
+    // Mostrar solo nombres para no saturar la consola
+    console.log('Nombres de usuarios:', users.map(user => user.name || 'Sin nombre'));
+  } catch (error) {
+    console.error('Error en prueba 3:', error);
+  }
+
+  // 4. PRUEBA DE REEMPLAZO DE USUARIO
+  console.log('--------------- PRUEBA 4: Reemplazar usuario ---------------');
+  try {
+    // Primero verificamos que el usuario existe
+    const userExists = await userFirestoreService.getUser(validUserId);
+    
+    if (userExists) {
+      // Crear datos modificados
+      const updatedUserData = {
+        ...validUserData,
+        name: "Usuario Actualizado",
+        gender: "Otro"
+      };
+      
+      // Reemplazar usuario
+      await userFirestoreService.replaceUser(validUserId, updatedUserData);
+      console.log(`Usuario ${validUserId} reemplazado`);
+      
+      // Verificar los cambios
+      const updatedUser = await userFirestoreService.getUser(validUserId);
+      console.log('Datos actualizados:', updatedUser ? {
+        name: updatedUser.name,
+        gender: updatedUser.gender
+      } : 'No encontrado');
+    } else {
+      console.log(`El usuario ${validUserId} no existe para reemplazar`);
+    }
+  } catch (error) {
+    console.error('Error en prueba 4:', error);
+  }
+
+  // 5. PRUEBA DE ELIMINACIÓN DE USUARIO
+  // console.log('--------------- PRUEBA 5: Eliminar usuario ---------------');
+  // try {
+  //   await userFirestoreService.deleteUser(validUserId);
+  //   console.log(`Usuario ${validUserId} eliminado`);
+    
+  //   // Verificar que se eliminó correctamente
+  //   const deletedUser = await userFirestoreService.getUser(validUserId);
+  //   console.log('¿Usuario eliminado existe?', deletedUser ? 'Sí (error)' : 'No (correcto)');
+  // } catch (error) {
+  //   console.error('Error en prueba 5:', error);
+  // }
+
+  // 6. PRUEBA DE VALIDACIÓN DE SUSTANCIAS INCORRECTAS
+  console.log('--------------- PRUEBA 6: Validación de sustancias incorrectas ---------------');
+  try {
+    const invalidSubstanceData = {
+      ...validUserData,
+      K1aEstimulantes: ['anfetaminas', 'sustancia_no_permitida'],
+    };
+    
+    const validationResult = userFirestoreService.validateUserData(invalidSubstanceData);
+    console.log('Resultado de validación de sustancias incorrectas:', validationResult);
+  } catch (error) {
+    console.error('Error en prueba 6:', error);
+  }
+}
+
+// Función para crear datos de usuario válidos
+function createValidUserData(): Usuario {
+  return {
     //Campos básicos
-    name: "Beto Gay 4",
+    name: "Usuario de Prueba",
     gender: "Masculino",
     birthdate: Timestamp.fromDate(new Date(1990, 5, 15)),
     interviewDate: Timestamp.now(),
-    startTimeInterview: '17:25',
-    endTimeInterview: '18:55',
+    startTimeInterview: '10:00',
+    endTimeInterview: '11:30',
     durationInterview: '1.5 horas',
-    nameInterviewer: 'Dr. Juan Pérez',
+    nameInterviewer: 'Dr. Evaluador',
     sexualPreference: 'Heterosexual',
     stateOrigin: 'Jalisco',
     stateResidence: 'Guadalajara',
@@ -145,19 +232,14 @@ async function exampleClinicalDataManagementSurvey() {
     questionJ3d: 'No',
     //Trastornos asociados al uso de sustancias psicoactivas no alcohólicas
     questionK1a: 'No',
-    K1aEstimulantes: ['anfetaminas', 'speed', 'cristal', 'dexedrina', 'ritalina',
-              'píldoras adelgazantes'],
-    K1aCocaina: ['inhalada', 'intravenosa', 'crack', 'speedball'],
-    K1aNarcoticos: ['heroína', 'morfina', 'Dilaudid', 'opio', 'Demerol', 'metadona',
-              'codeína', 'Percodan', 'Darvon'],
-    K1aAlucinoginos: ['LSD (ácido)', 'mescalina', 'peyote', 'PCP (polvo de ángel, peace pill)',
-              'psilocybin', 'STP', 'hongos', 'éxtasis', 'MDA', 'MDMA'],
-    K1aInhalantes: ['pegamento', 'éter', 'óxido nitroso (laughing gas)', 'amyl o butyl nitrate (poppers)'],
-    K1aMarihuana: ['hachís', 'THC', 'pasto', 'hierba', 'mota', 'reefer'],
-    K1aTranquilizantes: ['Qualude', 'Seconal (<<reds>>)', 'Valium', 'Xanax', 'Librium',
-              'Ativan', 'Dalmane', 'Halción', 'barbitúricos', '<<Miltown>>',
-              'Tranquimazin', 'Lexatin', 'Orfidal'],
-    K1aOtrasSustancias: [' '],
+    K1aEstimulantes: ['anfetaminas', 'speed'],
+    K1aCocaina: ['inhalada', 'crack'],
+    K1aNarcoticos: ['heroína', 'morfina'],
+    K1aAlucinoginos: ['LSD (ácido)', 'peyote'],
+    K1aInhalantes: ['pegamento', 'éter'],
+    K1aMarihuana: ['hachís', 'THC'],
+    K1aTranquilizantes: ['Valium', 'Xanax'],
+    K1aOtrasSustancias: [],
     questionK1b: 'No',
     questionK2a: 'No',
     questionK2b: 'No',
@@ -268,28 +350,7 @@ async function exampleClinicalDataManagementSurvey() {
     diagnosticO1: 'No',
     diagnosticP1: 'No',
   };
-
-  try {
-    // Crear el usuario en Firestore
-    console.log('Intentando crear usuario...');
-    await userFirestoreService.createUser(userId, data);
-    console.log(`Usuario ${userId} creado con éxito!`);
-
-    // Obtener el usuario de Firestore
-    console.log('Intentando obtener usuario...');
-    const user = await userFirestoreService.getUser(userId);
-    if (user) {
-      console.log(`Usuario ${userId} obtenido con éxito:`, user);
-      console.log('Nombre:', user.name);
-      console.log('Género:', user.gender);
-    } else {
-      console.log(`Usuario ${userId} no encontrado.`);
-    }
-
-  } catch (error) {
-    console.error('Error en la gestión de datos del usuario:', error);
-  }
 }
 
-// Exportar la función de ejemplo
-export default exampleClinicalDataManagementSurvey;
+// Exportar la función principal
+export default testUserFirestoreService;

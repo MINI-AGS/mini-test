@@ -2,7 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "./screens/HomeScreen";
-import QuestionsScreen from "./screens/QuestionsScreen/index";
+//import QuestionsScreen from "./screens/QuestionsScreen/index";
 import QuestionDisplay from "./screens/QuestionsScreen/prueba";
 
 const Stack = createStackNavigator();

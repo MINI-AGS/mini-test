@@ -1,72 +1,105 @@
-import React, { useState, useEffect } from 'react';
-import { Module, Question } from './types';
-import { modules } from './module';
-import { questions } from './questions';
+import React, { useState, useEffect } from "react";
+import { Section, Question } from "./types";
+import { sections } from "./module";
+import { questions } from "./questions";
 
 interface AnswerState {
   [questionId: string]: string;
 }
 
-//ZONA PIBBLE================================================
 const QuestionDisplay: React.FC = () => {
   const [answers, setAnswers] = useState<AnswerState>({});
-  const [visibleModules, setVisibleModules] = useState<string[]>(["moduloA"]);
+  const [visibleSections, setVisibleSections] = useState<string[]>([
+    "sectionA",
+  ]);
 
-  // Funcion para manejar las respuestas
+  // Función para manejar las respuestas
   const handleAnswer = (questionId: string, answer: string) => {
-    setAnswers(prev => ({
+    setAnswers((prev) => ({
       ...prev,
-      [questionId]: answer
+      [questionId]: answer,
     }));
   };
 
-  // Efecto para actualizar modulos visibles cuando cambian las respuestas
   useEffect(() => {
-    const newVisibleModules: string[] = ["moduloA"]; // El modulo A siempre es visible
+    const newVisibleSections: string[] = ["sectionA"]; // El section A siempre es visible
 
-    // Verificar cada modulo con dependencias
-    modules.forEach(module => {
-      if (module.id === "moduloA") return; // Saltamos el modulo A que ya esta incluido
+    // Verificar si se debe mostrar el section A3 basándose en las respuestas de sectionA
+    const relatedQuestionsA = questions.filter((q) => q.section === "sectionA");
+    const anyYesA = relatedQuestionsA.some((q) => answers[q.id] === "si");
 
-      // Verificar si el modulo debe ser visible utilizando la funcion dependsOn
-      if (module.dependsOn(answers)) {
-        newVisibleModules.push(module.id);
-      }
-    }); 
+    // Filtrar las preguntas del section A3 (las preguntas adicionales)
+    const relatedQuestionsA3 = questions.filter(
+      (q) => q.section === "sectionA3",
+    );
 
-     // Eliminar respuestas de los modulos que no son visibles
+    // Si alguna respuesta de sectionA es "sí", mostramos las preguntas de sectionA3
+    if (anyYesA) {
+      relatedQuestionsA3.forEach((q) => {
+        if (!newVisibleSections.includes(q.section)) {
+          newVisibleSections.push(q.section); // Agregar el section A3 si alguna pregunta de sectionA es "sí"
+        }
+      });
+    } else {
+      // Si no hay respuesta "sí" en sectionA, mostramos sectionB
+      const relatedQuestionsB = questions.filter(
+        (q) => q.section === "sectionB1",
+      );
+      relatedQuestionsB.forEach((q) => {
+        if (!newVisibleSections.includes(q.section)) {
+          newVisibleSections.push(q.section); // Agregar sectionB
+        }
+      });
+    }
+
+    // Contar cuántas respuestas "si" hay en las preguntas de section A y section A3
+    const countYesAnswers = [
+      ...relatedQuestionsA,
+      ...relatedQuestionsA3,
+    ].filter((q) => answers[q.id] === "si").length;
+
+    // Si hay 5 o más respuestas "sí", mostrar sectionA4a, de lo contrario sectionB
+    if (countYesAnswers >= 5) {
+      newVisibleSections.push("sectionA4a"); // Mostrar sectionA4a si cumple con la condición
+    } else {
+      newVisibleSections.push("sectionB1"); // Mostrar sectionB si no cumple la condición
+    }
+
+    // Actualizar los sections visibles
+    setVisibleSections(newVisibleSections);
+
+    // Limpiar respuestas de sections que no son visibles
     const newAnswers = { ...answers };
-    modules.forEach(module => {
-      if (!newVisibleModules.includes(module.id)) {
-        module.questions.forEach(question => {
-          delete newAnswers[question.id]; // Eliminar las respuestas de las preguntas del modulo no visible
+    sections.forEach((section) => {
+      if (!newVisibleSections.includes(section.id)) {
+        section.questions.forEach((question) => {
+          delete newAnswers[question.id];
         });
       }
     });
 
-    setVisibleModules(newVisibleModules);
-    setAnswers(newAnswers)
+    setAnswers(newAnswers);
   }, [answers]); // Este efecto se ejecuta cada vez que cambian las respuestas
-  //ZONA PIBBLE =============================================
+
   return (
     <div className="question-system">
-      {modules.map(module => {
-        // Verificar si el modulo debe mostrarse
-        if (!visibleModules.includes(module.id)) {
-          return null;
+      {sections.map((section) => {
+        // Verificar si el section debe mostrarse
+        if (!visibleSections.includes(section.id)) {
+          return null; // No renderizamos el section si no está en los sections visibles
         }
-        
+
         return (
-          <div key={module.id} className="module">
-            <h2>{module.title}</h2>
-            
-            {module.questions.map(question => (
+          <div key={section.id} className="section">
+            <h2>{section.title}</h2>
+
+            {section.questions.map((question) => (
               <div key={question.id} className="question">
                 <p>{question.text}</p>
-                
+
                 {question.options ? (
                   <div className="options">
-                    {question.options.map(option => (
+                    {question.options.map((option) => (
                       <label key={option}>
                         <input
                           type="radio"
@@ -82,7 +115,7 @@ const QuestionDisplay: React.FC = () => {
                 ) : (
                   <input
                     type="text"
-                    value={answers[question.id] || ''}
+                    value={answers[question.id] || ""}
                     onChange={(e) => handleAnswer(question.id, e.target.value)}
                     placeholder="Escribe tu respuesta"
                   />
@@ -92,12 +125,12 @@ const QuestionDisplay: React.FC = () => {
           </div>
         );
       })}
-      
+
       <div className="debug">
         <h3>Estado de respuestas:</h3>
         <pre>{JSON.stringify(answers, null, 2)}</pre>
-        <h3>Modulos visibles:</h3>
-        <pre>{JSON.stringify(visibleModules, null, 2)}</pre>
+        <h3>Secciones visibles:</h3>
+        <pre>{JSON.stringify(visibleSections, null, 2)}</pre>
       </div>
     </div>
   );

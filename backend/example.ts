@@ -1,5 +1,5 @@
 import { doc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
-import db from "../firebaseConfig.ts";
+import db from "../firebaseConfig";
 
 const example = async () => {
   try {
@@ -8,7 +8,6 @@ const example = async () => {
       description: "Este es un ejemplo de como escribir en la base de datos",
     });
     console.log("Example: Document successfully written!");
-
     const docRef = doc(db, "ejemplos", "Ejemplo1");
     const docSnap = await getDoc(docRef);
 

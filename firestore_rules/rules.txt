@@ -2,409 +2,84 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // Helper function to check if array only contains allowed values
-    function containsOnlyAllowedValues(array, allowedValues) {
-      return array is list && array.size() >= 0 && array.size() <= allowedValues.size() &&
-        array.removeAll(allowedValues).size() == 0;
-    }
-
-    // Substance list functions
-    function getAllowedEstimulantes() {
-      return ['anfetaminas', 'speed', 'cristal', 'dexedrina', 'ritalina',
-              'píldoras adelgazantes'];
-    }
-
-    function getAllowedCocaina() {
-      return ['inhalada', 'intravenosa', 'crack', 'speedball'];
-    }
-
-    function getAllowedNarcoticos() {
-      return ['heroína', 'morfina', 'Dilaudid', 'opio', 'Demerol', 'metadona',
-              'codeína', 'Percodan', 'Darvon'];
-    }
-
-    function getAllowedAlucinogenos() {
-      return ['LSD (ácido)', 'mescalina', 'peyote', 'PCP (polvo de ángel, peace pill)',
-              'psilocybin', 'STP', 'hongos', 'éxtasis', 'MDA', 'MDMA'];
-    }
-
-    function getAllowedInhalantes() {
-      return ['pegamento', 'éter', 'óxido nitroso (laughing gas)', 'amyl o butyl nitrate (poppers)'];
-    }
-
-    function getAllowedMarihuana() {
-      return ['hachís', 'THC', 'pasto', 'hierba', 'mota', 'reefer'];
-    }
-
-    function getAllowedTranquilizantes() {
-      return ['Qualude', 'Seconal (<<reds>>)', 'Valium', 'Xanax', 'Librium',
-              'Ativan', 'Dalmane', 'Halción', 'barbitúricos', '<<Miltown>>',
-              'Tranquimazin', 'Lexatin', 'Orfidal'];
-    }
-
-    // Break down substance validation into smaller functions
-    function isValidEstimulantesData(data) {
-      return !('K1aEstimulantes' in data) || 
-             containsOnlyAllowedValues(data.K1aEstimulantes, getAllowedEstimulantes());
-    }
-
-    function isValidCocainaData(data) {
-      return !('K1aCocaina' in data) || 
-             containsOnlyAllowedValues(data.K1aCocaina, getAllowedCocaina());
-    }
-
-    function isValidNarcoticosData(data) {
-      return !('K1aNarcoticos' in data) || 
-             containsOnlyAllowedValues(data.K1aNarcoticos, getAllowedNarcoticos());
-    }
-
-    function isValidAlucinogenosData(data) {
-      return !('K1aAlucinoginos' in data) || 
-             containsOnlyAllowedValues(data.K1aAlucinoginos, getAllowedAlucinogenos());
-    }
-
-    function isValidInhalantesData(data) {
-      return !('K1aInhalantes' in data) || 
-             containsOnlyAllowedValues(data.K1aInhalantes, getAllowedInhalantes());
-    }
-
-    function isValidMarihuanaData(data) {
-      return !('K1aMarihuana' in data) || 
-             containsOnlyAllowedValues(data.K1aMarihuana, getAllowedMarihuana());
-    }
-
-    function isValidTranquilizantesData(data) {
-      return !('K1aTranquilizantes' in data) || 
-             containsOnlyAllowedValues(data.K1aTranquilizantes, getAllowedTranquilizantes());
-    }
-
-    function isValidOtrasSustanciasData(data) {
-      return !('K1aOtrasSustancias' in data) || data.K1aOtrasSustancias is list;
-    }
-
-    // Combine all substance validations
-    function isValidSustancias(data) {
-      return isValidEstimulantesData(data) &&
-             isValidCocainaData(data) &&
-             isValidNarcoticosData(data) &&
-             isValidAlucinogenosData(data) &&
-             isValidInhalantesData(data) &&
-             isValidMarihuanaData(data) &&
-             isValidTranquilizantesData(data) &&
-             isValidOtrasSustanciasData(data);
-    }
-
-    // Break down data validation into sections
-    function isValidBasicFields(data) {
+    // Función básica para verificar los campos mínimos necesarios
+    function hasRequiredFields(data) {
       return data.gender is string &&
         data.interviewDate is timestamp &&
         data.startTimeInterview is string &&
         data.endTimeInterview is string &&
         data.durationInterview is string;
     }
-
-    function isValidSectionA(data) {
-      return data.questionA1 is string &&
-        data.questionA2 is string &&
-        data.questionA3a is string &&
-        data.questionA3b is string &&
-        data.questionA3c is string &&
-        data.questionA3d is string &&
-        data.questionA3e is string &&
-        data.questionA3f is string &&
-        data.questionA3g is string &&
-        data.questionA4a is string &&
-        data.questionA4b is string &&
-        data.questionA5a is string &&
-        data.questionA5b is string &&
-        data.questionA6a is string &&
-        data.questionA6b is string &&
-        data.questionA6c is string &&
-        data.questionA6d is string &&
-        data.questionA6e is string &&
-        data.questionA6f is string;
-    }
-
-    function isValidSectionB(data) {
-      return data.questionB1 is string &&
-        data.questionB2 is string &&
-        data.questionB3a is string &&
-        data.questionB3b is string &&
-        data.questionB3c is string &&
-        data.questionB3d is string &&
-        data.questionB3e is string &&
-        data.questionB3f is string &&
-        data.questionB4 is string;
-    }
-
-    function isValidSectionC(data) {
-      return data.questionC1 is string &&
-        data.questionC2 is string &&
-        data.questionC3 is string &&
-        data.questionC4 is string &&
-        data.questionC5 is string &&
-        data.questionC6 is string;
-    }
-
-    function isValidSectionD(data) {
-      return data.questionD1a is string &&
-        data.questionD1b is string &&
-        data.questionD2a is string &&
-        data.questionD2b is string &&
-        data.questionD3a is string &&
-        data.questionD3b is string &&
-        data.questionD3c is string &&
-        data.questionD3d is string &&
-        data.questionD3f is string &&
-        data.questionD4 is string;
-    }
-
-    function isValidSectionE1(data) {
-      return data.questionE1a is string &&
-        data.questionE1b is string &&
-        data.questionE2 is string &&
-        data.questionE3 is string;
-    }
-
-    function isValidSectionE2(data) {
-      return data.questionE4a is string &&
-        data.questionE4b is string &&
-        data.questionE4c is string &&
-        data.questionE4d is string &&
-        data.questionE4e is string &&
-        data.questionE4f is string &&
-        data.questionE4g is string &&
-        data.questionE4h is string &&
-        data.questionE4i is string &&
-        data.questionE4j is string &&
-        data.questionE4k is string &&
-        data.questionE4l is string &&
-        data.questionE4m is string &&
-        data.questionE5 is string &&
-        data.questionE6 is string &&
-        data.questionE7 is string;
-    }
-
-    function isValidSectionF_G(data) {
-      return data.questionF1 is string &&
-        data.questionF2 is string &&
-        data.questionG1 is string &&
-        data.questionG2 is string &&
-        data.questionG3 is string &&
-        data.questionG4 is string;
-    }
-
-    function isValidSectionH_I1(data) {
-      return data.questionH1 is string &&
-        data.questionH2 is string &&
-        data.questionH3 is string &&
-        data.questionH4 is string &&
-        data.questionH5 is string &&
-        data.questionH6 is string &&
-        data.questionI1 is string &&
-        data.questionI2 is string;
-    }
-
-    function isValidSectionI2_J1(data) {
-      return data.questionI3a is string &&
-        data.questionI3b is string &&
-        data.questionI3c is string &&
-        data.questionI3d is string &&
-        data.questionI3e is string &&
-        data.questionI3f is string &&
-        data.questionI4a is string &&
-        data.questionI4b is string &&
-        data.questionI4c is string &&
-        data.questionI4d is string &&
-        data.questionI4e is string &&
-        data.questionI5 is string &&
-        data.questionJ1 is string;
-    }
-
-    function isValidSectionJ2_K1a(data) {
-      return data.questionJ2a is string &&
-        data.questionJ2b is string &&
-        data.questionJ2c is string &&
-        data.questionJ2d is string &&
-        data.questionJ2e is string &&
-        data.questionJ2f is string &&
-        data.questionJ2g is string &&
-        data.questionJ3a is string &&
-        data.questionJ3b is string &&
-        data.questionJ3c is string &&
-        data.questionJ3d is string &&
-        data.questionK1a is string;
-    }
-
-    function isValidSectionK1b_K3(data) {
-      return data.questionK1b is string &&
-        data.questionK2a is string &&
-        data.questionK2b is string &&
-        data.questionK2c is string &&
-        data.questionK2d is string &&
-        data.questionK2e is string &&
-        data.questionK2f is string &&
-        data.questionK2g is string &&
-        data.questionK3a is string &&
-        data.questionK3b is string &&
-        data.questionK3c is string &&
-        data.questionK3d is string;
-    }
-
-    function isValidSectionL1_L7(data) {
-      return data.questionL1a is string &&
-        data.questionL1b is string &&
-        data.questionL2a is string &&
-        data.questionL2b is string &&
-        data.questionL3a is string &&
-        data.questionL3b is string &&
-        data.questionL4a is string &&
-        data.questionL4b is string &&
-        data.questionL5a is string &&
-        data.questionL5b is string &&
-        data.questionL6a is string &&
-        data.questionL7a is string &&
-        data.questionL7b is string;
-    }
-
-    function isValidSectionL8_M6(data) {
-      return data.questionL8b is string &&
-        data.questionL9b is string &&
-        data.questionL10b is string &&
-        data.questionL11b is string &&
-        data.questionL12b is string &&
-        data.questionM1a is string &&
-        data.questionM1b is string &&
-        data.questionM1c is string &&
-        data.questionM2 is string &&
-        data.questionM3 is string &&
-        data.questionM4a is string &&
-        data.questionM4b is string &&
-        data.questionM4c is string &&
-        data.questionM5 is string &&
-        data.questionM6 is string;
-    }
-
-    function isValidSectionN_O(data) {
-      return data.questionN1 is string &&
-        data.questionN2 is string &&
-        data.questionN3 is string &&
-        data.questionN4 is string &&
-        data.questionN5 is string &&
-        data.questionN6 is string &&
-        data.questionN7 is string &&
-        data.questionN8 is string &&
-        data.questionO1a is string &&
-        data.questionO1b is string &&
-        data.questionO2 is string &&
-        data.questionO3a is string &&
-        data.questionO3b is string &&
-        data.questionO3c is string &&
-        data.questionO3d is string &&
-        data.questionO3e is string &&
-        data.questionO3f is string;
-    }
-
-    function isValidSectionP(data) {
-      return data.questionP1a is string &&
-        data.questionP1b is string &&
-        data.questionP1c is string &&
-        data.questionP1d is string &&
-        data.questionP1e is string &&
-        data.questionP1f is string &&
-        data.questionP2a is string &&
-        data.questionP2b is string &&
-        data.questionP2c is string &&
-        data.questionP2d is string &&
-        data.questionP2e is string &&
-        data.questionP2f is string;
-    }
-
-    function isValidDiagnosticFields1(data) {
-      return data.diagnosticA1 is string &&
-        data.diagnosticA2 is string &&
-        data.diagnosticA3 is string &&
-        data.diagnosticB1 is string &&
-        data.diagnosticC1 is string &&
-        data.riesgoC1 is string &&
-        data.diagnosticD1 is string &&
-        data.periodoD1 is string &&
-        data.diagnosticD2 is string &&
-        data.periodoD2 is string;
-    }
-
-    function isValidDiagnosticFields2(data) {
-      return data.diagnosticE1 is string &&
-        data.periodoE1 is string &&
-        data.diagnosticE2 is string &&
-        data.periodoE2 is string &&
-        data.diagnosticF1 is string &&
-        data.diagnosticF2 is string &&
-        data.diagnosticF3 is string &&
-        data.diagnosticG1 is string &&
-        data.diagnosticH1 is string &&
-        data.diagnosticI1 is string;
-    }
-
-    function isValidDiagnosticFields3(data) {
-      return data.diagnosticJ1 is string &&
-        data.diagnosticJ2 is string &&
-        data.diagnosticK1 is string &&
-        data.diagnosticK2 is string &&
-        data.diagnosticL1 is string &&
-        data.diagnosticL2 is string &&
-        data.diagnosticL3 is string &&
-        data.diagnosticM1 is string &&
-        data.diagnosticN1 is string &&
-        data.diagnosticN2 is string &&
-        data.diagnosticO1 is string &&
-        data.diagnosticP1 is string;
-    }
-
-    // Main data validation function that calls all sub-functions
-    function isValidData(data) {
-      return isValidBasicFields(data) &&
-        isValidSectionA(data) &&
-        isValidSectionB(data) &&
-        isValidSectionC(data) &&
-        isValidSectionD(data) &&
-        isValidSectionE1(data) &&
-        isValidSectionE2(data) &&
-        isValidSectionF_G(data) &&
-        isValidSectionH_I1(data) &&
-        isValidSectionI2_J1(data) &&
-        isValidSectionJ2_K1a(data) &&
-        isValidSustancias(data) &&
-        isValidSectionK1b_K3(data) &&
-        isValidSectionL1_L7(data) &&
-        isValidSectionL8_M6(data) &&
-        isValidSectionN_O(data) &&
-        isValidSectionP(data) &&
-        isValidDiagnosticFields1(data) &&
-        isValidDiagnosticFields2(data) &&
-        isValidDiagnosticFields3(data);
-    }
-
-    // Rules for the collection of data
-    match /data/{documentId} {
-      allow get: if true;
-      allow list: if true;
-      allow delete: if true;
-      allow create: if isValidData(request.resource.data);
-      allow update: if false;
+    
+    // Función para verificar que los arrays de sustancias contengan valores permitidos
+    function containsOnlyAllowedValues(array, allowedValues) {
+      return array is list && array.size() >= 0 && 
+        array.removeAll(allowedValues).size() == 0;
     }
     
-    // Rules for examples
-    match /ejemplos/{documentId} {
-      allow get: if true;
-      allow list: if true;
-      allow delete: if true;
-      allow create: if true;
-      allow update: if true;
+    // Listas de valores permitidos para sustancias (mantenidas para verificación básica)
+    function getAllowedEstimulantes() {
+      return ['anfetaminas', 'speed', 'cristal', 'dexedrina', 'ritalina', 'píldoras adelgazantes'];
     }
-
-    // Rules for all other collections
+    
+    function getAllowedCocaina() {
+      return ['inhalada', 'intravenosa', 'crack', 'speedball'];
+    }
+    
+    function getAllowedNarcoticos() {
+      return ['heroína', 'morfina', 'Dilaudid', 'opio', 'Demerol', 'metadona', 'codeína', 'Percodan', 'Darvon'];
+    }
+    
+    function getAllowedAlucinogenos() {
+      return ['LSD (ácido)', 'mescalina', 'peyote', 'PCP (polvo de ángel, peace pill)', 'psilocybin', 'STP', 'hongos', 'éxtasis', 'MDA', 'MDMA'];
+    }
+    
+    function getAllowedInhalantes() {
+      return ['pegamento', 'éter', 'óxido nitroso (laughing gas)', 'amyl o butyl nitrate (poppers)'];
+    }
+    
+    function getAllowedMarihuana() {
+      return ['hachís', 'THC', 'pasto', 'hierba', 'mota', 'reefer'];
+    }
+    
+    function getAllowedTranquilizantes() {
+      return ['Qualude', 'Seconal (<<reds>>)', 'Valium', 'Xanax', 'Librium', 'Ativan', 'Dalmane', 'Halción', 'barbitúricos', '<<Miltown>>', 'Tranquimazin', 'Lexatin', 'Orfidal'];
+    }
+    
+    // Verificación básica de sustancias
+    function isValidSustancias(data) {
+      return (!('K1aEstimulantes' in data) || containsOnlyAllowedValues(data.K1aEstimulantes, getAllowedEstimulantes())) &&
+             (!('K1aCocaina' in data) || containsOnlyAllowedValues(data.K1aCocaina, getAllowedCocaina())) &&
+             (!('K1aNarcoticos' in data) || containsOnlyAllowedValues(data.K1aNarcoticos, getAllowedNarcoticos())) &&
+             (!('K1aAlucinoginos' in data) || containsOnlyAllowedValues(data.K1aAlucinoginos, getAllowedAlucinogenos())) &&
+             (!('K1aInhalantes' in data) || containsOnlyAllowedValues(data.K1aInhalantes, getAllowedInhalantes())) &&
+             (!('K1aMarihuana' in data) || containsOnlyAllowedValues(data.K1aMarihuana, getAllowedMarihuana())) &&
+             (!('K1aTranquilizantes' in data) || containsOnlyAllowedValues(data.K1aTranquilizantes, getAllowedTranquilizantes())) &&
+             (!('K1aOtrasSustancias' in data) || data.K1aOtrasSustancias is list);
+    }
+    
+    // Reglas para la colección de datos
+    match /data/{documentId} {
+      // Permitir lectura a todos
+      allow get, list: if true;
+      
+      // Permitir eliminación a todos (puedes restringir esto según tus necesidades)
+      allow delete: if true;
+      
+      // Validar solo campos críticos en la creación
+      allow create: if hasRequiredFields(request.resource.data) && 
+                     isValidSustancias(request.resource.data);
+      
+      // Impedir actualizaciones o permitir solo con validación básica
+      allow update: if false; // O podrías usar: hasRequiredFields(request.resource.data) && isValidSustancias(request.resource.data);
+    }
+    
+    // Reglas para ejemplos (sin cambios)
+    match /ejemplos/{documentId} {
+      allow get, list, delete, create, update: if true;
+    }
+    
+    // Reglas para todas las demás colecciones
     match /{document=**} {
       allow read, write: if false;
     }

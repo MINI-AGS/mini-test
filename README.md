@@ -19,6 +19,34 @@ To run the project, follow these steps:
 2. Run `npm install` to install the dependencies
 3. Run `npm start` to start the expo project
 
+## Run the tests
+
+To run the tests, follow these steps:
+
+1. Make sure to have the firebase emulator running (only for the firebase tests)
+
+```bash
+firebase emulators:start
+```
+
+2. To run all the tests, run the following command
+
+```bash
+npm run test
+```
+
+3. To run only the firebase tests, run the following command
+
+```bash
+npm run test:firebase
+```
+
+4. To run only the logic tests, run the following command
+
+```bash
+npm run test:logic
+```
+
 ## Technologies
 
 Explanation of the technologies used in the project

@@ -2,6 +2,8 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "allowImportingTsExtensions": true,
-    "strict": true
+    "strict": true,
+    "esModuleInterop": true, // Habilitar la interoperabilidad con módulos ES
+    "allowSyntheticDefaultImports": true // Permitir importar módulos sin un `default export`
   }
 }

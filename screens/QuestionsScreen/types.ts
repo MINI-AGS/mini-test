@@ -10,10 +10,12 @@ export interface Question {
 export interface Section {
   id: string;
   title: string;
-  questions: Question[]; // Se asignarn preguntas dinmicamente
+  questions: Question[]; // Se asignarán preguntas dinámicamente
   defaultAnswer?: string;
-  dependsOn?: {
-    sectionId: string; // ID del mdulo del que depende
-    requireAllYes: boolean;
-  };
+  dependsOn: (answers: any) => boolean | string; // Permitir tanto booleano como string
+}
+export interface Diagnosis {
+  id: string;
+  name: string;
+  criteria: (answers: Record<string, string>) => "sí" | "no";
 }

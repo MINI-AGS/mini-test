@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Section, Question } from "./types";
 import { sections } from "./module";
 import { questions } from "./questions";
+import { diagnosis } from "./diagnosis";
 
 interface AnswerState {
   [questionId: string]: string;
@@ -30,6 +31,11 @@ const QuestionDisplay: React.FC = () => {
     if (section.dependsOn(answers)) {
       newVisibleModules.push(section.id);
     }
+    /*
+    if(diagnosis.criteria(answers)){
+      newVisibleModules.push(diagnosis.id)
+    }
+    */
   });
 
   // Eliminar respuestas de los módulos que no son visibles

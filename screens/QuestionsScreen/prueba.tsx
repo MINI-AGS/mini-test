@@ -1,88 +1,86 @@
 import React, { useState, useEffect } from "react";
-import { Section, Question } from "./types";
+import { Section, Question, AnswerState } from "./types";
 import { sections } from "./module";
 import { questions } from "./questions";
-import { diagnosis } from "./diagnosis";
+import { myDiagnoses } from "./diagnosis";
 
-interface AnswerState {
-  [questionId: string]: string;
-}
+// ZONA PIBBLE================================================
 
-//ZONA PIBBLE================================================
 const QuestionDisplay: React.FC = () => {
   const [answers, setAnswers] = useState<AnswerState>({});
   const [visibleModules, setVisibleModules] = useState<string[]>(["sectionA"]);
 
   // Funcion para manejar las respuestas
   const handleAnswer = (questionId: string, answer: string) => {
-    setAnswers(prev => ({
+    setAnswers((prev) => ({
       ...prev,
-      [questionId]: answer
+      [questionId]: answer,
     }));
   };
 
-  // Efecto para actualizar modulos visibles cuando cambian las respuestas
-  //
   useEffect(() => {
-  const newVisibleModules: string[] = ["sectionA"]; // El modulo A siempre es visible
+    const newVisibleModules: string[] = ["sectionA"]; // El modulo A siempre es visible
 
-  sections.forEach(section => {
-    if (section.id === "sectionA") return;
-    if (section.dependsOn(answers)) {
-      newVisibleModules.push(section.id);
+    // Evaluar las secciones
+    sections.forEach((section) => {
+      if (section.id === "sectionA") return; // El modulo A siempre es visible
+
+      // Evaluar la condición de visibilidad de la sección
+      if (section.dependsOn(answers)) {
+        newVisibleModules.push(section.id);
+      }
+    });
+
+    // Evaluar los diagnósticos según la condición dependsOn (sin usar criteria)
+    myDiagnoses.forEach((diagnosis) => {
+      // Aquí estamos usando la función `dependsOn` para evaluar si el diagnóstico debe ser visible
+      if (diagnosis.dependsOn(answers)) {
+        newVisibleModules.push(diagnosis.id); // Si depende de las respuestas, lo agregamos como visible
+      }
+    });
+
+    // Eliminar respuestas de los módulos que no son visibles
+    const newAnswers = { ...answers };
+    let hasChanges = false; // Variable para rastrear si hay cambios en respuestas
+
+    sections.forEach((section) => {
+      if (!newVisibleModules.includes(section.id)) {
+        section.questions.forEach((question) => {
+          if (question.id in newAnswers) {
+            delete newAnswers[question.id];
+            hasChanges = true; // Detectamos un cambio
+          }
+        });
+      }
+    });
+
+    // Solo actualizar el estado si realmente hay cambios
+    if (JSON.stringify(visibleModules) !== JSON.stringify(newVisibleModules)) {
+      setVisibleModules(newVisibleModules);
     }
-    /*
-    if(diagnosis.criteria(answers)){
-      newVisibleModules.push(diagnosis.id)
+
+    if (hasChanges) {
+      setAnswers(newAnswers);
     }
-    */
-  });
+  }, [answers, visibleModules]);
 
-  // Eliminar respuestas de los módulos que no son visibles
-  const newAnswers = { ...answers };
-  let hasChanges = false; // Variable para rastrear si hay cambios en respuestas
-
-  sections.forEach(section => {
-    if (!newVisibleModules.includes(section.id)) {
-      section.questions.forEach(question => {
-        if (question.id in newAnswers) {
-          delete newAnswers[question.id];
-          hasChanges = true; // Detectamos un cambio
-        }
-      });
-    }
-  });
-
-  // Solo actualizar el estado si realmente hay cambios
-  if (JSON.stringify(visibleModules) !== JSON.stringify(newVisibleModules)) {
-    setVisibleModules(newVisibleModules);
-  }
-
-  if (hasChanges) {
-    setAnswers(newAnswers);
-  }
-}, [answers]);
-
-  //ZONA PIBBLE =============================================
+  // FINAL DE ZONA PIBBLE =============================================
   return (
     <div className="question-system">
-      {sections.map(section => {
-        // Verificar si el modulo debe mostrarse
+      {sections.map((section) => {
         if (!visibleModules.includes(section.id)) {
           return null;
         }
-        
+
         return (
           <div key={section.id} className="section">
             <h2>{section.title}</h2>
-            
-            {section.questions.map(question => (
+            {section.questions.map((question) => (
               <div key={question.id} className="question">
                 <p>{question.text}</p>
-                
                 {question.options ? (
                   <div className="options">
-                    {question.options.map(option => (
+                    {question.options.map((option) => (
                       <label key={option}>
                         <input
                           type="radio"
@@ -98,7 +96,7 @@ const QuestionDisplay: React.FC = () => {
                 ) : (
                   <input
                     type="text"
-                    value={answers[question.id] || ''}
+                    value={answers[question.id] || ""}
                     onChange={(e) => handleAnswer(question.id, e.target.value)}
                     placeholder="Escribe tu respuesta"
                   />
@@ -108,7 +106,21 @@ const QuestionDisplay: React.FC = () => {
           </div>
         );
       })}
-      
+
+      {myDiagnoses.map((diagnosis) => {
+        if (!visibleModules.includes(diagnosis.id)) {
+          return null;
+        }
+
+        return (
+          <div key={diagnosis.id} className="diagnosis">
+            <h2>{diagnosis.name}</h2>
+            <p>Diagnóstico visible</p>{" "}
+            {/* Aquí podrías agregar más información si lo necesitas */}
+          </div>
+        );
+      })}
+
       <div className="debug">
         <h3>Estado de respuestas:</h3>
         <pre>{JSON.stringify(answers, null, 2)}</pre>

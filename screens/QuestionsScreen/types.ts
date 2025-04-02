@@ -1,5 +1,9 @@
 // types.18:19:36
 // // types.ts
+export interface AnswerState {
+  [questionId: string]: string;
+}
+
 export interface Question {
   id: string;
   text: string;
@@ -17,5 +21,6 @@ export interface Section {
 export interface Diagnosis {
   id: string;
   name: string;
-  criteria: (answers: Record<string, string>) => "sí" | "no";
+  criteria: (answers: Record<string, string>) => "sí" | "no"; // Mantiene el criterio de evaluación
+  dependsOn: (answers: any) => boolean | string; // Permitir tanto booleano como string
 }

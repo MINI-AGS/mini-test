@@ -4,7 +4,7 @@ import { sections } from "./module";
 import { questions } from "./questions";
 import { myDiagnoses } from "./diagnosis";
 
-// ZONA PIBBLE================================================
+// ZONA BETIÑO ================================================
 
 const QuestionDisplay: React.FC = () => {
   const [answers, setAnswers] = useState<AnswerState>({});
@@ -64,7 +64,7 @@ const QuestionDisplay: React.FC = () => {
     }
   }, [answers, visibleModules]);
 
-  // FINAL DE ZONA PIBBLE =============================================
+  // FINAL DE ZONA BETIÑO =============================================
   return (
     <div className="question-system">
       {sections.map((section) => {

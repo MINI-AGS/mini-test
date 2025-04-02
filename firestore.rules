@@ -1,0 +1,87 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Función básica para verificar los campos mínimos necesarios
+    function hasRequiredFields(data) {
+      return data.gender is string &&
+        data.interviewDate is timestamp &&
+        data.startTimeInterview is string &&
+        data.endTimeInterview is string &&
+        data.durationInterview is string;
+    }
+    
+    // Función para verificar que los arrays de sustancias contengan valores permitidos
+    function containsOnlyAllowedValues(array, allowedValues) {
+      return array is list && array.size() >= 0 && 
+        array.removeAll(allowedValues).size() == 0;
+    }
+    
+    // Listas de valores permitidos para sustancias (mantenidas para verificación básica)
+    function getAllowedEstimulantes() {
+      return ['anfetaminas', 'speed', 'cristal', 'dexedrina', 'ritalina', 'píldoras adelgazantes'];
+    }
+    
+    function getAllowedCocaina() {
+      return ['inhalada', 'intravenosa', 'crack', 'speedball'];
+    }
+    
+    function getAllowedNarcoticos() {
+      return ['heroína', 'morfina', 'Dilaudid', 'opio', 'Demerol', 'metadona', 'codeína', 'Percodan', 'Darvon'];
+    }
+    
+    function getAllowedAlucinogenos() {
+      return ['LSD (ácido)', 'mescalina', 'peyote', 'PCP (polvo de ángel, peace pill)', 'psilocybin', 'STP', 'hongos', 'éxtasis', 'MDA', 'MDMA'];
+    }
+    
+    function getAllowedInhalantes() {
+      return ['pegamento', 'éter', 'óxido nitroso (laughing gas)', 'amyl o butyl nitrate (poppers)'];
+    }
+    
+    function getAllowedMarihuana() {
+      return ['hachís', 'THC', 'pasto', 'hierba', 'mota', 'reefer'];
+    }
+    
+    function getAllowedTranquilizantes() {
+      return ['Qualude', 'Seconal (<<reds>>)', 'Valium', 'Xanax', 'Librium', 'Ativan', 'Dalmane', 'Halción', 'barbitúricos', '<<Miltown>>', 'Tranquimazin', 'Lexatin', 'Orfidal'];
+    }
+    
+    // Verificación básica de sustancias
+    function isValidSustancias(data) {
+      return (!('K1aEstimulantes' in data) || containsOnlyAllowedValues(data.K1aEstimulantes, getAllowedEstimulantes())) &&
+             (!('K1aCocaina' in data) || containsOnlyAllowedValues(data.K1aCocaina, getAllowedCocaina())) &&
+             (!('K1aNarcoticos' in data) || containsOnlyAllowedValues(data.K1aNarcoticos, getAllowedNarcoticos())) &&
+             (!('K1aAlucinoginos' in data) || containsOnlyAllowedValues(data.K1aAlucinoginos, getAllowedAlucinogenos())) &&
+             (!('K1aInhalantes' in data) || containsOnlyAllowedValues(data.K1aInhalantes, getAllowedInhalantes())) &&
+             (!('K1aMarihuana' in data) || containsOnlyAllowedValues(data.K1aMarihuana, getAllowedMarihuana())) &&
+             (!('K1aTranquilizantes' in data) || containsOnlyAllowedValues(data.K1aTranquilizantes, getAllowedTranquilizantes())) &&
+             (!('K1aOtrasSustancias' in data) || data.K1aOtrasSustancias is list);
+    }
+    
+    // Reglas para la colección de datos
+    match /data/{documentId} {
+      // Permitir lectura a todos
+      allow get, list: if true;
+      
+      // Permitir eliminación a todos (puedes restringir esto según tus necesidades)
+      allow delete: if true;
+      
+      // Validar solo campos críticos en la creación
+      allow create: if hasRequiredFields(request.resource.data) && 
+                     isValidSustancias(request.resource.data);
+      
+      // Impedir actualizaciones o permitir solo con validación básica
+      allow update: if false; // O podrías usar: hasRequiredFields(request.resource.data) && isValidSustancias(request.resource.data);
+    }
+    
+    // Reglas para ejemplos (sin cambios)
+    match /ejemplos/{documentId} {
+      allow get, list, delete, create, update: if true;
+    }
+    
+    // Reglas para todas las demás colecciones
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

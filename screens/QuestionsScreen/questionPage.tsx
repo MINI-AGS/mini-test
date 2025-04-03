@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { View, ScrollView, Text, TextInput, StyleSheet } from "react-native";
+import { RadioButton } from "react-native-paper"; // Assuming you're using react-native-paper for RadioButton
 import { Section, Question, AnswerState } from "./types";
 import { sections } from "./module";
 import { questions } from "./questions";
 import { myDiagnoses } from "./diagnosis";
 
-// ZONA BETI脩O ================================================
-
 const QuestionDisplay: React.FC = () => {
   const [answers, setAnswers] = useState<AnswerState>({});
   const [visibleModules, setVisibleModules] = useState<string[]>(["sectionA"]);
 
-  // Funcion para manejar las respuestas
   const handleAnswer = (questionId: string, answer: string) => {
     setAnswers((prev) => ({
       ...prev,
@@ -19,42 +18,36 @@ const QuestionDisplay: React.FC = () => {
   };
 
   useEffect(() => {
-    const newVisibleModules: string[] = ["sectionA"]; // El modulo A siempre es visible
+    const newVisibleModules: string[] = ["sectionA"];
 
-    // Evaluar las secciones
     sections.forEach((section) => {
-      if (section.id === "sectionA") return; // El modulo A siempre es visible
+      if (section.id === "sectionA") return;
 
-      // Evaluar la condici贸n de visibilidad de la secci贸n
       if (section.dependsOn(answers)) {
         newVisibleModules.push(section.id);
       }
     });
 
-    // Evaluar los diagn贸sticos seg煤n la condici贸n dependsOn (sin usar criteria)
     myDiagnoses.forEach((diagnosis) => {
-      // Aqu铆 estamos usando la funci贸n `dependsOn` para evaluar si el diagn贸stico debe ser visible
       if (diagnosis.dependsOn(answers)) {
-        newVisibleModules.push(diagnosis.id); // Si depende de las respuestas, lo agregamos como visible
+        newVisibleModules.push(diagnosis.id);
       }
     });
 
-    // Eliminar respuestas de los m贸dulos que no son visibles
     const newAnswers = { ...answers };
-    let hasChanges = false; // Variable para rastrear si hay cambios en respuestas
+    let hasChanges = false;
 
     sections.forEach((section) => {
       if (!newVisibleModules.includes(section.id)) {
         section.questions.forEach((question) => {
           if (question.id in newAnswers) {
             delete newAnswers[question.id];
-            hasChanges = true; // Detectamos un cambio
+            hasChanges = true;
           }
         });
       }
     });
 
-    // Solo actualizar el estado si realmente hay cambios
     if (JSON.stringify(visibleModules) !== JSON.stringify(newVisibleModules)) {
       setVisibleModules(newVisibleModules);
     }
@@ -64,71 +57,126 @@ const QuestionDisplay: React.FC = () => {
     }
   }, [answers, visibleModules]);
 
-  // FINAL DE ZONA BETI脩O =============================================
   return (
-    <div className="question-system">
+    <ScrollView style={styles.container}>
       {sections.map((section) => {
         if (!visibleModules.includes(section.id)) {
           return null;
         }
-
         return (
-          <div key={section.id} className="section">
-            <h2>{section.title}</h2>
+          <View key={section.id} style={styles.section}>
+            <Text style={styles.sectionTitle}>{section.title}</Text>
             {section.questions.map((question) => (
-              <div key={question.id} className="question">
-                <p>{question.text}</p>
+              <View key={question.id} style={styles.question}>
+                <Text>{question.text}</Text>
                 {question.options ? (
-                  <div className="options">
+                  <View style={styles.options}>
                     {question.options.map((option) => (
-                      <label key={option}>
-                        <input
-                          type="radio"
-                          name={`question-${question.id}`}
+                      <View key={option} style={styles.radioOption}>
+                        <RadioButton
                           value={option}
-                          checked={answers[question.id] === option}
-                          onChange={() => handleAnswer(question.id, option)}
+                          status={answers[question.id] === option ? 'checked' : 'unchecked'}
+                          onPress={() => handleAnswer(question.id, option)}
                         />
-                        {option}
-                      </label>
+                        <Text style={styles.radioLabel}>{option}</Text>
+                      </View>
                     ))}
-                  </div>
+                  </View>
                 ) : (
-                  <input
-                    type="text"
+                  <TextInput
+                    style={styles.input}
                     value={answers[question.id] || ""}
-                    onChange={(e) => handleAnswer(question.id, e.target.value)}
+                    onChangeText={(text) => handleAnswer(question.id, text)}
                     placeholder="Escribe tu respuesta"
                   />
                 )}
-              </div>
+              </View>
             ))}
-          </div>
+          </View>
         );
       })}
-
+      
       {myDiagnoses.map((diagnosis) => {
         if (!visibleModules.includes(diagnosis.id)) {
           return null;
         }
-
         return (
-          <div key={diagnosis.id} className="diagnosis">
-            <h2>{diagnosis.name}</h2>
-            <p>Diagn贸stico visible</p>{" "}
-            {/* Aqu铆 podr铆as agregar m谩s informaci贸n si lo necesitas */}
-          </div>
+          <View key={diagnosis.id} style={styles.diagnosis}>
+            <Text style={styles.diagnosisTitle}>{diagnosis.name}</Text>
+            <Text>Diagn梥tico visible</Text>
+          </View>
         );
       })}
-
-      <div className="debug">
-        <h3>Estado de respuestas:</h3>
-        <pre>{JSON.stringify(answers, null, 2)}</pre>
-        <h3>Modulos visibles:</h3>
-        <pre>{JSON.stringify(visibleModules, null, 2)}</pre>
-      </div>
-    </div>
+      
+      <View style={styles.debug}>
+        <Text style={styles.debugTitle}>Estado de respuestas:</Text>
+        <Text style={styles.debugText}>{JSON.stringify(answers, null, 2)}</Text>
+        <Text style={styles.debugTitle}>M梔ulos visibles:</Text>
+        <Text style={styles.debugText}>{JSON.stringify(visibleModules, null, 2)}</Text>
+      </View>
+    </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  section: {
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  question: {
+    marginBottom: 15,
+  },
+  options: {
+    marginTop: 8,
+  },
+  radioOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  radioLabel: {
+    marginLeft: 8,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    marginTop: 5,
+  },
+  diagnosis: {
+    backgroundColor: '#f0f0f0',
+    padding: 15,
+    borderRadius: 5,
+    marginBottom: 15,
+  },
+  diagnosisTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  debug: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: '#f8f8f8',
+    borderRadius: 5,
+  },
+  debugTitle: {
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  debugText: {
+    fontFamily: 'monospace',
+    marginBottom: 10,
+  }
+});
 
 export default QuestionDisplay;

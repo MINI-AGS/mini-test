@@ -6,7 +6,7 @@ export const questions: Question[] = [
   {
     id: "QuestionA1",
     text: "¿En las últimas 2 semanas, se ha sentido deprimido o decaído la mayor parte del día, casi todos los días?",
-    options: ["si", "no"],
+    options: ["si", "no"], //
     section: "sectionA",
   },
   {
@@ -38,7 +38,7 @@ export const questions: Question[] = [
     id: "QuestionA3d",
     text: "¿Casi todos los días, se sentía la mayor parte del tiempo fatigado o sin energía?",
     options: ["si", "no"],
-    section: "sectionA3",
+    section: "sectionA3", //
   },
   {
     id: "QuestionA3e",

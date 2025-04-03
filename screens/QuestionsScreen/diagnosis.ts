@@ -5,14 +5,10 @@ export const myDiagnoses: Diagnosis[] = [
   {
     id: "major_depressive_episode",
     name: "Episodio Depresivo Mayor",
-    criteria: (answers) => {
-      return answers["question1"] === "si" ? "sí" : "no"; // Ejemplo
-    },
-    dependsOn: (answers) => {
+    criteria: (answers: any) => {
       const relatedQuestionsA3 = questions.filter(
         (q) => q.section === "sectionA3",
       );
-
       const relatedQuestionsA = questions.filter(
         (q) => q.section === "sectionA",
       );
@@ -22,18 +18,35 @@ export const myDiagnoses: Diagnosis[] = [
         ...relatedQuestionsA,
       ].filter((q) => answers[q.id] === "si").length;
 
-      return totalYesAnswers >= 5; // Muestra si hay al menos 5 respuestas "si"
+      return totalYesAnswers >= 5 ? "sí" : "no"; // Siempre retorna "sí" o "no"
+    },
+    dependsOn: (answers: any): boolean => {
+      const relatedQuestionsA3 = questions.filter(
+        (q) => q.section === "sectionA3",
+      );
+      const relatedQuestionsA = questions.filter(
+        (q) => q.section === "sectionA",
+      );
+
+      const totalYesAnswers = [
+        ...relatedQuestionsA3,
+        ...relatedQuestionsA,
+      ].filter((q) => answers[q.id] === "si").length;
+
+      return totalYesAnswers >= 5; // Retorna un booleano
     },
   },
   {
-    id: "recurrent_major_depressive_episode",
+    id: "major_depressive_episode_recidivist",
     name: "Episodio Depresivo Mayor Recidivante",
     criteria: (answers) => {
       return answers["question1"] === "si" ? "sí" : "no"; // Ejemplo
     },
     dependsOn: (answers) => {
-      // Aquí también puedes definir si este diagnóstico depende de respuestas específicas
-      return answers["question1"] === "si";
+      const relatedQuestions = questions.filter(
+        (q) => q.section === "sectionA4b",
+      );
+      return relatedQuestions.some((q) => answers[q.id] === "si"); // Verifica si alguna respuesta es "si" en el sectionA4
     },
   },
   {

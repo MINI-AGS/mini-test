@@ -75,9 +75,9 @@ service cloud.firestore {
     }
     
     // Reglas para ejemplos (sin cambios)
-    //match /ejemplos/{documentId} {
-      //allow get, list, delete, create, update: if true;
-    //}
+    match /ejemplos/{documentId} {
+      allow get, list, delete, create, update: if true;
+    }
     
     // Reglas para ejemplos solo para admins (script de python)
     match /ejemplos2/{documentId} {

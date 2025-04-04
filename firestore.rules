@@ -60,23 +60,28 @@ service cloud.firestore {
     
     // Reglas para la colección de datos
     match /data/{documentId} {
-      // Permitir lectura a todos
-      allow get, list: if true;
+      // Permitir lectura a nadie
+      allow get, list: if false; // admin-sdk can bypass
       
-      // Permitir eliminación a todos (puedes restringir esto según tus necesidades)
-      allow delete: if true;
+      // Permitir eliminación a nadie
+      allow delete: if false; // admin-sdk can bypass
       
       // Validar solo campos críticos en la creación
       allow create: if hasRequiredFields(request.resource.data) && 
                      isValidSustancias(request.resource.data);
       
-      // Impedir actualizaciones o permitir solo con validación básica
-      allow update: if false; // O podrías usar: hasRequiredFields(request.resource.data) && isValidSustancias(request.resource.data);
+      // Impedir actualizaciones 
+      allow update: if false; // admin-sdk can bypass
     }
     
     // Reglas para ejemplos (sin cambios)
-    match /ejemplos/{documentId} {
-      allow get, list, delete, create, update: if true;
+    //match /ejemplos/{documentId} {
+      //allow get, list, delete, create, update: if true;
+    //}
+    
+    // Reglas para ejemplos solo para admins (script de python)
+    match /ejemplos2/{documentId} {
+      allow get, list, delete, create, update: if false;
     }
     
     // Reglas para todas las demás colecciones

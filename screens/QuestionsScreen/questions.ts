@@ -1,11 +1,12 @@
 //questions.ts
-import { Question } from "./types";
+import { Question, Flags } from "./types";
 
 export const questions: Question[] = [
   // Sección A
   {
     id: "questionA1",
-    text: "¿En las últimas 2 semanas, se ha sentido deprimido o decaído la mayor parte del día, casi todos los días?",
+    //En casod e que tel texto sea dinamico, usar __<id de la pregunta>_DYNAMIC__
+    text: "__A1_DYNAMIC__",
     options: ["si", "no"], //
     section: "sectionA",
   },

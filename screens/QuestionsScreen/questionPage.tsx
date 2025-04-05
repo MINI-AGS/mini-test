@@ -11,8 +11,8 @@ import { RadioButton } from "react-native-paper";
 import { Section, Question, AnswerState } from "./types";
 import { sections } from "./module";
 import { myDiagnoses } from "./diagnosis";
+import { getQuestionsWithDynamicText } from "./questionRender"; // 👈 Nombre corregido
 
-// Get the screen height
 const { height } = Dimensions.get("window");
 
 const QuestionDisplay: React.FC = () => {
@@ -20,14 +20,10 @@ const QuestionDisplay: React.FC = () => {
   const [visibleModules, setVisibleModules] = useState<string[]>(["sectionA"]);
 
   const handleAnswer = (questionId: string, answer: string) => {
-    setAnswers((prev) => {
-      const newAnswers = {
-        ...prev,
-        [questionId]: answer,
-      };
-
-      return newAnswers;
-    });
+    setAnswers((prev) => ({
+      ...prev,
+      [questionId]: answer,
+    }));
   };
 
   useEffect(() => {
@@ -70,16 +66,21 @@ const QuestionDisplay: React.FC = () => {
     }
   }, [answers, visibleModules]);
 
+  const dynamicQuestions = getQuestionsWithDynamicText(answers); // 👈 Aquí se obtienen preguntas con texto dinámico
+
   return (
-    <ScrollView style={[styles.container, { height: height }]}>
+    <ScrollView style={[styles.container, { height }]}>
       {sections.map((section) => {
-        if (!visibleModules.includes(section.id)) {
-          return null;
-        }
+        if (!visibleModules.includes(section.id)) return null;
+
+        const sectionQuestions = dynamicQuestions.filter((q) =>
+          section.questions.some((sq) => sq.id === q.id),
+        );
+
         return (
           <View key={section.id} style={styles.section}>
             <Text style={styles.sectionTitle}>{section.title}</Text>
-            {section.questions.map((question) => (
+            {sectionQuestions.map((question) => (
               <View key={question.id} style={styles.question}>
                 <Text>{question.text}</Text>
                 {question.options ? (
@@ -113,22 +114,19 @@ const QuestionDisplay: React.FC = () => {
         );
       })}
 
-      {myDiagnoses.map((diagnosis) => {
-        if (!visibleModules.includes(diagnosis.id)) {
-          return null;
-        }
-        return (
+      {myDiagnoses.map((diagnosis) =>
+        visibleModules.includes(diagnosis.id) ? (
           <View key={diagnosis.id} style={styles.diagnosis}>
             <Text style={styles.diagnosisTitle}>{diagnosis.name}</Text>
             <Text>Diagnóstico visible</Text>
           </View>
-        );
-      })}
+        ) : null,
+      )}
 
       <View style={styles.debug}>
         <Text style={styles.debugTitle}>Estado de respuestas:</Text>
         <Text style={styles.debugText}>{JSON.stringify(answers, null, 2)}</Text>
-        <Text style={styles.debugTitle}>M—dulos visibles:</Text>
+        <Text style={styles.debugTitle}>Módulos visibles:</Text>
         <Text style={styles.debugText}>
           {JSON.stringify(visibleModules, null, 2)}
         </Text>
@@ -138,32 +136,17 @@ const QuestionDisplay: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  section: {
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  question: {
-    marginBottom: 15,
-  },
-  options: {
-    marginTop: 8,
-  },
+  container: { flex: 1, padding: 16 },
+  section: { marginBottom: 20 },
+  sectionTitle: { fontSize: 18, fontWeight: "bold", marginBottom: 10 },
+  question: { marginBottom: 15 },
+  options: { marginTop: 8 },
   radioOption: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 8,
   },
-  radioLabel: {
-    marginLeft: 8,
-  },
+  radioLabel: { marginLeft: 8 },
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
@@ -188,14 +171,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#f8f8f8",
     borderRadius: 5,
   },
-  debugTitle: {
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  debugText: {
-    fontFamily: "monospace",
-    marginBottom: 10,
-  },
+  debugTitle: { fontWeight: "bold", marginBottom: 5 },
+  debugText: { fontFamily: "monospace", marginBottom: 10 },
 });
 
 export default QuestionDisplay;

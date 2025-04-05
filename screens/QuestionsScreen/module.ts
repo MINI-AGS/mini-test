@@ -5,7 +5,7 @@ import { AnswerState, Question, Section, Diagnosis } from "./types";
 const localValues: { [key: string]: string } = {};
 
 export const sections: Section[] = [
-  /*   {
+  {
     id: "sectionA",
     title: "Modulo A - Episodio depresivo mayor",
     questions: questions.filter((q) => q.section === "sectionA"),
@@ -28,6 +28,7 @@ export const sections: Section[] = [
       return sectionACompleta && algunaRespuestaSi;
     },
   },
+  /*
   {
     id: "sectionA4a",
     title: "Modulo A4a",
@@ -105,7 +106,7 @@ export const sections: Section[] = [
       // A6 se muestra si alguna de las condiciones (A5a o A5b) es "s√≠"
       return (a5aCondition || a5bCondition) && sectionA5bVisible;
     },
-    },
+  },
   {
     id: "sectionB", // ID del módulo B
     title: "Modulo B - Trastorno distímico",
@@ -188,6 +189,7 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionC"),
     dependsOn: (answers) => true, // Siempre visible
   },
+  */
   {
     id: "sectionD",
     title: "Modulo D - Episodio (hipo)maníaco",
@@ -197,25 +199,7 @@ export const sections: Section[] = [
   {
     id: "sectionD3",
     title: "Módulo D3 - Síntomas de (hipo)manía",
-    questions: (answers: AnswerState) => {
-      const isCurrentEpisode =
-        answers["questionD1b"]?.toLowerCase() === "si" ||
-        answers["questionD2b"]?.toLowerCase() === "si";
-
-      return questions
-        .filter((q) => q.section === "sectionD3")
-        .map((q) => ({
-          ...q,
-          text: isCurrentEpisode
-            ? q.text
-                .replace(/\bSentía\b/g, "Siente")
-                .replace(/\btenía\b/g, "tiene")
-                .replace(/\bestaba\b/g, "está")
-                .replace(/\bhacía\b/g, "hace")
-                .replace(/\bpodía\b/g, "puede")
-            : q.text,
-        }));
-    },
+    questions: questions.filter((q) => q.section === "sectionD3"),
     dependsOn: (answers: AnswerState) => {
       const isCurrentEpisode =
         answers["QuestionD1b"]?.toLowerCase() === "si" ||
@@ -228,6 +212,7 @@ export const sections: Section[] = [
       return isCurrentEpisode || (isPastEpisode && !isCurrentEpisode);
     },
   },
+
   {
     id: "sectionE1a",
     title: "Modulo E1a",
@@ -316,7 +301,7 @@ export const sections: Section[] = [
     title: "Modulo F - Agorafobia",
     questions: questions.filter((q) => q.section === "sectionF1"),
     dependsOn: (answers) => true, // Siempre visible
-    },*/
+  },
   {
     id: "sectionG ",
     title: "Modulo G - Fobia social (trastorno de ansiedad social)",
@@ -356,7 +341,7 @@ export const sections: Section[] = [
       return relatedQuestions.some((q) => answers[q.id] === "si"); // Retorna true o false
     },
   },
-  /*  {
+  {
     id: "sectionH ",
     title: "Modulo H - Trastorno obsesivo-compulsivo",
     questions: questions.filter((q) => q.section === "sectionH1"),
@@ -426,7 +411,7 @@ export const sections: Section[] = [
       const h5Questions = questions.filter((q) => q.section === "sectionH5");
       return h5Questions.some((q) => answers[q.id] === "si");
     },
-    },
+  },
   {
     id: "sectionI ",
     title: "Modulo I - Estado por estrés postraumático (opcional)",
@@ -485,7 +470,7 @@ export const sections: Section[] = [
 
       return tiene2oMasEnI3 && I4Completado; // Mostrar I5 solo si se cumplen ambas
     },
-    },
+  },
   {
     id: "sectionJ ",
     title: "Modulo J - Abuso y dependencia de alcohol",
@@ -524,9 +509,7 @@ export const sections: Section[] = [
       "Modulo K - Trastornos asociados al uso de sustancias psicoactivas no alcohólicas ",
     questions: questions.filter((q) => q.section === "sectionK1a"),
     dependsOn: (answers) => true, // Siempre visible
-    },
-    FALTAN LOS MODULOS K,L,M,N
-
+  },
   {
     id: "sectionO1a",
     title: "Modulo O - Trastorno de ansiedad generalizada ",
@@ -574,5 +557,5 @@ export const sections: Section[] = [
       // 3. Mostrar P2 solo si hay 2+ "SÍ" en P1
       return respuestasSiP1 >= 2;
     },
-    },*/
+  },
 ]; // <- Esto cierra correctamente el array

@@ -1,7 +1,7 @@
 // types.18:19:36
 // // types.ts
 export interface AnswerState {
-  [key: string]: string | undefined;
+  [key: string]: string;
 }
 
 export interface Question {
@@ -33,4 +33,9 @@ export interface Diagnosis {
   result?: string; // Hacer que result sea opcional
   criteria?: (answers: Record<string, string>) => "sí" | "no";
   dependsOn: (answers: any) => boolean | string;
+}
+
+export interface Flags {
+  id: string;
+  dependsOn: (answers: Record<string, string>) => boolean;
 }

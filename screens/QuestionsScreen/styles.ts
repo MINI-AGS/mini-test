@@ -3,56 +3,61 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: "#f5f5f5",
+    padding: 16,
   },
-  moduleHeader: {
-    backgroundColor: "#6200ea",
-    padding: 15,
-    borderRadius: 10,
-    marginVertical: 10,
+  section: {
+    marginBottom: 20,
   },
-  moduleTitle: {
-    color: "white",
+  sectionTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    textAlign: "center",
+    marginBottom: 10,
   },
-  moduleContent: {
-    backgroundColor: "white",
+  question: {
+    marginBottom: 15,
+  },
+  options: {
+    marginTop: 8,
+  },
+  radioOption: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 8,
+  },
+  radioLabel: {
+    marginLeft: 8,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+    marginTop: 5,
+  },
+  diagnosis: {
+    backgroundColor: "#f0f0f0",
     padding: 15,
-    borderRadius: 10,
-    marginBottom: 10,
-    elevation: 3,
+    borderRadius: 5,
+    marginBottom: 15,
   },
-  questionContainer: {
-    marginBottom: 10,
-  },
-  questionText: {
+  diagnosisTitle: {
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 5,
   },
-  optionsContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-  },
-  optionButton: {
-    backgroundColor: "#e0e0e0",
+  debug: {
+    marginTop: 20,
     padding: 10,
+    backgroundColor: "#f8f8f8",
     borderRadius: 5,
-    margin: 5,
   },
-  selectedOption: {
-    backgroundColor: "#6200ea",
+  debugTitle: {
+    fontWeight: "bold",
+    marginBottom: 5,
   },
-  optionText: {
-    fontSize: 14,
-    color: "black",
-  },
-  selectedOptionText: {
-    color: "white",
+  debugText: {
+    fontFamily: "monospace",
+    marginBottom: 10,
   },
 });
-
 export default styles;

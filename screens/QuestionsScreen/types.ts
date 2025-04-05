@@ -1,7 +1,7 @@
 // types.18:19:36
 // // types.ts
 export interface AnswerState {
-  [questionId: string]: string;
+  [key: string]: string | undefined;
 }
 
 export interface Question {
@@ -14,13 +14,23 @@ export interface Question {
 export interface Section {
   id: string;
   title: string;
-  questions: Question[]; // Se asignarán preguntas dinámicamente
+  questions: Question[];
   defaultAnswer?: string;
-  dependsOn: (answers: any) => boolean | string; // Permitir tanto booleano como string
+  dependsOn: (answers: any) => boolean | string;
+  isDisabled?: (answers: any) => boolean | string;
+  // Nueva propiedad para evaluar condiciones como E5
+  evaluateConditions?: (answers: any) => Record<
+    string,
+    {
+      isMet: boolean;
+      result?: string;
+    }
+  >;
 }
 export interface Diagnosis {
   id: string;
   name: string;
-  criteria: (answers: Record<string, string>) => "sí" | "no"; // Mantiene el criterio de evaluación
-  dependsOn: (answers: any) => boolean | string; // Permitir tanto booleano como string
+  result?: string; // Hacer que result sea opcional
+  criteria?: (answers: Record<string, string>) => "sí" | "no";
+  dependsOn: (answers: any) => boolean | string;
 }

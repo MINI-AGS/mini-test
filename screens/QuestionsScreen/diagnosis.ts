@@ -6,7 +6,7 @@ export const myDiagnoses: Diagnosis[] = [
   // Diagnóstico: Episodio Depresivo Mayor
   {
     id: "diagnosticA1",
-    name: "Episodio Depresivo Mayor",
+    name: "Episodio Depresivo Mayor Actual",
     criteria: (answers: any) => {
       return answers["question1"] === "si" ? "sí" : "no"; // Ejemplo
     },

@@ -5,26 +5,32 @@ import { AnswerState, Question, Section, Diagnosis } from "./types";
 const localValues: { [key: string]: string } = {};
 
 export const sections: Section[] = [
-  /*  {
+  /*   {
     id: "sectionA",
-    title: "Modulo A - Preguntas Iniciales",
+    title: "Modulo A - Episodio depresivo mayor",
     questions: questions.filter((q) => q.section === "sectionA"),
     dependsOn: (answers) => true, // Siempre visible
   },
   {
     id: "sectionA3",
-    title: "Modulo A3 - Preguntas Avanzadas",
+    title: "Módulo A3 - Síntomas adicionales",
     questions: questions.filter((q) => q.section === "sectionA3"),
     dependsOn: (answers) => {
-      const relatedQuestions = questions.filter(
+      const preguntasSectionA = questions.filter(
         (q) => q.section === "sectionA",
       );
-      return relatedQuestions.some((q) => answers[q.id] === "si"); // Retorna true o false
+      const sectionACompleta = preguntasSectionA.every(
+        (q) => answers[q.id] !== undefined,
+      );
+      const algunaRespuestaSi = preguntasSectionA.some(
+        (q) => answers[q.id] === "si",
+      );
+      return sectionACompleta && algunaRespuestaSi;
     },
   },
   {
     id: "sectionA4a",
-    title: "Modulo A4a - Preguntas Especiales",
+    title: "Modulo A4a",
     questions: questions.filter((q) => q.section === "sectionA4a"),
     dependsOn: (answers) => {
       const relatedQuestionsA3 = questions.filter(
@@ -60,14 +66,14 @@ export const sections: Section[] = [
     dependsOn: (answers) => {
       // Buscar el diagnóstico "Episodio Depresivo Mayor Actual"
       const majorDepressiveEpisode = myDiagnoses.find(
-        (diagnosis) => diagnosis.id === "major_depressive_episode",
+        (diagnosis) => diagnosis.id === "diagnosticA1",
       );
 
       // Verificar si se cumple la condición de A5a (es decir, A2 = "sí")
-      const a5aCondition = answers["QuestionA2"]?.toLowerCase() === "si";
+      const a5aCondition = answers["questionA2"]?.toLowerCase() === "si";
 
       // Verificar si se cumple la condición de A4b (es decir, A4b = "sí")
-      const a4bCondition = answers["QuestionA4b"]?.toLowerCase() === "si";
+      const a4bCondition = answers["questionA4b"]?.toLowerCase() === "si";
 
       // A5b se muestra si todas las condiciones son verdaderas
       return (
@@ -84,22 +90,22 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionA6"),
     dependsOn: (answers) => {
       // Se muestra si A5a (¬øCODIFIC√ì S√ç EN A2?) o A5b fueron respondidas con "s√≠"
-      const a5aCondition = answers["QuestionA2"]?.toLowerCase() === "si"; // Esto es la condici√≥n interna de A5a
-      const a5bCondition = answers["QuestionA5b"]?.toLowerCase() === "si"; // Esto es la respuesta a A5b
+      const a5aCondition = answers["questionA2"]?.toLowerCase() === "si"; // Esto es la condici√≥n interna de A5a
+      const a5bCondition = answers["questionA5b"]?.toLowerCase() === "si"; // Esto es la respuesta a A5b
 
       const majorDepressiveEpisode = myDiagnoses.find(
-        (diagnosis) => diagnosis.id === "major_depressive_episode",
+        (diagnosis) => diagnosis.id === "diagnosticA1",
       );
 
       const sectionA5bVisible =
         (majorDepressiveEpisode?.dependsOn(answers) ?? false) &&
         a5aCondition &&
-        answers["QuestionA4b"]?.toLowerCase() === "si";
+        answers["questionA4b"]?.toLowerCase() === "si";
 
       // A6 se muestra si alguna de las condiciones (A5a o A5b) es "s√≠"
       return (a5aCondition || a5bCondition) && sectionA5bVisible;
     },
-  },
+    },
   {
     id: "sectionB", // ID del módulo B
     title: "Modulo B - Trastorno distímico",
@@ -107,29 +113,15 @@ export const sections: Section[] = [
     dependsOn: (answers) => {
       // Buscar diagnóstico de episodio depresivo mayor
       const majorDepressiveEpisode = myDiagnoses.find(
-        (diagnosis) => diagnosis.id === "major_depressive_episode",
+        (diagnosis) => diagnosis.id === "diagnosticA1",
       );
       // Buscar diagnóstico de episodio depresivo mayor recidivante
       const majorDepressiveEpisodeRecidivist = myDiagnoses.find(
-        (diagnosis) => diagnosis.id === "major_depressive_episode_recidivist",
+        (diagnosis) => diagnosis.id === "diagnosticA2",
       );
       // Buscar diagnóstico de episodio depresivo mayor con síntomas melancólicos actuales
       const majorDepressiveEpisodeWithMelancholic = myDiagnoses.find(
-        (diagnosis) =>
-          diagnosis.id ===
-          "Major_Depressive_Episode_with_Melancholic_Features_Current",
-      );
-      console.log(
-        "Diagnóstico Episodio Depresivo Mayor:",
-        majorDepressiveEpisode,
-      );
-      console.log(
-        "Diagnóstico Episodio Depresivo Mayor Recidivante:",
-        majorDepressiveEpisodeRecidivist,
-      );
-      console.log(
-        "Diagnóstico Episodio Depresivo Mayor con características melancólicas:",
-        majorDepressiveEpisodeWithMelancholic,
+        (diagnosis) => diagnosis.id === "diagnosticA3",
       );
       // Si cualquiera de los tres diagnósticos es positivo, no mostrar el módulo B
       return !(
@@ -141,7 +133,7 @@ export const sections: Section[] = [
     isDisabled: (answers) => {
       // Deshabilitar si el diagnóstico de episodio depresivo mayor es positivo
       const majorDepressiveEpisode = myDiagnoses.find(
-        (diagnosis) => diagnosis.id === "major_depressive_episode",
+        (diagnosis) => diagnosis.id === "diagnosticA1",
       );
 
       // Si el diagnóstico de episodio depresivo mayor es positivo, deshabilitar el módulo B
@@ -207,8 +199,8 @@ export const sections: Section[] = [
     title: "Módulo D3 - Síntomas de (hipo)manía",
     questions: (answers: AnswerState) => {
       const isCurrentEpisode =
-        answers["QuestionD1b"]?.toLowerCase() === "si" ||
-        answers["QuestionD2b"]?.toLowerCase() === "si";
+        answers["questionD1b"]?.toLowerCase() === "si" ||
+        answers["questionD2b"]?.toLowerCase() === "si";
 
       return questions
         .filter((q) => q.section === "sectionD3")
@@ -235,7 +227,7 @@ export const sections: Section[] = [
 
       return isCurrentEpisode || (isPastEpisode && !isCurrentEpisode);
     },
-    },
+  },
   {
     id: "sectionE1a",
     title: "Modulo E1a",
@@ -324,7 +316,7 @@ export const sections: Section[] = [
     title: "Modulo F - Agorafobia",
     questions: questions.filter((q) => q.section === "sectionF1"),
     dependsOn: (answers) => true, // Siempre visible
-    },
+    },*/
   {
     id: "sectionG ",
     title: "Modulo G - Fobia social (trastorno de ansiedad social)",
@@ -364,7 +356,7 @@ export const sections: Section[] = [
       return relatedQuestions.some((q) => answers[q.id] === "si"); // Retorna true o false
     },
   },
-  {
+  /*  {
     id: "sectionH ",
     title: "Modulo H - Trastorno obsesivo-compulsivo",
     questions: questions.filter((q) => q.section === "sectionH1"),
@@ -534,7 +526,7 @@ export const sections: Section[] = [
     dependsOn: (answers) => true, // Siempre visible
     },
     FALTAN LOS MODULOS K,L,M,N
-    */
+
   {
     id: "sectionO1a",
     title: "Modulo O - Trastorno de ansiedad generalizada ",
@@ -545,20 +537,20 @@ export const sections: Section[] = [
     id: "sectionO1b",
     title: "modulo O1b ",
     questions: questions.filter((q) => q.section === "sectionO1b"),
-    dependsOn: (answers) => answers["QuestionO1a"] === "si",
+    dependsOn: (answers) => answers["questionO1a"] === "si",
   },
   {
     id: "sectionO2",
     title: "modulo O2 ",
     questions: questions.filter((q) => q.section === "sectionO2"),
     dependsOn: (answers) =>
-      answers["QuestionO1a"] === "si" && answers["QuestionO1b"] === "si",
+      answers["QuestionO1a"] === "si" && answers["questionO1b"] === "si",
   },
   {
     id: "sectionO3",
     title: "modulo O3 ",
     questions: questions.filter((q) => q.section === "sectionO3"),
-    dependsOn: (answers) => answers["QuestionO2"] === "si",
+    dependsOn: (answers) => answers["questionO2"] === "si",
   },
   {
     id: "sectionP1",
@@ -582,5 +574,5 @@ export const sections: Section[] = [
       // 3. Mostrar P2 solo si hay 2+ "SÍ" en P1
       return respuestasSiP1 >= 2;
     },
-  },
+    },*/
 ]; // <- Esto cierra correctamente el array

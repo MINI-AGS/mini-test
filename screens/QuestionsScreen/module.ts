@@ -512,10 +512,16 @@ export const sections: Section[] = [
     dependsOn: (answers) => true, // Siempre visible
   },
   {
+    id: "sectionK1_list",
+    title: "Modulo K1",
+    questions: questions.filter((q) => q.section === "sectionK1_list"),
+    dependsOn: (answers) => answers["questionK1a"] === "si", // Siempre visible
+  },
+  {
     id: "sectionK2",
     title: "Modulo K2",
     questions: questions.filter((q) => q.section === "sectionK2"),
-    dependsOn: (answers) => answers["questionK1a"],
+    dependsOn: (answers) => answers["questionK1a_list"],
   },
   /*
   {

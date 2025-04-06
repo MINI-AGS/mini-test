@@ -609,9 +609,15 @@ export const questions: Question[] = [
     options: ["si", "no"],
     section: "sectionJ10",
   },
-  //IMPORTANTEEEEEEEEEEEEEEEEEE  FALTA SECCION K,L,M
+  //IMPORTANTEEEEEEEEEEEEEEEEEE  FALTA SECCION L,M
   {
     id: "questionK1a",
+    text: "¿En los últimos 12 meses, tomó alguna de estas sustancias, en más de una ocasión, para sentirse mejor o para cambiar su estado de ánimo?",
+    options: ["si", "no"],
+    section: "sectionK1",
+  },
+  {
+    id: "questionK1a_list",
     text: "¿En los últimos 12 meses, tomó alguna de estas sustancias, en más de una ocasión, para sentirse mejor o para cambiar su estado de ánimo?",
     options: [
       "Estimulantes: anfetaminas, speed, cristal, dexedrina, ritalina, píldoras adelgazantes",
@@ -623,7 +629,7 @@ export const questions: Question[] = [
       "Tranquilizantes: Qualude, Seconal («reds»), Valium, Xanax, Librium, Ativan, Dalmane, Halción, barbitúricos, «Miltown», Tranquimazin, Lexatin, Orfidal",
       "Otras sustancias: esteroides, pastillas dietéticas o para dormir sin receta",
     ],
-    section: "sectionK1",
+    section: "sectionK1_list",
     questionType: "checkbox",
   },
   {

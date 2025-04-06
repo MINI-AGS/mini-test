@@ -106,8 +106,11 @@ export function getQuestionsWithDynamicText(answers: AnswerState): Question[] {
   });
 
   // Generar preguntas dinámicas si hay drogas seleccionadas
-  if (answers["questionK1a"] && Array.isArray(answers["questionK1a"])) {
-    const selectedDrugs = answers["questionK1a"];
+  if (
+    answers["questionK1a_list"] &&
+    Array.isArray(answers["questionK1a_list"])
+  ) {
+    const selectedDrugs = answers["questionK1a_list"];
     const drugQuestions = generateDrugQuestions(selectedDrugs);
     return [...baseQuestions, ...drugQuestions];
   }

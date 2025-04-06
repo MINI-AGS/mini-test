@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   ScrollView,
@@ -6,24 +6,62 @@ import {
   TextInput,
   StyleSheet,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
-import { RadioButton } from "react-native-paper";
+import { RadioButton, Checkbox } from "react-native-paper";
 import { Section, Question, AnswerState } from "./types";
 import { sections } from "./module";
 import { myDiagnoses } from "./diagnosis";
-import { getQuestionsWithDynamicText } from "./questionRender"; // 👈 Nombre corregido
+import { getQuestionsWithDynamicText } from "./questionRender";
 
 const { height } = Dimensions.get("window");
 
 const QuestionDisplay: React.FC = () => {
   const [answers, setAnswers] = useState<AnswerState>({});
   const [visibleModules, setVisibleModules] = useState<string[]>(["sectionA"]);
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const handleAnswer = (questionId: string, answer: string) => {
     setAnswers((prev) => ({
       ...prev,
       [questionId]: answer,
     }));
+  };
+
+  const handleCheckboxAnswer = (
+    questionId: string,
+    option: string,
+    isChecked: boolean,
+  ) => {
+    setAnswers((prev) => {
+      const currentAnswers = Array.isArray(prev[questionId])
+        ? (prev[questionId] as string[])
+        : [];
+
+      if (isChecked) {
+        if (!currentAnswers.includes(option)) {
+          return {
+            ...prev,
+            [questionId]: [...currentAnswers, option],
+          };
+        }
+      } else {
+        return {
+          ...prev,
+          [questionId]: currentAnswers.filter((item) => item !== option),
+        };
+      }
+
+      return prev;
+    });
+  };
+
+  const isOptionChecked = (questionId: string, option: string): boolean => {
+    if (!answers[questionId]) return false;
+    return (
+      Array.isArray(answers[questionId]) &&
+      (answers[questionId] as string[]).includes(option)
+    );
   };
 
   useEffect(() => {
@@ -48,9 +86,18 @@ const QuestionDisplay: React.FC = () => {
 
     sections.forEach((section) => {
       if (!newVisibleModules.includes(section.id)) {
-        section.questions.forEach((question) => {
+        // Eliminar respuestas de preguntas estáticas
+        section.questions?.forEach((question) => {
           if (question.id in newAnswers) {
             delete newAnswers[question.id];
+            hasChanges = true;
+          }
+        });
+
+        // Eliminar respuestas de preguntas dinámicas relacionadas
+        Object.keys(newAnswers).forEach((key) => {
+          if (key.startsWith(`questionK2_`) && section.id === "sectionK2") {
+            delete newAnswers[key];
             hasChanges = true;
           }
         });
@@ -66,16 +113,31 @@ const QuestionDisplay: React.FC = () => {
     }
   }, [answers, visibleModules]);
 
-  const dynamicQuestions = getQuestionsWithDynamicText(answers); // 👈 Aquí se obtienen preguntas con texto dinámico
+  const dynamicQuestions = getQuestionsWithDynamicText(answers);
+
+  const getSectionQuestions = (sectionId: string) => {
+    if (sectionId === "sectionK2") {
+      // Para la sección K2, usamos todas las preguntas dinámicas que pertenecen a ella
+      return dynamicQuestions.filter((q) => q.section === "sectionK2");
+    }
+    // Para otras secciones, filtramos usando las preguntas definidas en el módulo
+    return dynamicQuestions.filter((q) =>
+      sections
+        .find((s) => s.id === sectionId)
+        ?.questions?.some((sq) => sq.id === q.id),
+    );
+  };
 
   return (
-    <ScrollView style={[styles.container, { height }]}>
+    <ScrollView
+      ref={scrollViewRef}
+      style={[styles.container, { height }]}
+      contentContainerStyle={styles.scrollContent}
+    >
       {sections.map((section) => {
         if (!visibleModules.includes(section.id)) return null;
 
-        const sectionQuestions = dynamicQuestions.filter((q) =>
-          section.questions.some((sq) => sq.id === q.id),
-        );
+        const sectionQuestions = getSectionQuestions(section.id);
 
         return (
           <View key={section.id} style={styles.section}>
@@ -85,25 +147,49 @@ const QuestionDisplay: React.FC = () => {
                 <Text>{question.text}</Text>
                 {question.options ? (
                   <View style={styles.options}>
-                    {question.options.map((option) => (
-                      <View key={option} style={styles.radioOption}>
-                        <RadioButton
-                          value={option}
-                          status={
-                            answers[question.id] === option
-                              ? "checked"
-                              : "unchecked"
-                          }
-                          onPress={() => handleAnswer(question.id, option)}
-                        />
-                        <Text style={styles.radioLabel}>{option}</Text>
-                      </View>
-                    ))}
+                    {question.questionType === "checkbox"
+                      ? question.options.map((option) => (
+                          <View key={option} style={styles.checkboxOption}>
+                            <Checkbox
+                              status={
+                                isOptionChecked(question.id, option)
+                                  ? "checked"
+                                  : "unchecked"
+                              }
+                              onPress={() =>
+                                handleCheckboxAnswer(
+                                  question.id,
+                                  option,
+                                  !isOptionChecked(question.id, option),
+                                )
+                              }
+                            />
+                            <Text style={styles.optionLabel}>{option}</Text>
+                          </View>
+                        ))
+                      : question.options.map((option) => (
+                          <View key={option} style={styles.radioOption}>
+                            <RadioButton
+                              value={option}
+                              status={
+                                answers[question.id] === option
+                                  ? "checked"
+                                  : "unchecked"
+                              }
+                              onPress={() => handleAnswer(question.id, option)}
+                            />
+                            <Text style={styles.radioLabel}>{option}</Text>
+                          </View>
+                        ))}
                   </View>
                 ) : (
                   <TextInput
                     style={styles.input}
-                    value={answers[question.id] || ""}
+                    value={
+                      typeof answers[question.id] === "string"
+                        ? (answers[question.id] as string)
+                        : ""
+                    }
                     onChangeText={(text) => handleAnswer(question.id, text)}
                     placeholder="Escribe tu respuesta"
                   />
@@ -137,6 +223,7 @@ const QuestionDisplay: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
+  scrollContent: { paddingBottom: 20 }, // Espacio adicional al final
   section: { marginBottom: 20 },
   sectionTitle: { fontSize: 18, fontWeight: "bold", marginBottom: 10 },
   question: { marginBottom: 15 },
@@ -146,7 +233,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 8,
   },
+  checkboxOption: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 8,
+  },
   radioLabel: { marginLeft: 8 },
+  optionLabel: { marginLeft: 8 },
   input: {
     borderWidth: 1,
     borderColor: "#ccc",

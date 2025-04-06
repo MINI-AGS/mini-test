@@ -610,14 +610,22 @@ export const questions: Question[] = [
     section: "sectionJ10",
   },
   //IMPORTANTEEEEEEEEEEEEEEEEEE  FALTA SECCION K,L,M
-  /*
   {
-    id: "QuestionK1a",
-    text: "¿En los últimos 12 meses, tomó alguna de estas sustancias, en más de una ocasión,para sentirse mejor o para cambiar su estado de ánimo?",
-    options: ["si", "no"],
-    section: "sectionK1a",
+    id: "questionK1a",
+    text: "¿En los últimos 12 meses, tomó alguna de estas sustancias, en más de una ocasión, para sentirse mejor o para cambiar su estado de ánimo?",
+    options: [
+      "Estimulantes: anfetaminas, speed, cristal, dexedrina, ritalina, píldoras adelgazantes",
+      "Cocaína: inhalada, intravenosa, crack, speedball",
+      "Narcóticos: heroína, morfina, Dilaudid, opio, Demerol, metadona, codeína, Percodan, Darvon",
+      "Alucinógenos: LSD (ácido), mescalina, peyote, PCP (polvo de ángel, peace pill), psilocybin, STP, hongos, éxtasis, MDA, MDMA",
+      "Inhalantes: pegamento, éter, óxido nitroso (laughing gas), amyl o butyl nitrate (poppers)",
+      "Marihuana: hachís, THC, pasto, hierba, mota, reefer",
+      "Tranquilizantes: Qualude, Seconal («reds»), Valium, Xanax, Librium, Ativan, Dalmane, Halción, barbitúricos, «Miltown», Tranquimazin, Lexatin, Orfidal",
+      "Otras sustancias: esteroides, pastillas dietéticas o para dormir sin receta",
+    ],
+    section: "sectionK1",
+    questionType: "checkbox",
   },
-  */
   {
     id: "questionN1",
     text: "¿En los últimos 3 meses, se ha dado usted atracones, en los cuales comía grandes cantidades de alimentos en un período de 2 horas?",

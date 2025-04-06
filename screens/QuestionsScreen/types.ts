@@ -1,14 +1,15 @@
 // types.18:19:36
 // // types.ts
 export interface AnswerState {
-  [key: string]: string;
+  [key: string]: string | string[];
 }
 
 export interface Question {
   id: string;
   text: string;
-  options?: string[]; // Opciones para preguntas tipo seleccin
-  section: string; // Referencia al mdulo al que pertenece
+  options?: string[];
+  section: string;
+  questionType?: "radio" | "checkbox" | "text"; // Tipo de pregunta (radio por defecto)
 }
 
 export interface Section {

@@ -188,6 +188,30 @@ export const myDiagnoses: Diagnosis[] = [
       return respuestasJ2.length >= 3; // Mostrar módulo si hay 3+ "SÍ" en J2
     },
   },
+  {
+    id: "diagnosticK2",
+    name: "Dependencia De Sustancias Actual",
+    dependsOn: (answers) => {
+      const k2Pattern = /^questionK_.+_(K2[a-g])$/;
+      const positiveCount = Object.keys(answers)
+        .filter((key) => k2Pattern.test(key))
+        .filter((key) => answers[key] === "si").length;
+
+      return positiveCount >= 3;
+    },
+  },
+  {
+    id: "diagnosticK3",
+    name: "ABUSO DE SUSTANCIAS ACTUAL",
+    dependsOn: (answers) => {
+      const k3Pattern = /^questionK_.+_(K3[a-g])$/;
+      const positiveCount = Object.keys(answers)
+        .filter((key) => k3Pattern.test(key))
+        .filter((key) => answers[key] === "si").length;
+
+      return positiveCount >= 1;
+    },
+  },
   //MODULO 0 DIAGNOSTICO FALTAN LOS DEL KLMN
   {
     id: "diagnosticO1",

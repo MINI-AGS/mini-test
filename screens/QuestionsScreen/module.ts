@@ -1,6 +1,8 @@
 import { questions } from "./questions";
 import { myDiagnoses } from "./diagnosis"; // Asegúrate de importar los diagnósticos
 import { AnswerState, Question, Section, Diagnosis } from "./types";
+import { isAnswerEqual, safeToLowerCase } from "./utils";
+
 // Objeto para almacenar valores locales sin enviarlos a la base de datos
 const localValues: { [key: string]: string } = {};
 
@@ -189,7 +191,7 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionC"),
     dependsOn: (answers) => true, // Siempre visible
   },
-  */
+
   {
     id: "sectionD",
     title: "Modulo D - Episodio (hipo)maníaco",
@@ -200,15 +202,13 @@ export const sections: Section[] = [
     id: "sectionD3",
     title: "Módulo D3 - Síntomas de (hipo)manía",
     questions: questions.filter((q) => q.section === "sectionD3"),
-    dependsOn: (answers: AnswerState) => {
+    dependsOn: (answers) => {
       const isCurrentEpisode =
-        answers["QuestionD1b"]?.toLowerCase() === "si" ||
-        answers["QuestionD2b"]?.toLowerCase() === "si";
-
+        isAnswerEqual(answers, "QuestionD1b", "si") ||
+        isAnswerEqual(answers, "QuestionD2b", "si");
       const isPastEpisode =
-        answers["QuestionD1a"]?.toLowerCase() === "si" ||
-        answers["QuestionD2a"]?.toLowerCase() === "si";
-
+        isAnswerEqual(answers, "QuestionD1a", "si") ||
+        isAnswerEqual(answers, "QuestionD2a", "si");
       return isCurrentEpisode || (isPastEpisode && !isCurrentEpisode);
     },
   },
@@ -503,18 +503,26 @@ export const sections: Section[] = [
       return J2Completo && respuestasSiJ2 < 3;
     },
   },
+  */
   {
-    id: "sectionKa",
+    id: "sectionK1",
     title:
       "Modulo K - Trastornos asociados al uso de sustancias psicoactivas no alcohólicas ",
-    questions: questions.filter((q) => q.section === "sectionK1a"),
+    questions: questions.filter((q) => q.section === "sectionK1"),
     dependsOn: (answers) => true, // Siempre visible
   },
+  {
+    id: "sectionK2",
+    title: "Modulo K2",
+    questions: questions.filter((q) => q.section === "sectionK2"),
+    dependsOn: (answers) => answers["questionK1a"],
+  },
+  /*
   {
     id: "sectionO1a",
     title: "Modulo O - Trastorno de ansiedad generalizada ",
     questions: questions.filter((q) => q.section === "sectionO1a"),
-    dependsOn: (answers) => true, // Siempre visible
+    dependsOn: (answers) => (answers["questionK1a"]?.length || 0) > 0,
   },
   {
     id: "sectionO1b",
@@ -558,4 +566,5 @@ export const sections: Section[] = [
       return respuestasSiP1 >= 2;
     },
   },
+  */
 ]; // <- Esto cierra correctamente el array

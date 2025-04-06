@@ -86,7 +86,7 @@ const QuestionDisplay: React.FC = () => {
 
     sections.forEach((section) => {
       if (!newVisibleModules.includes(section.id)) {
-        // Eliminar respuestas de preguntas estáticas
+        // Eliminar respuestas de preguntas est√°ticas
         section.questions?.forEach((question) => {
           if (question.id in newAnswers) {
             delete newAnswers[question.id];
@@ -94,7 +94,7 @@ const QuestionDisplay: React.FC = () => {
           }
         });
 
-        // Eliminar respuestas de preguntas dinámicas relacionadas
+        // Eliminar respuestas de preguntas din√°micas relacionadas
         Object.keys(newAnswers).forEach((key) => {
           if (key.startsWith(`questionK2_`) && section.id === "sectionK2") {
             delete newAnswers[key];
@@ -117,10 +117,10 @@ const QuestionDisplay: React.FC = () => {
 
   const getSectionQuestions = (sectionId: string) => {
     if (sectionId === "sectionK2") {
-      // Para la sección K2, usamos todas las preguntas dinámicas que pertenecen a ella
+      // Para la secci√≥n K2, usamos todas las preguntas din√°micas que pertenecen a ella
       return dynamicQuestions.filter((q) => q.section === "sectionK2");
     }
-    // Para otras secciones, filtramos usando las preguntas definidas en el módulo
+    // Para otras secciones, filtramos usando las preguntas definidas en el m√≥dulo
     return dynamicQuestions.filter((q) =>
       sections
         .find((s) => s.id === sectionId)
@@ -204,7 +204,7 @@ const QuestionDisplay: React.FC = () => {
         visibleModules.includes(diagnosis.id) ? (
           <View key={diagnosis.id} style={styles.diagnosis}>
             <Text style={styles.diagnosisTitle}>{diagnosis.name}</Text>
-            <Text>Diagnóstico visible</Text>
+            <Text>Diagn√≥stico visible</Text>
           </View>
         ) : null,
       )}
@@ -212,7 +212,7 @@ const QuestionDisplay: React.FC = () => {
       <View style={styles.debug}>
         <Text style={styles.debugTitle}>Estado de respuestas:</Text>
         <Text style={styles.debugText}>{JSON.stringify(answers, null, 2)}</Text>
-        <Text style={styles.debugTitle}>Módulos visibles:</Text>
+        <Text style={styles.debugTitle}>M√≥dulos visibles:</Text>
         <Text style={styles.debugText}>
           {JSON.stringify(visibleModules, null, 2)}
         </Text>

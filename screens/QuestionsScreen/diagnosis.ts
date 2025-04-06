@@ -23,7 +23,7 @@ export const myDiagnoses: Diagnosis[] = [
         ...relatedQuestionsA,
       ].filter((q) => answers[q.id] === "si").length;
 
-      return totalYesAnswers >= 5; // Retorna un b
+      return totalYesAnswers >= 5; // Retorna un valor booleano indicando si el total de respuestas "sí" es mayor o igual a 5
     },
   },
 

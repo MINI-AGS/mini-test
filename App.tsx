@@ -1,3 +1,4 @@
+import "./globals.css";
 import React, { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
@@ -24,4 +25,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-

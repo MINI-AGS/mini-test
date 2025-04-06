@@ -158,134 +158,110 @@ export interface Record {
 
   //Trastornos asociados al uso de sustancias psicoactivas no alcohólicas
   questionK1a: string;
-  /*
-  K1aEstimulantes: string[];
-  K1aCocaina: string[];
-  K1aNarcoticos: string[];
-  K1aAlucinoginos: string[];
-  K1aInhalantes: string[];
-  K1aMarihuana: string[];
-  K1aTranquilizantes: string[];
-  K1aOtrasSustancias: string[];
-
-  questionK1b: string;
-
-  questionK2a: string;
-  questionK2b: string;
-  questionK2c: string;
-  questionK2d: string;
-  questionK2e: string;
-  questionK2f: string;
-  questionK2g: string;
-
-  questionK3a: string;
-  questionK3b: string;
-  questionK3c: string;
-  questionK3d: string;
-  */
   // En caso que de escoger Estimulantes
-  questionK1a_Estimulantes: string[];
-  questionK2a_Estimulantes?: string; // son opcionales, solo si se escoge Estimulantes
-  questionK2b_Estimulantes?: string;
-  questionK2c_Estimulantes?: string;
-  questionK2d_Estimulantes?: string;
-  questionK2e_Estimulantes?: string;
-  questionK2f_Estimulantes?: string;
-  questionK3a_Estimulantes?: string;
-  questionK3b_Estimulantes?: string;
-  questionK3c_Estimulantes?: string;
-  questionK3d_Estimulantes?: string; 
+  questionK_Estimulantes_list: string[];
+  questionK_Estimulantes_K2a?: string; // son opcionales, solo si se escoge Estimulantes
+  questionK_Estimulantes_K2b?: string;
+  questionK_Estimulantes_K2c?: string;
+  questionK_Estimulantes_K2d?: string;
+  questionK_Estimulantes_K2e?: string;
+  questionK_Estimulantes_K2f?: string;
+  questionK_Estimulantes_K3a?: string;
+  questionK_Estimulantes_K3b?: string;
+  questionK_Estimulantes_K3c?: string;
+  questionK_Estimulantes_K3d?: string; 
 
   // En caso que de escoger Cocaina
-  questionK1a_Cocaina: string[];
-  questionK2a_Cocaina?: string; // son opcionales, solo si se escoge Cocaina
-  questionK2b_Cocaina?: string;
-  questionK2c_Cocaina?: string;
-  questionK2d_Cocaina?: string;
-  questionK2e_Cocaina?: string;
-  questionK2f_Cocaina?: string;
-  questionK3a_Cocaina?: string;
-  questionK3b_Cocaina?: string;
-  questionK3c_Cocaina?: string;
-  questionK3d_Cocaina?: string;
+  questionK_Cocaina_list: string[];
+  questionK_Cocaina_K2a?: string; // son opcionales, solo si se escoge Cocaina
+  questionK_Cocaina_K2b?: string;
+  questionK_Cocaina_K2c?: string;
+  questionK_Cocaina_K2d?: string;
+  questionK_Cocaina_K2e?: string;
+  questionK_Cocaina_K2f?: string;
+  questionK_Cocaina_K3a?: string;
+  questionK_Cocaina_K3b?: string;
+  questionK_Cocaina_K3c?: string;
+  questionK_Cocaina_K3d?: string;
 
   // En caso que de escoger Narcoticos
-  questionK1a_Narcoticos: string[];
-  questionK2a_Narcoticos?: string; // son opcionales, solo si se escoge Narcoticos
-  questionK2b_Narcoticos?: string;
-  questionK2c_Narcoticos?: string;
-  questionK2d_Narcoticos?: string;
-  questionK2e_Narcoticos?: string;
-  questionK2f_Narcoticos?: string;
-  questionK3a_Narcoticos?: string;
-  questionK3b_Narcoticos?: string;
-  questionK3c_Narcoticos?: string;
-  questionK3d_Narcoticos?: string;
+  questionK_Narcoticos_list: string[];
+  questionK_Narcoticos_K2a?: string; // son opcionales, solo si se escoge Narcoticos
+  questionK_Narcoticos_K2b?: string;
+  questionK_Narcoticos_K2c?: string;
+  questionK_Narcoticos_K2d?: string;
+  questionK_Narcoticos_K2e?: string;
+  questionK_Narcoticos_K2f?: string;
+  questionK_Narcoticos_K3a?: string;
+  questionK_Narcoticos_K3b?: string;
+  questionK_Narcoticos_K3c?: string;
+  questionK_Narcoticos_K3d?: string;
 
   // En caso que de escoger Alucinoginos
-  questionK1a_Alucinoginos: string[];
-  questionK2a_Alucinoginos?: string; // son opcionales, solo si se escoge Alucinoginos
-  questionK2b_Alucinoginos?: string;
-  questionK2c_Alucinoginos?: string;
-  questionK2d_Alucinoginos?: string;
-  questionK2e_Alucinoginos?: string;
-  questionK2f_Alucinoginos?: string;
-  questionK3a_Alucinoginos?: string;
-  questionK3b_Alucinoginos?: string;
-  questionK3c_Alucinoginos?: string;
-  questionK3d_Alucinoginos?: string;
+  questionK_Alucinoginos_list: string[];
+  questionK_Alucinoginos_K2a?: string; // son opcionales, solo si se escoge Alucinoginos
+  questionK_Alucinoginos_K2b?: string;
+  questionK_Alucinoginos_K2c?: string;
+  questionK_Alucinoginos_K2d?: string;
+  questionK_Alucinoginos_K2e?: string;
+  questionK_Alucinoginos_K2f?: string;
+  questionK_Alucinoginos_K3a?: string;
+  questionK_Alucinoginos_K3b?: string;
+  questionK_Alucinoginos_K3c?: string;
+  questionK_Alucinoginos_K3d?: string;
 
   // En caso que de escoger Inhalantes
-  questionK1a_Inhalantes: string[];
-  questionK2a_Inhalantes?: string; // son opcionales, solo si se escoge Inhalantes
-  questionK2b_Inhalantes?: string;
-  questionK2c_Inhalantes?: string;
-  questionK2d_Inhalantes?: string;
-  questionK2e_Inhalantes?: string;
-  questionK2f_Inhalantes?: string;
-  questionK3a_Inhalantes?: string;
-  questionK3b_Inhalantes?: string;
-  questionK3c_Inhalantes?: string;
-  questionK3d_Inhalantes?: string;
+  questionK_Inhalantes_list: string[];
+  questionK_Inhalantes_K2a?: string; // son opcionales, solo si se escoge Inhalantes
+  questionK_Inhalantes_K2b?: string;
+  questionK_Inhalantes_K2c?: string;
+  questionK_Inhalantes_K2d?: string;
+  questionK_Inhalantes_K2e?: string;
+  questionK_Inhalantes_K2f?: string;
+  questionK_Inhalantes_K3a?: string;
+  questionK_Inhalantes_K3b?: string;
+  questionK_Inhalantes_K3c?: string;
+  questionK_Inhalantes_K3d?: string;
   
   // En caso que de escoger Marihuana
-  questionK1a_Marihuana: string[];
-  questionK2a_Marihuana?: string; // son opcionales, solo si se escoge Marihuana
-  questionK2b_Marihuana?: string;
-  questionK2c_Marihuana?: string;
-  questionK2d_Marihuana?: string;
-  questionK2e_Marihuana?: string;
-  questionK2f_Marihuana?: string;
-  questionK3a_Marihuana?: string;
-  questionK3b_Marihuana?: string;
-  questionK3c_Marihuana?: string;
-  questionK3d_Marihuana?: string;
+  questionK_Marihuana_list: string[];
+  questionK_Marihuana_K2a?: string; // son opcionales, solo si se escoge Marihuana
+  questionK_Marihuana_K2b?: string;
+  questionK_Marihuana_K2c?: string;
+  questionK_Marihuana_K2d?: string;
+  questionK_Marihuana_K2e?: string;
+  questionK_Marihuana_K2f?: string;
+  questionK_Marihuana_K3a?: string;
+  questionK_Marihuana_K3b?: string;
+  questionK_Marihuana_K3c?: string;
+  questionK_Marihuana_K3d?: string;
 
   // En caso que de escoger Tranquilizantes
-  questionK1a_Tranquilizantes: string[];
-  questionK2a_Tranquilizantes?: string; // son opcionales, solo si se escoge Tranquilizantes
-  questionK2b_Tranquilizantes?: string;
-  questionK2c_Tranquilizantes?: string;
-  questionK2d_Tranquilizantes?: string;
-  questionK2e_Tranquilizantes?: string;
-  questionK2f_Tranquilizantes?: string;
-  questionK3a_Tranquilizantes?: string;
-  questionK3b_Tranquilizantes?: string;
-  questionK3c_Tranquilizantes?: string;
-  questionK3d_Tranquilizantes?: string;
+  questionK_Tranquilizantes_list: string[];
+  questionK_Tranquilizantes_K2a?: string; // son opcionales, solo si se escoge Tranquilizantes
+  questionK_Tranquilizantes_K2b?: string;
+  questionK_Tranquilizantes_K2c?: string;
+  questionK_Tranquilizantes_K2d?: string;
+  questionK_Tranquilizantes_K2e?: string;
+  questionK_Tranquilizantes_K2f?: string;
+  questionK_Tranquilizantes_K3a?: string;
+  questionK_Tranquilizantes_K3b?: string;
+  questionK_Tranquilizantes_K3c?: string;
+  questionK_Tranquilizantes_K3d?: string;
   
   // En caso que de escoger Otras Sustancias
-  questionK1a_OtrasSustancias: string[];
-  questionK2a_OtrasSustancias?: string; // son opcionales, solo si se escoge Otras Sustancias
-  questionK2b_OtrasSustancias?: string;
-  questionK2c_OtrasSustancias?: string;
-  questionK2d_OtrasSustancias?: string;
-  questionK2e_OtrasSustancias?: string;
-  questionK2f_OtrasSustancias?: string;
-  questionK3a_OtrasSustancias?: string;
-  questionK3b_OtrasSustancias?: string;
-  questionK3c_OtrasSustancias?: string;
-  questionK3d_OtrasSustancias?: string;
+  questionK_OtrasSustancias_list: string[];
+  questionK_OtrasSustancias_K2a?: string; // son opcionales, solo si se escoge Otras Sustancias
+  questionK_OtrasSustancias_K2b?: string;
+  questionK_OtrasSustancias_K2c?: string;
+  questionK_OtrasSustancias_K2d?: string;
+  questionK_OtrasSustancias_K2e?: string;
+  questionK_OtrasSustancias_K2f?: string;
+  questionK_OtrasSustancias_K3a?: string;
+  questionK_OtrasSustancias_K3b?: string;
+  questionK_OtrasSustancias_K3c?: string;
+  questionK_OtrasSustancias_K3d?: string;
+  
 
   //Trastornos psicoticos
   questionL1a: string;

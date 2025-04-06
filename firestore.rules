@@ -48,14 +48,14 @@ service cloud.firestore {
     
     // Verificación básica de sustancias
     function isValidSustancias(data) {
-      return (!('questionK1a_Estimulantes' in data) || containsOnlyAllowedValues(data.questionK1a_Estimulantes, getAllowedEstimulantes())) &&
-             (!('questionK1a_Cocaina' in data) || containsOnlyAllowedValues(data.questionK1a_Cocaina, getAllowedCocaina())) &&
-             (!('questionK1a_Narcoticos' in data) || containsOnlyAllowedValues(data.questionK1a_Narcoticos, getAllowedNarcoticos())) &&
-             (!('questionK1a_Alucinoginos' in data) || containsOnlyAllowedValues(data.questionK1a_Alucinoginos, getAllowedAlucinogenos())) &&
-             (!('questionK1a_Inhalantes' in data) || containsOnlyAllowedValues(data.questionK1a_Inhalantes, getAllowedInhalantes())) &&
-             (!('questionK1a_Marihuana' in data) || containsOnlyAllowedValues(data.questionK1a_Marihuana, getAllowedMarihuana())) &&
-             (!('questionK1a_Tranquilizantes' in data) || containsOnlyAllowedValues(data.questionK1a_Tranquilizantes, getAllowedTranquilizantes())) &&
-             (!('questionK1a_OtrasSustancias' in data) || data.questionK1a_OtrasSustancias is list);
+      return (!('questionK_Estimulantes_list' in data) || containsOnlyAllowedValues(data.questionK_Estimulantes_list, getAllowedEstimulantes())) &&
+             (!('questionK_Cocaina_list' in data) || containsOnlyAllowedValues(data.questionK_Cocaina_list, getAllowedCocaina())) &&
+             (!('questionK_Narcoticos_list' in data) || containsOnlyAllowedValues(data.questionK_Narcoticos_list, getAllowedNarcoticos())) &&
+             (!('questionK_Alucinoginos_list' in data) || containsOnlyAllowedValues(data.questionK_Alucinoginos_list, getAllowedAlucinogenos())) &&
+             (!('questionK_Inhalantes_list' in data) || containsOnlyAllowedValues(data.questionK_Inhalantes_list, getAllowedInhalantes())) &&
+             (!('questionK_Marihuana_list' in data) || containsOnlyAllowedValues(data.questionK_Marihuana_list, getAllowedMarihuana())) &&
+             (!('questionK_Tranquilizantes_list' in data) || containsOnlyAllowedValues(data.questionK_Tranquilizantes_list, getAllowedTranquilizantes())) &&
+             (!('questionK_OtrasSustancias_list' in data) || data.questionK_OtrasSustancias_list is list);
     }
     
     // Reglas para la colección de datos

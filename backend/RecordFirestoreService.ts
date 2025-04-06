@@ -536,14 +536,14 @@ class RecordFirestoreService {
     ];
 
     // Validar los arrays de sustancias escogidas
-    this.validateSubstanceArray(record, "questionK1a_Estimulantes", allowedEstimulantes, "Estimulantes", errors, isValid);
-    this.validateSubstanceArray(record, "questionK1a_Cocaina", allowedCocaina, "Cocaína", errors, isValid);
-    this.validateSubstanceArray(record, "questionK1a_Narcoticos", allowedNarcoticos, "Narcóticos", errors, isValid);
-    this.validateSubstanceArray(record, "questionK1a_Alucinoginos", allowedAlucinoginos, "Alucinógenos", errors, isValid);
-    this.validateSubstanceArray(record, "questionK1a_Inhalantes", allowedInhalantes, "Inhalantes", errors, isValid);
-    this.validateSubstanceArray(record, "questionK1a_Marihuana", allowedMarihuana, "Marihuana", errors, isValid);
-    this.validateSubstanceArray(record, "questionK1a_Tranquilizantes", allowedTranquilizantes, "Tranquilizantes", errors, isValid);
-    this.validateSubstanceArray(record, "questionK1a_OtrasSustancias", [], "Otras Sustancias", errors, isValid);
+    this.validateSubstanceArray(record, "questionK_Estimulantes_list", allowedEstimulantes, "Estimulantes", errors, isValid);
+    this.validateSubstanceArray(record, "questionK_Cocaina_list", allowedCocaina, "Cocaína", errors, isValid);
+    this.validateSubstanceArray(record, "questionK_Narcoticos_list", allowedNarcoticos, "Narcóticos", errors, isValid);
+    this.validateSubstanceArray(record, "questionK_Alucinoginos_list", allowedAlucinoginos, "Alucinógenos", errors, isValid);
+    this.validateSubstanceArray(record, "questionK_Inhalantes_list", allowedInhalantes, "Inhalantes", errors, isValid);
+    this.validateSubstanceArray(record, "questionK_Marihuana_list", allowedMarihuana, "Marihuana", errors, isValid);
+    this.validateSubstanceArray(record, "questionK_Tranquilizantes_list", allowedTranquilizantes, "Tranquilizantes", errors, isValid);
+    this.validateSubstanceArray(record, "questionK_OtrasSustancias_list", [], "Otras Sustancias", errors, isValid);
 
     // Validar preguntas adicionales para cada sustancia
     this.validateSubstanceQuestions(record, "Estimulantes", errors, isValid);
@@ -596,22 +596,22 @@ class RecordFirestoreService {
     errors: string[], 
     isValid: boolean
   ): boolean {
-    const arrayField = `questionK1a_${substanceType}`;
+    const arrayField = `questionK_${substanceType}_list`;
     
     // Solo validamos las preguntas si se seleccionó la sustancia
     if (arrayField in record && Array.isArray(record[arrayField]) && record[arrayField].length > 0) {
       // Lista de preguntas que deben existir para cada sustancia seleccionada
       const requiredQuestions = [
-        `questionK2a_${substanceType}`,
-        `questionK2b_${substanceType}`,
-        `questionK2c_${substanceType}`,
-        `questionK2d_${substanceType}`,
-        `questionK2e_${substanceType}`,
-        `questionK2f_${substanceType}`,
-        `questionK3a_${substanceType}`,
-        `questionK3b_${substanceType}`,
-        `questionK3c_${substanceType}`,
-        `questionK3d_${substanceType}`
+        `questionK${substanceType}_K2a`,
+        `questionK_${substanceType}_K2b`,
+        `questionK_${substanceType}_K2c`,
+        `questionK_${substanceType}_K2d`,
+        `questionK_${substanceType}_K2e`,
+        `questionK_${substanceType}_K2f`,
+        `questionK_${substanceType}_K3a`,
+        `questionK_${substanceType}_K3b`,
+        `questionK_${substanceType}_K3c`,
+        `questionK_${substanceType}_K3d`,
       ];
       
       // Verificamos que existan todas las preguntas adicionales necesarias

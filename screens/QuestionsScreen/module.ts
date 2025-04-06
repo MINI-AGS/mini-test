@@ -30,7 +30,6 @@ export const sections: Section[] = [
       return sectionACompleta && algunaRespuestaSi;
     },
   },
-  /*
   {
     id: "sectionA4a",
     title: "Modulo A4a",
@@ -503,7 +502,6 @@ export const sections: Section[] = [
       return J2Completo && respuestasSiJ2 < 3;
     },
   },
-  */
   {
     id: "sectionK1",
     title:
@@ -523,7 +521,7 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionK2"),
     dependsOn: (answers) => answers["questionK1a_list"],
   },
-  /*
+
   {
     id: "sectionO1a",
     title: "Modulo O - Trastorno de ansiedad generalizada ",
@@ -572,5 +570,4 @@ export const sections: Section[] = [
       return respuestasSiP1 >= 2;
     },
   },
-  */
 ]; // <- Esto cierra correctamente el array

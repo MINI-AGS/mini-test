@@ -215,7 +215,7 @@ export const myDiagnoses: Diagnosis[] = [
   //MODULO 0 DIAGNOSTICO FALTAN LOS DEL KLMN
   {
     id: "diagnosticO1",
-    name: "Transtorno De Ansiedad Generalizada Actual",
+    name: "Trastorno De Ansiedad Generalizada Actual",
     dependsOn: (answers) => {
       // Verificar si hay 3+ "SÍ" en 03 (para mostrar el módulo)
       const respuestasO3 = questions

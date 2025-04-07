@@ -456,19 +456,6 @@ class RecordFirestoreService {
       "questionJ3b",
       "questionJ3c",
       "questionJ3d",
-      "questionK1a",
-      "questionK1b",
-      "questionK2a",
-      "questionK2b",
-      "questionK2c",
-      "questionK2d",
-      "questionK2e",
-      "questionK2f",
-      "questionK2g",
-      "questionK3a",
-      "questionK3b",
-      "questionK3c",
-      "questionK3d",
     ];
 
     return this.validateRequiredStringFields(
@@ -480,7 +467,7 @@ class RecordFirestoreService {
   }
 
   /**
-   * Valida los datos de sustancias
+   * Valida los datos de sustancias con la nueva estructura
    */
   private isValidSustancias(record: Record, errors: string[]): boolean {
     let isValid = true;
@@ -506,7 +493,7 @@ class RecordFirestoreService {
       "Percodan",
       "Darvon",
     ];
-    const allowedAlucinogenos = [
+    const allowedAlucinoginos = [
       "LSD (ácido)",
       "mescalina",
       "peyote",
@@ -548,114 +535,97 @@ class RecordFirestoreService {
       "Orfidal",
     ];
 
-    // Validar estimulantes
-    if ("K1aEstimulantes" in record) {
-      if (!Array.isArray(record.K1aEstimulantes)) {
-        errors.push("K1aEstimulantes debe ser un array");
+    // Validar los arrays de sustancias escogidas
+    this.validateSubstanceArray(record, "questionK_Estimulantes_list", allowedEstimulantes, "Estimulantes", errors, isValid);
+    this.validateSubstanceArray(record, "questionK_Cocaina_list", allowedCocaina, "Cocaína", errors, isValid);
+    this.validateSubstanceArray(record, "questionK_Narcoticos_list", allowedNarcoticos, "Narcóticos", errors, isValid);
+    this.validateSubstanceArray(record, "questionK_Alucinoginos_list", allowedAlucinoginos, "Alucinógenos", errors, isValid);
+    this.validateSubstanceArray(record, "questionK_Inhalantes_list", allowedInhalantes, "Inhalantes", errors, isValid);
+    this.validateSubstanceArray(record, "questionK_Marihuana_list", allowedMarihuana, "Marihuana", errors, isValid);
+    this.validateSubstanceArray(record, "questionK_Tranquilizantes_list", allowedTranquilizantes, "Tranquilizantes", errors, isValid);
+    this.validateSubstanceArray(record, "questionK_OtrasSustancias_list", [], "Otras Sustancias", errors, isValid);
+
+    // Validar preguntas adicionales para cada sustancia
+    this.validateSubstanceQuestions(record, "Estimulantes", errors, isValid);
+    this.validateSubstanceQuestions(record, "Cocaina", errors, isValid);
+    this.validateSubstanceQuestions(record, "Narcoticos", errors, isValid);
+    this.validateSubstanceQuestions(record, "Alucinoginos", errors, isValid);
+    this.validateSubstanceQuestions(record, "Inhalantes", errors, isValid);
+    this.validateSubstanceQuestions(record, "Marihuana", errors, isValid);
+    this.validateSubstanceQuestions(record, "Tranquilizantes", errors, isValid);
+    this.validateSubstanceQuestions(record, "OtrasSustancias", errors, isValid);
+
+    return isValid;
+  }
+
+  /**
+   * Valida los arrays de sustancias
+   */
+  private validateSubstanceArray(
+    record: Record, 
+    fieldName: string, 
+    allowedValues: string[], 
+    substanceName: string, 
+    errors: string[], 
+    isValid: boolean
+  ): boolean {
+    if (fieldName in record) {
+      if (!Array.isArray(record[fieldName])) {
+        errors.push(`${fieldName} debe ser un array`);
         isValid = false;
-      } else if (
-        !this.containsOnlyAllowedValues(
-          record.K1aEstimulantes,
-          allowedEstimulantes,
-        )
-      ) {
-        errors.push("K1aEstimulantes contiene valores no permitidos");
+      } else if (allowedValues.length > 0 && !this.containsOnlyAllowedValues(record[fieldName], allowedValues)) {
+        errors.push(`${fieldName} contiene valores no permitidos para ${substanceName}`);
         isValid = false;
       }
-    }
 
-    // Validar cocaína
-    if ("K1aCocaina" in record) {
-      if (!Array.isArray(record.K1aCocaina)) {
-        errors.push("K1aCocaina debe ser un array");
-        isValid = false;
-      } else if (
-        !this.containsOnlyAllowedValues(record.K1aCocaina, allowedCocaina)
-      ) {
-        errors.push("K1aCocaina contiene valores no permitidos");
-        isValid = false;
+      // Si se seleccionó esta sustancia, validamos que existan las preguntas adicionales
+      if (Array.isArray(record[fieldName]) && record[fieldName].length > 0) {
+        const substanceType = fieldName.split("_")[1]; // Obtiene "Estimulantes", "Cocaina", etc.
+        // Aquí podríamos añadir validaciones específicas para las preguntas relacionadas
       }
     }
+    return isValid;
+  }
 
-    // Validar narcóticos
-    if ("K1aNarcoticos" in record) {
-      if (!Array.isArray(record.K1aNarcoticos)) {
-        errors.push("K1aNarcoticos debe ser un array");
-        isValid = false;
-      } else if (
-        !this.containsOnlyAllowedValues(record.K1aNarcoticos, allowedNarcoticos)
-      ) {
-        errors.push("K1aNarcoticos contiene valores no permitidos");
-        isValid = false;
+  /**
+   * Valida las preguntas adicionales para cada tipo de sustancia
+   */
+  private validateSubstanceQuestions(
+    record: Record, 
+    substanceType: string, 
+    errors: string[], 
+    isValid: boolean
+  ): boolean {
+    const arrayField = `questionK_${substanceType}_list`;
+    
+    // Solo validamos las preguntas si se seleccionó la sustancia
+    if (arrayField in record && Array.isArray(record[arrayField]) && record[arrayField].length > 0) {
+      // Lista de preguntas que deben existir para cada sustancia seleccionada
+      const requiredQuestions = [
+        `questionK_${substanceType}_K2a`,
+        `questionK_${substanceType}_K2b`,
+        `questionK_${substanceType}_K2c`,
+        `questionK_${substanceType}_K2d`,
+        `questionK_${substanceType}_K2e`,
+        `questionK_${substanceType}_K2f`,
+        `questionK_${substanceType}_K3a`,
+        `questionK_${substanceType}_K3b`,
+        `questionK_${substanceType}_K3c`,
+        `questionK_${substanceType}_K3d`,
+      ];
+      
+      // Verificamos que existan todas las preguntas adicionales necesarias
+      for (const question of requiredQuestions) {
+        if (!(question in record)) {
+          errors.push(`Falta la pregunta ${question} para la sustancia ${substanceType} seleccionada`);
+          isValid = false;
+        } else if (typeof record[question] !== "string") {
+          errors.push(`La pregunta ${question} debe ser una cadena de texto`);
+          isValid = false;
+        }
       }
     }
-
-    // Validar alucinógenos
-    if ("K1aAlucinoginos" in record) {
-      if (!Array.isArray(record.K1aAlucinoginos)) {
-        errors.push("K1aAlucinoginos debe ser un array");
-        isValid = false;
-      } else if (
-        !this.containsOnlyAllowedValues(
-          record.K1aAlucinoginos,
-          allowedAlucinogenos,
-        )
-      ) {
-        errors.push("K1aAlucinoginos contiene valores no permitidos");
-        isValid = false;
-      }
-    }
-
-    // Validar inhalantes
-    if ("K1aInhalantes" in record) {
-      if (!Array.isArray(record.K1aInhalantes)) {
-        errors.push("K1aInhalantes debe ser un array");
-        isValid = false;
-      } else if (
-        !this.containsOnlyAllowedValues(record.K1aInhalantes, allowedInhalantes)
-      ) {
-        errors.push("K1aInhalantes contiene valores no permitidos");
-        isValid = false;
-      }
-    }
-
-    // Validar marihuana
-    if ("K1aMarihuana" in record) {
-      if (!Array.isArray(record.K1aMarihuana)) {
-        errors.push("K1aMarihuana debe ser un array");
-        isValid = false;
-      } else if (
-        !this.containsOnlyAllowedValues(record.K1aMarihuana, allowedMarihuana)
-      ) {
-        errors.push("K1aMarihuana contiene valores no permitidos");
-        isValid = false;
-      }
-    }
-
-    // Validar tranquilizantes
-    if ("K1aTranquilizantes" in record) {
-      if (!Array.isArray(record.K1aTranquilizantes)) {
-        errors.push("K1aTranquilizantes debe ser un array");
-        isValid = false;
-      } else if (
-        !this.containsOnlyAllowedValues(
-          record.K1aTranquilizantes,
-          allowedTranquilizantes,
-        )
-      ) {
-        errors.push("K1aTranquilizantes contiene valores no permitidos");
-        isValid = false;
-      }
-    }
-
-    // Validar otras sustancias
-    if ("K1aOtrasSustancias" in record) {
-      if (!Array.isArray(record.K1aOtrasSustancias)) {
-        errors.push("K1aOtrasSustancias debe ser un array");
-        isValid = false;
-      }
-    }
-
+    
     return isValid;
   }
 
@@ -845,14 +815,12 @@ class RecordFirestoreService {
   ): boolean {
     if (!Array.isArray(array)) return false;
 
-    // Si el array está vacío o contiene solo valores permitidos, es válido
-    if (array.length === 0) return true;
+    // Si el array está vacío o si allowedValues está vacío (como en OtrasSustancias), es válido
+    if (array.length === 0 || allowedValues.length === 0) return true;
 
     // Verificar que todos los elementos estén en la lista de valores permitidos
     return array.every((value) => allowedValues.includes(value));
   }
-
-  // ... resto del código de la clase ...
 
   /**
    * Método modificado para crear un usuario con validación previa

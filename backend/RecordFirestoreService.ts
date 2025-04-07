@@ -602,7 +602,7 @@ class RecordFirestoreService {
     if (arrayField in record && Array.isArray(record[arrayField]) && record[arrayField].length > 0) {
       // Lista de preguntas que deben existir para cada sustancia seleccionada
       const requiredQuestions = [
-        `questionK${substanceType}_K2a`,
+        `questionK_${substanceType}_K2a`,
         `questionK_${substanceType}_K2b`,
         `questionK_${substanceType}_K2c`,
         `questionK_${substanceType}_K2d`,

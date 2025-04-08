@@ -188,6 +188,7 @@ export const myDiagnoses: Diagnosis[] = [
       return respuestasJ2.length >= 3; // Mostrar módulo si hay 3+ "SÍ" en J2
     },
   },
+  //FALTA DIAGNOSTICO DEL J3
   {
     id: "diagnosticK2",
     name: "Dependencia De Sustancias Actual",
@@ -212,7 +213,37 @@ export const myDiagnoses: Diagnosis[] = [
       return positiveCount >= 1;
     },
   },
-  //MODULO 0 DIAGNOSTICO FALTAN LOS DEL KLMN
+  //MODULO L
+  {
+    //Trastorno Psicotico Actual
+    id: "diagnosticL1",
+    name: "TRASTORNO PSICÓTICO ACTUAL",
+    dependsOn: (answers) => {
+      // Verificar si hay 1+ "SI EXTRAÑO" en <<b>> o 2+ "SI" en <<b>>
+      const respuestasL1 = questions
+        .filter((q) => q.section === "sectionL11")
+        .filter(
+          (q) => answers[q.id] === "si" || answers[q.id] === "si extraño");
+      //Mostrar módulo si hay 1+ "SI EXTRAÑO" o 2+ "SI" en L11
+      return respuestasL1.length >= 2; // Mostrar módulo si hay 1+ "SI EXTRAÑO" o 2+ "SI" en L11
+    }
+  },
+  {
+    //Trastorno Psicótico de Por Vida
+    id: "diagnosticL2",
+    name: "TRASTORNO PSICÓTICO DE POR VIDA",
+    dependsOn: (answers) => {
+      // Verificar si hay 1+ "SI EXTRAÑO" en <<a>> o 2+ "SI" en <<a>>
+      const respuestasL2 = questions
+        .filter((q) => q.section === "sectionL12")
+        .filter(
+          (q) => answers[q.id] === "si" || answers[q.id] === "si extraño");
+      //Mostrar módulo si hay 1+ "SI EXTRAÑO" o 2+ "SI" en L12
+      return respuestasL2.length >= 2; // Mostrar módulo si hay 1+ "SI EXTRAÑO" o 2+ "SI" en L12
+    }
+  },
+  //FALTA DEL MODULO L - TRASTORNO DEL ESTADO DE ANIMO CON SINTOMAS PSICOTIOCS ACTUAL
+  //MODULO 0 DIAGNOSTICO FALTAN LOS DEL KMN
   {
     id: "diagnosticO1",
     name: "Trastorno De Ansiedad Generalizada Actual",

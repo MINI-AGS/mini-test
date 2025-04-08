@@ -279,7 +279,8 @@ export interface Record {
   questionL5a: string;
   questionL5b: string;
 
-  questionL6a: string;
+  questionL6a1: string;
+  questionL6a2: string;
   questionL6b: string;
 
   questionL7a: string;

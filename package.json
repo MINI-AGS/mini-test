@@ -8,7 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "mocha --exit tests/*.test.ts",
-    "test:firebase": "mocha --exit tests/firebaseTests.test.ts",
+    "test:firebase": "mocha --exit --require ts-node/register tests/firebaseTests.test.ts",
     "test:logic": "mocha --exit tests/logicTests.test.ts"
   },
   "dependencies": {
@@ -31,12 +31,14 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@firebase/rules-unit-testing": "^4.0.1",
     "@firebase/testing": "^0.20.11",
     "@types/mocha": "^10.0.10",
     "@types/react": "~18.3.12",
     "@types/react-test-renderer": "^18.3.0",
     "mocha": "^11.1.0",
-    "typescript": "^5.3.3"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   },
   "private": true
 }

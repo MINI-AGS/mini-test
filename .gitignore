@@ -39,3 +39,6 @@ yarn-error.*
 *.log
 
 .firebase/*
+*.apk
+*.aab
+*.ipa

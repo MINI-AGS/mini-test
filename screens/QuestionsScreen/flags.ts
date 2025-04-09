@@ -18,8 +18,8 @@ export const flags: Flags[] = [
 export const FlagFunctions = {
   isFlagActive: (flagId: string, answers: Record<string, string>): boolean => {
     const flag = flags.find((f) => f.id === flagId);
-    return flag ? flag.dependsOn(answers) : false;
     console.log(flag);
+    return flag ? flag.dependsOn(answers) : false;
   },
 };
 //================================================

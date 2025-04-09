@@ -2,10 +2,10 @@ import { questions } from "./questions";
 import { myDiagnoses } from "./diagnosis"; // Asegúrate de importar los diagnósticos
 import { AnswerState, Question, Section, Diagnosis } from "./types";
 import { isAnswerEqual, safeToLowerCase } from "./utils";
+import { FlagFunctions } from "./flags";
 
 // Objeto para almacenar valores locales sin enviarlos a la base de datos
-const localValues: { [key: string]: string } = {};
-
+export let resultadoDiagnostico: Record<string, boolean> = {};
 export const sections: Section[] = [
   {
     id: "sectionA",
@@ -202,16 +202,44 @@ export const sections: Section[] = [
     title: "Módulo D3 - Síntomas de (hipo)manía",
     questions: questions.filter((q) => q.section === "sectionD3"),
     dependsOn: (answers) => {
-      const isCurrentEpisode =
-        isAnswerEqual(answers, "QuestionD1b", "si") ||
-        isAnswerEqual(answers, "QuestionD2b", "si");
-      const isPastEpisode =
-        isAnswerEqual(answers, "QuestionD1a", "si") ||
-        isAnswerEqual(answers, "QuestionD2a", "si");
-      return isCurrentEpisode || (isPastEpisode && !isCurrentEpisode);
+      const currentEpisode =
+        answers["questionD1a"] === "si" || answers["questionD2a"] === "si";
+      const pastEpisode =
+        answers["questionD1b"] === "si" || answers["questionD2b"] === "no";
+      const pastFlag = FlagFunctions.isFlagActive("PastAnswers", answers);
+
+      // Mostrar si hay episodio actual, o si hay episodio pasado y se activó la bandera
+      return currentEpisode || (pastEpisode && pastFlag);
     },
   },
+  {
+    id: "sectionD4",
+    title: "Módulo D4",
+    questions: questions.filter((q) => q.section === "sectionD4"),
+    dependsOn: (answers) => {
+      const d3Symptoms = [
+        "questionD3a",
+        "questionD3b",
+        "questionD3c",
+        "questionD3d",
+        "questionD3e",
+        "questionD3f",
+        "questionD3g",
+      ];
 
+      const positiveSymptoms = d3Symptoms.filter(
+        (q) => answers[q] === "si",
+      ).length;
+      //VOLVER A VERIFICAR
+      const condition1 = positiveSymptoms >= 3;
+      const condition2 =
+        answers["questionD1a"] === "no" && positiveSymptoms >= 4;
+      const condition3 = answers["questionD1b"] === "no";
+      const d3Completed = d3Symptoms.every((q) => answers[q] !== undefined);
+
+      return d3Completed && (condition1 || condition2 || condition3);
+    },
+  },
   {
     id: "sectionE1a",
     title: "Modulo E1a",
@@ -255,18 +283,19 @@ export const sections: Section[] = [
   {
     id: "sectionE5",
     title: "Trastorno de angustia",
-    questions: questions.filter((q) => q.section === "sectionE"),
+    questions: questions.filter((q) => q.section === "sectionE5"),
+
     dependsOn: (answers: any) => {
-      // 1. Buscar pregunta E3 y síntomas E4
-      const E3 = questions.find((q) => q.id === "QuestionE3");
+      const E3 = questions.find((q) => q.id === "questionE3");
       const preguntasE4 = questions.filter((q) => q.section === "sectionE4");
 
-      // 2. Evaluar
       const tieneE3 = E3 ? answers[E3.id] === "si" : false;
       const totalE4 = preguntasE4.filter((q) => answers[q.id] === "si").length;
       const resultado = tieneE3 && totalE4 >= 4;
 
-      // 3. Solo este console.log para verificar actualización
+      // Guardar el resultado en el diagnóstico
+      resultadoDiagnostico["Trastorno de angustia de por vida"] = resultado;
+
       console.log(
         "[Actualización E5] E3:",
         tieneE3,
@@ -281,18 +310,59 @@ export const sections: Section[] = [
   },
   {
     id: "sectionE6",
-    title: "Modulo E6",
+    title: "Crisis actual",
     questions: questions.filter((q) => q.section === "sectionE6"),
-    dependsOn: (answers) => {
-      return localValues["E5"] === "si"; // Se usa el valor local de E5
+    dependsOn: (answers: any) => {
+      const preguntasE4 = questions.filter((q) => q.section === "sectionE4");
+      const totalE4 = preguntasE4.filter((q) => answers[q.id] === "si").length;
+
+      const resultadoE5 =
+        resultadoDiagnostico["Trastorno de angustia de por vida"] === true;
+      const hayAlgunaE4 = totalE4 >= 1;
+
+      const resultadoE6 = !resultadoE5 && hayAlgunaE4;
+
+      resultadoDiagnostico["Crisis actual"] = resultadoE6;
+
+      console.log(
+        "[Actualización E6] E5:",
+        resultadoE5,
+        "| Al menos un síntoma E4:",
+        hayAlgunaE4,
+        "| Resultado E6:",
+        resultadoE6,
+      );
+
+      return resultadoE6;
     },
   },
   {
     id: "sectionE7",
-    title: "Modulo E7",
+    title: "Modulo E7 Trastorno de angustia actual",
     questions: questions.filter((q) => q.section === "sectionE7"),
     dependsOn: (answers) => {
-      return localValues["E6"] === "si"; // Se usa el valor local de E6
+      // Obtener el resultado de E6 (Crisis actual)
+      const resultadoE6 = resultadoDiagnostico["Crisis actual"];
+
+      // Mostrar E7 solo si E6 es falso
+      if (resultadoE6 === false) {
+        // Obtener la respuesta de la pregunta E7
+        const resultadoE7 = answers["questionE7"] === "si"; // Suponiendo que "questionE7" es el ID de la pregunta en E7
+
+        // Guardar el resultado de E7 en el diagnóstico
+        resultadoDiagnostico["Trastorno de angustia actual"] = resultadoE7;
+
+        console.log(
+          "[Actualización E7] Respuesta E7:",
+          answers["questionE7"],
+          "| Resultado E7:",
+          resultadoE7,
+        );
+
+        return true; // Mostrar E7 si E6 es falso
+      }
+
+      return false; // No mostrar E7 si E6 es verdadero
     },
   },
   {
@@ -300,6 +370,58 @@ export const sections: Section[] = [
     title: "Modulo F - Agorafobia",
     questions: questions.filter((q) => q.section === "sectionF1"),
     dependsOn: (answers) => true, // Siempre visible
+  },
+  {
+    id: "sectionF2",
+    title: "Módulo F2",
+    questions: questions.filter((q) => q.section === "sectionF2"),
+    dependsOn: (answers: Record<string, any>): boolean => {
+      const respuestaF1 = answers["questionF1"];
+      console.log("[F2 dependsOn] F1 actual:", respuestaF1); // Debug F1
+
+      // Si F1 no ha sido respondido, no mostrar F2
+      if (respuestaF1 === undefined) {
+        console.log("[F2 dependsOn] F1 no respondido - ocultando F2");
+        return false;
+      }
+
+      // Si F1 es "no", ocultar F2
+      if (respuestaF1 === "no") {
+        console.log('[F2 dependsOn] F1 es "no" - ocultando F2');
+        return false;
+      }
+
+      // Si F1 es "sí", mostrar F2
+      console.log('[F2 dependsOn] F1 es "sí" - mostrando F2');
+      return true;
+    },
+    beforeShow: (answers: Record<string, any>) => {
+      console.log("[F2 beforeShow] Valores actuales:", {
+        F1: answers["questionF1"],
+        F2: answers["questionF2"],
+      }); // Debug completo
+
+      if (answers["questionF1"] === "no" && answers["questionF2"] !== "no") {
+        console.log(
+          '[F2 beforeShow] Auto-respondiendo "no" en F2 porque F1 es "no"',
+        );
+        answers["questionF2"] = "no";
+
+        // Si usas React, descomenta esto:
+        // console.log('[F2 beforeShow] Actualizando estado...');
+        // setAnswers({...answers});
+
+        console.log("[F2 beforeShow] Valores después de actualizar:", {
+          F1: answers["questionF1"],
+          F2: answers["questionF2"],
+        });
+      } else {
+        console.log("[F2 beforeShow] No se requiere auto-respuesta", {
+          razón:
+            answers["questionF1"] !== "no" ? 'F1 no es "no"' : 'F2 ya es "no"',
+        });
+      }
+    },
   },
   {
     id: "sectionG ",
@@ -526,7 +648,7 @@ export const sections: Section[] = [
     id: "sectionO1a",
     title: "Modulo O - Trastorno de ansiedad generalizada ",
     questions: questions.filter((q) => q.section === "sectionO1a"),
-    dependsOn: (answers) => (answers["questionK1a"]?.length || 0) > 0,
+    dependsOn: () => true,
   },
   {
     id: "sectionO1b",

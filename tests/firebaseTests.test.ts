@@ -1,7 +1,7 @@
 const assert = require("assert");
 const firebase = require("@firebase/testing");
 
-const MY_PROJECT_ID = "mini-test-nonprod";
+const MY_PROJECT_ID = "mini-test-ags";
 
 describe("Firebase Tests", () => {
   it("should return true", () => {

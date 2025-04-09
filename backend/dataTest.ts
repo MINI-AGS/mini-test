@@ -273,7 +273,7 @@ function createValidRecordData(): Record {
     questionK_Estimulantes_K3b: "No",
     questionK_Estimulantes_K3c: "No",
     questionK_Estimulantes_K3d: "No",
-    
+
     questionK_Cocaina_list: ["inhalada", "crack"],
     questionK_Cocaina_K2a: "No",
     questionK_Cocaina_K2b: "No",
@@ -285,7 +285,7 @@ function createValidRecordData(): Record {
     questionK_Cocaina_K3b: "No",
     questionK_Cocaina_K3c: "No",
     questionK_Cocaina_K3d: "No",
-    
+
     questionK_Narcoticos_list: ["heroína", "morfina"],
     questionK_Narcoticos_K2a: "No",
     questionK_Narcoticos_K2b: "No",
@@ -297,7 +297,7 @@ function createValidRecordData(): Record {
     questionK_Narcoticos_K3b: "No",
     questionK_Narcoticos_K3c: "No",
     questionK_Narcoticos_K3d: "No",
-    
+
     questionK_Alucinoginos_list: ["LSD (ácido)", "peyote"],
     questionK_Alucinoginos_K2a: "No",
     questionK_Alucinoginos_K2b: "No",
@@ -309,7 +309,7 @@ function createValidRecordData(): Record {
     questionK_Alucinoginos_K3b: "No",
     questionK_Alucinoginos_K3c: "No",
     questionK_Alucinoginos_K3d: "No",
-    
+
     questionK_Inhalantes_list: ["pegamento", "éter"],
     questionK_Inhalantes_K2a: "No",
     questionK_Inhalantes_K2b: "No",
@@ -321,7 +321,7 @@ function createValidRecordData(): Record {
     questionK_Inhalantes_K3b: "No",
     questionK_Inhalantes_K3c: "No",
     questionK_Inhalantes_K3d: "No",
-    
+
     questionK_Marihuana_list: ["hachís", "THC"],
     questionK_Marihuana_K2a: "No",
     questionK_Marihuana_K2b: "No",
@@ -333,7 +333,7 @@ function createValidRecordData(): Record {
     questionK_Marihuana_K3b: "No",
     questionK_Marihuana_K3c: "No",
     questionK_Marihuana_K3d: "No",
-    
+
     questionK_Tranquilizantes_list: ["Valium", "Xanax"],
     questionK_Tranquilizantes_K2a: "No",
     questionK_Tranquilizantes_K2b: "No",
@@ -345,7 +345,7 @@ function createValidRecordData(): Record {
     questionK_Tranquilizantes_K3b: "No",
     questionK_Tranquilizantes_K3c: "No",
     questionK_Tranquilizantes_K3d: "No",
-    
+
     questionK_OtrasSustancias_list: [],
     questionK_OtrasSustancias_K2a: "No",
     questionK_OtrasSustancias_K2b: "No",
@@ -357,7 +357,7 @@ function createValidRecordData(): Record {
     questionK_OtrasSustancias_K3b: "No",
     questionK_OtrasSustancias_K3c: "No",
     questionK_OtrasSustancias_K3d: "No",
-    
+
     //Trastornos psicóticos
     questionL1a: "No",
     questionL1b: "No",
@@ -370,6 +370,8 @@ function createValidRecordData(): Record {
     questionL5a: "No",
     questionL5b: "No",
     questionL6a: "No",
+    questionL6a1: "No",
+    questionL6a2: "No",
     questionL6b: "No",
     questionL7a: "No",
     questionL7b: "No",
@@ -460,3 +462,4 @@ function createValidRecordData(): Record {
 
 // Exportar la función principal
 export default testRecordFirestoreService;
+

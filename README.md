@@ -4,6 +4,24 @@
 
 Add the description here
 
+## Build the project
+
+To generate the builds for the android/iOS platforms, you can run the following commands
+
+1. Android
+
+```bash
+eas build -p android --profile preview --local --output=apk
+```
+
+2. iOS
+
+```bash
+eas build -p ios --profile preview --local
+```
+
+Note. For the previous commands to work, we need to have eas installed and login to our account beforehand, to get the login credentials contact @YeyoM
+
 ## Run the project
 
 To run the project, you need to have the following installed:

@@ -19,6 +19,18 @@ class RecordFirestoreService {
     this.db = db;
   }
 
+  // Test connection to Firestore
+  async testConnection(): Promise<void> {
+    try {
+      const docRef = doc(this.db, this.collectionName, "ejemplos");
+      await setDoc(docRef, { test: true });
+      console.log("Firestore connection successful");
+    } catch (error) {
+      console.error("Error connecting to Firestore:", error);
+      throw error;
+    }
+  }
+
   // Create a new record
   async createRecord(recordId: string, record: Record): Promise<void> {
     try {
@@ -536,14 +548,70 @@ class RecordFirestoreService {
     ];
 
     // Validar los arrays de sustancias escogidas
-    this.validateSubstanceArray(record, "questionK_Estimulantes_list", allowedEstimulantes, "Estimulantes", errors, isValid);
-    this.validateSubstanceArray(record, "questionK_Cocaina_list", allowedCocaina, "Cocaína", errors, isValid);
-    this.validateSubstanceArray(record, "questionK_Narcoticos_list", allowedNarcoticos, "Narcóticos", errors, isValid);
-    this.validateSubstanceArray(record, "questionK_Alucinoginos_list", allowedAlucinoginos, "Alucinógenos", errors, isValid);
-    this.validateSubstanceArray(record, "questionK_Inhalantes_list", allowedInhalantes, "Inhalantes", errors, isValid);
-    this.validateSubstanceArray(record, "questionK_Marihuana_list", allowedMarihuana, "Marihuana", errors, isValid);
-    this.validateSubstanceArray(record, "questionK_Tranquilizantes_list", allowedTranquilizantes, "Tranquilizantes", errors, isValid);
-    this.validateSubstanceArray(record, "questionK_OtrasSustancias_list", [], "Otras Sustancias", errors, isValid);
+    this.validateSubstanceArray(
+      record,
+      "questionK_Estimulantes_list",
+      allowedEstimulantes,
+      "Estimulantes",
+      errors,
+      isValid,
+    );
+    this.validateSubstanceArray(
+      record,
+      "questionK_Cocaina_list",
+      allowedCocaina,
+      "Cocaína",
+      errors,
+      isValid,
+    );
+    this.validateSubstanceArray(
+      record,
+      "questionK_Narcoticos_list",
+      allowedNarcoticos,
+      "Narcóticos",
+      errors,
+      isValid,
+    );
+    this.validateSubstanceArray(
+      record,
+      "questionK_Alucinoginos_list",
+      allowedAlucinoginos,
+      "Alucinógenos",
+      errors,
+      isValid,
+    );
+    this.validateSubstanceArray(
+      record,
+      "questionK_Inhalantes_list",
+      allowedInhalantes,
+      "Inhalantes",
+      errors,
+      isValid,
+    );
+    this.validateSubstanceArray(
+      record,
+      "questionK_Marihuana_list",
+      allowedMarihuana,
+      "Marihuana",
+      errors,
+      isValid,
+    );
+    this.validateSubstanceArray(
+      record,
+      "questionK_Tranquilizantes_list",
+      allowedTranquilizantes,
+      "Tranquilizantes",
+      errors,
+      isValid,
+    );
+    this.validateSubstanceArray(
+      record,
+      "questionK_OtrasSustancias_list",
+      [],
+      "Otras Sustancias",
+      errors,
+      isValid,
+    );
 
     // Validar preguntas adicionales para cada sustancia
     this.validateSubstanceQuestions(record, "Estimulantes", errors, isValid);
@@ -562,19 +630,24 @@ class RecordFirestoreService {
    * Valida los arrays de sustancias
    */
   private validateSubstanceArray(
-    record: Record, 
-    fieldName: string, 
-    allowedValues: string[], 
-    substanceName: string, 
-    errors: string[], 
-    isValid: boolean
+    record: Record,
+    fieldName: string,
+    allowedValues: string[],
+    substanceName: string,
+    errors: string[],
+    isValid: boolean,
   ): boolean {
     if (fieldName in record) {
       if (!Array.isArray(record[fieldName])) {
         errors.push(`${fieldName} debe ser un array`);
         isValid = false;
-      } else if (allowedValues.length > 0 && !this.containsOnlyAllowedValues(record[fieldName], allowedValues)) {
-        errors.push(`${fieldName} contiene valores no permitidos para ${substanceName}`);
+      } else if (
+        allowedValues.length > 0 &&
+        !this.containsOnlyAllowedValues(record[fieldName], allowedValues)
+      ) {
+        errors.push(
+          `${fieldName} contiene valores no permitidos para ${substanceName}`,
+        );
         isValid = false;
       }
 
@@ -591,15 +664,19 @@ class RecordFirestoreService {
    * Valida las preguntas adicionales para cada tipo de sustancia
    */
   private validateSubstanceQuestions(
-    record: Record, 
-    substanceType: string, 
-    errors: string[], 
-    isValid: boolean
+    record: Record,
+    substanceType: string,
+    errors: string[],
+    isValid: boolean,
   ): boolean {
     const arrayField = `questionK_${substanceType}_list`;
-    
+
     // Solo validamos las preguntas si se seleccionó la sustancia
-    if (arrayField in record && Array.isArray(record[arrayField]) && record[arrayField].length > 0) {
+    if (
+      arrayField in record &&
+      Array.isArray(record[arrayField]) &&
+      record[arrayField].length > 0
+    ) {
       // Lista de preguntas que deben existir para cada sustancia seleccionada
       const requiredQuestions = [
         `questionK_${substanceType}_K2a`,
@@ -613,11 +690,13 @@ class RecordFirestoreService {
         `questionK_${substanceType}_K3c`,
         `questionK_${substanceType}_K3d`,
       ];
-      
+
       // Verificamos que existan todas las preguntas adicionales necesarias
       for (const question of requiredQuestions) {
         if (!(question in record)) {
-          errors.push(`Falta la pregunta ${question} para la sustancia ${substanceType} seleccionada`);
+          errors.push(
+            `Falta la pregunta ${question} para la sustancia ${substanceType} seleccionada`,
+          );
           isValid = false;
         } else if (typeof record[question] !== "string") {
           errors.push(`La pregunta ${question} debe ser una cadena de texto`);
@@ -625,7 +704,7 @@ class RecordFirestoreService {
         }
       }
     }
-    
+
     return isValid;
   }
 

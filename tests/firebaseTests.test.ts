@@ -11,7 +11,7 @@ import { setDoc } from "firebase/firestore";
 import { createValidRecordData } from "./data/validRecord";
 import { createUnvalidRecordData } from "./data/unvalidRecord";
 
-const MY_PROJECT_ID = "mini-test-nonprod";
+const MY_PROJECT_ID = "mini-test-ags";
 
 describe("Firebase Tests", () => {
   it("Can write to the database with valid data", async () => {

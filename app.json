@@ -19,12 +19,18 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.yeyom.minitest"
     },
     "web": {
       "favicon": "./assets/favicon.png",
       "meta": {
         "viewport": "width=device-width, initial-scale=1, shrink-to-fit=no"
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "101c267d-046f-45a8-b02a-da7209b580d3"
       }
     }
   }

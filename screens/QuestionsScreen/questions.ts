@@ -2,6 +2,73 @@
 import { Question, Flags } from "./types";
 
 export const questions: Question[] = [
+  // Datos del entrevistado
+  {
+    id: "name",
+    text: "Nombre del paciente:",
+    section: "sectionData",
+    questionType: "text",
+  },
+  {
+    id: "gender",
+    text: "Sexo:",
+    options: ["Hombre", "Mujer", "Otro"],
+    section: "sectionData",
+  },
+  {
+    id: "birhdate",
+    text: "Fecha de nacimiento:",
+    section: "sectionData",
+    questionType: "text"
+  },
+  {
+    id: "sexualPreference",
+    text: "Preferencia sexual:",
+    questionType: "text",
+    section: "sectionData",
+  },
+  {
+    id: "stateOrigin",
+    text: "Estado de origen:",
+    section: "sectionData",
+    questionType: "text",
+  },
+  {
+    id: "stateResidence",
+    text: "Estado de residencia:",
+    section: "sectionData",
+    questionType: "text",
+  },
+  {
+    id: "startTimeInterview",
+    text: "Hora en que inició la entrevista:",
+    section: "sectionData",
+    questionType: "text",
+  },
+  {
+    id: "nameInterviewer",
+    text: "Nombre del entrevistador:",
+    section: "sectionData",
+    questionType: "text"
+  },
+  {
+    id: "endTimeInterview",
+    text: "Hora en que terminó la entrevista:",
+    section: "sectionData",
+    questionType: "text",
+  },
+  {
+    id: "interviewDate",
+    text: "Fecha de la entrevista",
+    section: "sectionData",
+    questionType: "text",
+  },
+  {
+    id: "durationInterview",
+    text: "Duración total:",
+    section: "sectionData",
+    questionType: "text",
+  },
   // Sección A
   {
     id: "questionA1",
@@ -621,7 +688,6 @@ export const questions: Question[] = [
 	  options: ["si", "no"],
 	  section: "sectionJ3",
   },
-  //IMPORTANTEEEEEEEEEEEEEEEEEE  FALTA SECCION L,M
   {
     id: "questionK1a",
     text: "¿En los últimos 12 meses, tomó alguna de estas sustancias, en más de una ocasión, para sentirse mejor o para cambiar su estado de ánimo?",
@@ -753,12 +819,77 @@ export const questions: Question[] = [
     options: ["si", "no"],
     section: "sectionL11",
   },
-  /*
-   * Checar esta condicional L13
+  //section M
   {
-    id: "questionL13a"
+    id: "questionM1a",
+    text: "¿Cuál es su estatura?",
+    //options: ["", ""], //Chacar estos campos
+    section: "sectionM1",
+    questionType: "text",
   },
-  */
+  {
+    id: "questionM1b",
+    text: "¿En los últimos 3 meses, cuál ha sido su peso más bajo?",
+    //options: ["", ""], //Chacar estos campos
+    section: "sectionM1",
+    questionType: "text",
+  },
+  {
+    id: "questionM1c",
+    text: "¿ES EL PESO DEL PACIENTE INFERIOR AL PESO MÍNIMO CORRESPONDIENTE A SU ESTATURA (VER TABLA A CONTINUACIÓN)?",
+    options: ["si", "no"],
+    section: "sectionM1",
+  },
+  {
+    id: "questionM2",
+    text: "¿A pesar de su bajo peso, evitaba engordar?",
+    options: ["si", "no"],
+    section: "sectionM2",
+  },
+  {
+    id: "questionM3",
+    text: "¿A pesar de estar bajo peso, temía ganar peso o ponerse gordo/a?",
+    options: ["si", "no"],
+    section: "sectionM3",
+  },
+  {
+    id: "questionM4a",
+    text: "¿Se consideraba gordo, o que una parte de su cuerpo era demasiado gorda?",
+    options: ["si", "no"],
+    section: "sectionM4",
+  },
+  {
+    id: "questionM4b",
+    text: "¿Influyó mucho su peso o su figura en la opinión que usted tenía de sí mismo?",
+    options: ["si", "no"],
+    section: "sectionM4",
+  },
+  {
+    id: "questionM4c",
+    text: "¿Pensaba usted que su bajo peso era normal o excesivo?",
+    options: ["si", "no"],
+    section: "sectionM4",
+  },
+  //Lista de pesos Mujeres
+  {
+    id: "patientWeightWomen",
+    text: "",
+    options: ["38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51"],
+    section: "patientWeight",
+  },
+  {
+    id: "patientHeightWomen",
+    text: "",
+    options: ["144,8", "147,3", "149,9", "152,4", "154,9", "157,5", "160,0", "162,6", "165,1", "167,6", "170,2", "172,7", "175,3", "177,8"],
+    section: "patientHeight",
+  },
+  //QuestionM5
+  {
+    id: "questionM6",
+    text: "SÓLO PARA MUJERES: ¿En los últimos 3 meses, dejó de tener todos sus períodos menstruales, aunque debió tenerlos (cuando no estaba embarazada)?",
+    options: ["si", "no"],
+    section: "sectionM6",
+  },
   {
     id: "questionN1",
     text: "¿En los últimos 3 meses, se ha dado usted atracones, en los cuales comía grandes cantidades de alimentos en un período de 2 horas?",
@@ -788,6 +919,12 @@ export const questions: Question[] = [
     text: "¿Influye grandemente en la opinión que usted tiene de sí mismo su peso o la figura de su cuerpo?",
     options: ["si", "no"],
     section: "sectionN5",
+  },
+  {
+    id: "questionN7",
+    text: "__N7_DINAMIC__",
+    options: ["si", "no"],
+    section: "sectionN7",
   },
   {
     id: "questionO1a",

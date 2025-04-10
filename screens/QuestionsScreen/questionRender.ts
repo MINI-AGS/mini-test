@@ -87,6 +87,63 @@ const generateDrugQuestions = (selectedDrugs: string[]): Question[] => {
     })),
   );
 };
+
+// Alturas y pesos mínimos para mujeres y hombres
+const patientHeightWomen = ["144,8", "147,3", "149,9", "152,4", "154,9", "157,5", "160,0", "162,6", "165,1", "167,6", "170,2", "172,7", "175,3", "177,8"];
+const patientWeightWomen = ["38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51"];
+
+const patientHeightMen = ["154,9", "157,5", "160,0", "162,6", "165,1", "167,6", "170,2", "172,7", "175,3", "177,8", "180,3", "182,9", "185,4", "188,0", "190,5"];
+const patientWeightMen = ["47", "48", "49", "50", "51", "51", "52", "53", "54", "55", "56", "57", "58", "59", "61"];
+
+// Función para encontrar el peso mínimo más cercano a una estatura
+const findClosestWeight = (
+  userHeight: number,
+  heightList: string[],
+  weightList: string[]): 
+  string | null => {
+  // Convertimos la lista de estaturas a números (reemplazando coma por punto)
+  const parsedHeights = heightList.map(h => parseFloat(h.replace(",", ".")));
+  // Inicializamos el índice del más cercano al primero
+  let closestIndex = 0;
+  let minDiff = Math.abs(parsedHeights[0] - userHeight);
+
+  // Recorremos las demás estaturas para encontrar la más cercana
+  for (let i = 1; i < parsedHeights.length; i++) {
+    const diff = Math.abs(parsedHeights[i] - userHeight);
+    if (diff < minDiff) {
+      minDiff = diff;
+      closestIndex = i;
+    }
+  }
+  // Retornamos el peso correspondiente al índice más cercano
+  return weightList[closestIndex] || null;
+};
+
+// Pregunta dinámica N7
+// Generador de la pregunta dinámica N7, incluyendo el peso mínimo calculado
+const generateN7Questions = (
+  patientHeight?: string | null,
+  isMale: boolean = true
+): Question => {
+  // Seleccionamos la tabla de estaturas/pesos según el sexo
+  const heightList = isMale ? patientHeightMen : patientHeightWomen;
+  const weightList = isMale ? patientWeightMen : patientWeightWomen;
+
+  // Convertimos la estatura ingresada a número (float)
+  const height = patientHeight ? parseFloat(patientHeight.replace(",", ".")) : null;
+  
+  // Obtenemos el peso mínimo más cercano
+  const closestWeight = height !== null ? findClosestWeight(height, heightList, weightList) : null;
+
+  // Retornamos el objeto tipo `Question` con el texto personalizado
+  return {
+    id: "questionN7",
+    text: `¿Ocurren estos atracones solamente cuando está por debajo de (${closestWeight || "_____"} kg)?`,
+    options: ["si", "no"],
+    section: "sectionN7",
+  };
+};
+
 export function getDiagnosisResult(answers: AnswerState): Diagnosis[] {
   return myDiagnoses.map((d) => {
     // Solo modifica el diagnóstico específico
@@ -178,6 +235,31 @@ export function getQuestionsWithDynamicText(answers: AnswerState): Question[] {
 
     return q;
   });
+  
+  // Obtenemos la estatura ingresada (puede venir como string o como arreglo)
+  const rawHeight = answers["questionM1a"] || null;
+  // Si viene como arreglo (ej. desde un form multiselect), tomamos el primer valor
+  const estaturaIngresada = Array.isArray(rawHeight) ? rawHeight[0] : rawHeight;
+
+  // Obtenemos el sexo del usuario (igual puede ser string o arreglo)
+  const sexoRaw = answers["gender"];
+  // Lo convertimos a texto plano y en minúsculas para comparar
+  const sexo = Array.isArray(sexoRaw) ? sexoRaw[0]?.toLowerCase() || "" : sexoRaw?.toLowerCase() || "";
+
+  // Determinamos si el usuario es hombre
+  const esHombre = sexo.includes("hombre");
+
+  // Generamos la pregunta N7 con el peso dinámico incluido
+  const n7Question = generateN7Questions(estaturaIngresada, esHombre);
+
+  // Si ya existe la pregunta N7, la reemplazamos; si no, la agregamos
+  const n7Index = baseQuestions.findIndex(q => q.id === "questionN7");
+  if (n7Index >= 0) {
+    baseQuestions[n7Index] = n7Question;
+  } else {
+    baseQuestions.push(n7Question);
+  }
+
   // Generar preguntas dinámicas si hay drogas seleccionadas
   if (
     answers["questionK1a_list"] &&

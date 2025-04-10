@@ -335,18 +335,95 @@ export const myDiagnoses: Diagnosis[] = [
     id: "diagnosticL2",
     name: "TRASTORNO PSICÓTICO DE POR VIDA",
     dependsOn: (answers) => {
-      // Verificar si hay 1+ "SI EXTRAÑO" en <<a>> o 2+ "SI" en <<a>>
+      // Verificar si hay 1+ "SI EXTRAÑO" en <<a>> o 2+ "SI" en <<a>> o si dio positivo a diagnósticoL1
+      const respuestasL1 = questions
+        .filter((q) => q.section === "sectionL11")
+        .filter((q) => answers[q.id] === "si" || answers[q.id] === "si extraño");
       const respuestasL2 = questions
         .filter((q) => q.section === "sectionL12")
-        .filter(
-          (q) => answers[q.id] === "si" || answers[q.id] === "si extraño",
-        );
-      //Mostrar módulo si hay 1+ "SI EXTRAÑO" o 2+ "SI" en L12
-      return respuestasL2.length >= 2; // Mostrar módulo si hay 1+ "SI EXTRAÑO" o 2+ "SI" en L12
+        .filter((q) => answers[q.id] === "si");
+      //Mostrar módulo si hay 1+ "SI EXTRAÑO" o 2+ "SI" en L11 o 1+ "SI" en L12
+      return respuestasL1.length >= 2 || respuestasL2.length >= 1; // Mostrar módulo si hay 1+ "SI EXTRAÑO" o 2+ "SI" en L11 o 1+ "SI" en L12
     },
   },
-  //FALTA DEL MODULO L - TRASTORNO DEL ESTADO DE ANIMO CON SINTOMAS PSICOTIOCS ACTUAL
-  //MODULO 0 DIAGNOSTICO FALTAN LOS DEL KMN
+  {
+    //Trastorno del Estado de Ánimo con Síntomas Psicóticos Actual
+    id: "diagnosticL3",
+    name: "TRASTORNO DEL ESTADO DE ÁNIMO CON SÍNTOMAS PSICÓTICOS ACTUAL",
+    dependsOn: (answers) => {
+      // Verificar si hay 1+ "si" en preguntas L1b a L7b
+      const respuestasL13b = questions
+        .filter((q) => q.section === "sectionL13b")
+        .filter((q) => answers[q.id] === "si");
+
+      const episodioDepresivoMayor = myDiagnoses.some(
+        (diagnosis) => diagnosis.id === "diagnosticA1" && diagnosis.dependsOn(answers),
+      );
+      const episodioManiaco = myDiagnoses.some(
+        (diagnosis) => diagnosis.id === "diagnosticA2" && diagnosis.dependsOn(answers), 
+      );
+
+      return respuestasL13b.length >= 1 || episodioDepresivoMayor || episodioManiaco; // Mostrar módulo si hay 1+ "si" en L13b o si hay diagnóstico de episodio depresivo mayor o maniaco
+    }
+  },
+  //MODULO M DIAGNOSTICO
+  {
+    id: "diagnosticM1",
+    name: "Anorexia Nerviosa Actual",
+    dependsOn: (answers) => {
+      // Verificar si hay 1+ "si" en sectionM4 si entonces M5 va a ser "si"
+      const respuestasM4 = questions
+        .filter((q) => q.section === "sectionM4")
+        .filter((q) => answers[q.id] === "si");
+      //Para mujeres, verificar si pone "si" en M5 y M6
+      const isFemale = questions
+        .filter((q) => q.section === "sectionData")
+        .filter((q) => answers[q.id] === "Mujer");
+      
+      //respyestasM5 es si solo si hay 1+ "si" en M4
+      const respuestasM5 = respuestasM4.length >= 1;
+      const respuestasM6 = answers["questionM6"] === "si";
+
+      //Para hombres, verificar si pone "si" en M5 y M6
+      const isMale = questions
+        .filter((q) => q.section === "sectionData")
+        .filter((q) => answers[q.id] === "Hombre");
+      const respuestasM5H = isMale && respuestasM5;
+
+      return (isFemale && respuestasM5 && respuestasM6) || (isMale && respuestasM5H);
+    },
+  },
+  //MODULO N DIAGNOSTICO
+  {
+    id: "diagnosticN1",
+    name: "Bulimia Nerviosa Actual",
+    dependsOn: (answers) => {
+      //Verificar si hay 1 "si" en N5 o hay un "no" en N7 o salto a N8
+      const respuestasN5 = questions
+        .filter((q) => q.section === "sectionN5")
+        .filter((q) => answers[q.id] === "si");
+      const respuestasN7 = questions
+        .filter((q) => q.section === "sectionN7")
+        .filter((q) => answers[q.id] === "no");
+       const respuestasN8 = myDiagnoses
+        .filter((d) => d.id === "diagnosticM1")
+        // Verifica si el diagnóstico de anorexia nerviosa actual es falso
+        .some((d) => d.dependsOn(answers) === false); // Verifica si el diagnóstico de anorexia nerviosa actual es falso
+
+      return respuestasN5.length >= 1 || respuestasN7.length >= 1 || respuestasN8; // Mostrar módulo si hay 1 "si" en N5 o hay un "no" en N7 o salto a N8
+    },
+  },
+  {
+    id: "diagnosticN2",
+    name: "Anorexia Nerviosa Tipo Compulsivo/Purgativo Actual",
+    dependsOn: (answers) => {
+      const respuestasN7 = questions
+        .filter((q) => q.section === "sectionN7")
+        .filter((q) => answers[q.id] === "si");
+      return respuestasN7.length >= 1; // Mostrar módulo si hay 1 "si" en N7
+    },
+  },
+  //MODULO 0 DIAGNOSTICO FALTAN LOS DEL K
   {
     id: "diagnosticO1",
     name: "Trastorno De Ansiedad Generalizada Actual",

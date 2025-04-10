@@ -7,6 +7,13 @@ import { FlagFunctions } from "./flags";
 // Objeto para almacenar valores locales sin enviarlos a la base de datos
 export let resultadoDiagnostico: Record<string, boolean> = {};
 export const sections: Section[] = [
+  //Datos del paciente
+  {
+    id: "sectionData",
+    title: "Datos del paciente",
+    questions: questions.filter((q) => q.section === "sectionData"),
+    dependsOn: (answers) => true, // Siempre visible
+  },
   {
     id: "sectionA",
     title: "Modulo A - Episodio depresivo mayor",
@@ -643,7 +650,106 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionK2"),
     dependsOn: (answers) => answers["questionK1a_list"],
   },
+  //Modulo L
+  {
+    id: "sectionL12",
+    title: "Modulo L - Trastornos psicóticos",
+    //Mostar las preguntas que esten en la seccion L12 y L11 intercaladas
+    questions: questions.filter((q) => q.section === "sectionL12" || q.section === "sectionL11"),
+    dependsOn: (answers) => true, // Siempre visible
 
+  },
+  //Modulo M
+  {
+    id: "sectionM1",
+    title: "Modulo M - Anorexia nerviosa",
+    questions: questions.filter((q) => q.section === "sectionM1"),
+    dependsOn: (answers) => true, // Siempre visible
+  },
+  {
+    id: "sectionM2",
+    title: "En los últimos 3 meses:",
+    questions: questions.filter((q) => q.section === "sectionM2"),
+    //Solo mostrar si questionM1c es "si"
+    dependsOn: (answers) => answers["questionM1c"] === "si",
+  },
+  {
+    id: "sectionM3",
+    title: "",
+    questions: questions.filter((q) => q.section === "sectionM3"),
+    dependsOn: (answers) => answers["questionM2"] === "si",
+  },
+  {
+    id: "sectionM4",
+    title: "",
+    questions: questions.filter((q) => q.section === "sectionM4"),
+    dependsOn: (answers) => answers["questionM3"] === "si",
+  },
+  {
+    id: "sectionM6",
+    title: "",
+    questions: questions.filter((q) => q.section === "sectionM6"),
+    // solo mostrar si hay mas de 1 "si" en el sectionM4 y gender sea "mujer"
+    dependsOn: (answers) => {
+      const preguntasM4 = questions.filter((q) => q.section === "sectionM4");
+      const respuestasSiM4 = preguntasM4.filter(
+        (q) => answers[q.id] === "si",
+      ).length;
+      const isFemale = questions.filter((q) => q.section === "sectionData")
+        .filter((q) => answers[q.id] === "Mujer").length;
+      return (
+        respuestasSiM4 >= 2 &&
+        isFemale >= 1
+      );
+    }
+  },
+  {
+    id: "sectionN1",
+    title: "Modulo N - Bulimia nerviosa",
+    questions: questions.filter((q) => q.section === "sectionN1"),
+    dependsOn: (answers) => true, // Siempre visible
+  },
+  {
+    id: "sectionN2",
+    title: "",
+    questions: questions.filter((q) => q.section === "sectionN2"),
+    dependsOn: (answers) => answers["questionN1"] === "si",
+  },
+  {
+    id: "sectionN3",
+    title: "",
+    questions: questions.filter((q) => q.section === "sectionN3"),
+    dependsOn: (answers) => answers["questionN2"] === "si",
+  },
+  {
+    id: "sectionN4",
+    title: "",
+    questions: questions.filter((q) => q.section === "sectionN4"),
+    dependsOn: (answers) => answers["questionN3"] === "si",
+  },
+  {
+    id: "sectionN5",
+    title: "",
+    questions: questions.filter((q) => q.section === "sectionN5"),
+    dependsOn: (answers) => answers["questionN4"] === "si",
+  },
+  {
+    id: "sectionN7",
+    title: "",
+    questions: questions.filter((q) => q.section === "sectionN7"),
+    //Mostar solo si cumple con Anorexia nerviosa
+    dependsOn: (answers) => {
+      const diagnosisAnorexia = myDiagnoses
+        .filter((d) => d.id === "diagnosticM1")
+        .some((d) => d.dependsOn(answers));
+      
+      //Mostrar si hay un si en sectionN5 y el diagnostico de anorexia es positivo
+      const preguntasN5 = questions
+        .filter((q) => q.section === "sectionN5")
+        .filter((q) => answers[q.id] === "si").length;
+      return diagnosisAnorexia && preguntasN5 >= 1;
+    }
+  },
   {
     id: "sectionO1a",
     title: "Modulo O - Trastorno de ansiedad generalizada ",

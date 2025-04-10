@@ -1,21 +1,91 @@
-const assert = require("assert");
-const firebase = require("@firebase/testing");
+import {
+  assertFails,
+  assertSucceeds,
+  initializeTestEnvironment,
+} from "@firebase/rules-unit-testing";
 
-const MY_PROJECT_ID = "mini-test-nonprod";
+import fs from "fs";
+
+import { setDoc } from "firebase/firestore";
+
+import { createValidRecordData } from "./data/validRecord";
+import { createUnvalidRecordData } from "./data/unvalidRecord";
+
+const MY_PROJECT_ID = "mini-test-ags";
 
 describe("Firebase Tests", () => {
-  it("should return true", () => {
-    assert.equal(true, true);
+  it("Can write to the database with valid data", async () => {
+    const testEnv = await initializeTestEnvironment({
+      projectId: MY_PROJECT_ID,
+      firestore: {
+        rules: fs.readFileSync("firestore.rules", "utf8"),
+        host: "localhost",
+        port: 8080,
+      },
+    });
+
+    const db = testEnv.unauthenticatedContext().firestore();
+    const data = createValidRecordData();
+    await assertSucceeds(setDoc(db.collection("data").doc("testDoc"), data));
   });
 
-  it("Can read from the database", async () => {
-    const db = firebase
-      .initializeTestApp({
-        projectId: MY_PROJECT_ID,
-      })
-      .firestore();
+  it("Cannot write to the database with invalid data", async () => {
+    const testEnv = await initializeTestEnvironment({
+      projectId: MY_PROJECT_ID,
+      firestore: {
+        rules: fs.readFileSync("firestore.rules", "utf8"),
+        host: "localhost",
+        port: 8080,
+      },
+    });
 
-    const testDoc = db.collection("ejemplos").doc("testDoc");
-    await firebase.assertSucceeds(testDoc.get());
+    const db = testEnv.unauthenticatedContext().firestore();
+    const data = createUnvalidRecordData();
+    await assertFails(setDoc(db.collection("data").doc("testDoc"), data));
+  });
+
+  it("Cannot read from the database", async () => {
+    const testEnv = await initializeTestEnvironment({
+      projectId: MY_PROJECT_ID,
+      firestore: {
+        rules: fs.readFileSync("firestore.rules", "utf8"),
+        host: "localhost",
+        port: 8080,
+      },
+    });
+
+    const db = testEnv.unauthenticatedContext().firestore();
+    const testDoc = db.collection("data").doc("testDoc");
+    await assertFails(testDoc.get());
+  });
+
+  it("Cannot delete from the database", async () => {
+    const testEnv = await initializeTestEnvironment({
+      projectId: MY_PROJECT_ID,
+      firestore: {
+        rules: fs.readFileSync("firestore.rules", "utf8"),
+        host: "localhost",
+        port: 8080,
+      },
+    });
+
+    const db = testEnv.unauthenticatedContext().firestore();
+    const testDoc = db.collection("data").doc("testDoc");
+    await assertFails(testDoc.delete());
+  });
+
+  it("Cannot update the database", async () => {
+    const testEnv = await initializeTestEnvironment({
+      projectId: MY_PROJECT_ID,
+      firestore: {
+        rules: fs.readFileSync("firestore.rules", "utf8"),
+        host: "localhost",
+        port: 8080,
+      },
+    });
+
+    const db = testEnv.unauthenticatedContext().firestore();
+    const testDoc = db.collection("data").doc("testDoc");
+    await assertFails(testDoc.update({ field: "value" }));
   });
 });

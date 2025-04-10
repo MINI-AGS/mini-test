@@ -56,7 +56,7 @@ export function isAnswerEqual(
   return answerContains(answers[questionId], value);
 }
 
-export function calculateSuicideRiskScore(answers: any): number {
+export function calculateSuicideRiskScore(answers: AnswerState): number {
   const riskQuestions = [
     { id: "questionC1", points: 1 },
     { id: "questionC2", points: 2 },
@@ -72,7 +72,7 @@ export function calculateSuicideRiskScore(answers: any): number {
   );
 }
 
-export function RiskLevelC1(answers: any): string {
+export function RiskLevelC1(answers: AnswerState): string {
   if (answers["questionB4"] !== "si") return "No diagnosis";
 
   // Calcula el puntaje total

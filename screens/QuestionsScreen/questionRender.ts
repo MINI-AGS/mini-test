@@ -1,7 +1,8 @@
 // questionRenderer.ts
 import { questions } from "./questions";
+import { myDiagnoses } from "./diagnosis";
 import { FlagFunctions } from "./flags";
-import { Question, AnswerState } from "./types";
+import { Question, AnswerState, Diagnosis } from "./types";
 
 // Función para generar preguntas dinámicas por droga
 const generateDrugQuestions = (selectedDrugs: string[]): Question[] => {
@@ -86,25 +87,97 @@ const generateDrugQuestions = (selectedDrugs: string[]): Question[] => {
     })),
   );
 };
-
-export function getQuestionsWithDynamicText(answers: AnswerState): Question[] {
-  // Preguntas base
-  const baseQuestions = questions.map((q) => {
-    if (q.id === "questionA1") {
+export function getDiagnosisResult(answers: AnswerState): Diagnosis[] {
+  return myDiagnoses.map((d) => {
+    // Solo modifica el diagnóstico específico
+    if (d.id === "diagnosticD4_HipoManiaco") {
       const flagActive = FlagFunctions.isFlagActive(
         "PastAnswers",
         answers as any,
       );
+
+      // Clona el objeto completamente y sobrescribe result
+      return {
+        ...d,
+        result: () => (flagActive ? "pasado" : "actual"), // Función dinámica
+      };
+    }
+    return d; // Retorna los demás sin cambios
+  });
+}
+//Question modulo D pasado-presente
+export function getQuestionsWithDynamicText(answers: AnswerState): Question[] {
+  const baseQuestions = questions.map((q) => {
+    const flagActive = FlagFunctions.isFlagActive(
+      "PastAnswers",
+      answers as any,
+    );
+
+    if (q.id === "questionD3a") {
       return {
         ...q,
         text: flagActive
-          ? "¿Sentía que tenía habilidades especiales o una misión importante que cumplir?"
-          : "¿Sentía que podía hacer cosas que otros no podían hacer, o que usted era una persona especialmente importante?",
+          ? "¿Sentía que podía hacer cosas que otros no podían hacer, o que usted era una persona especialmente importante?"
+          : "¿Siente que puede hacer cosas que otros no pueden hacer, o que usted es una persona especialmente importante?",
       };
     }
+
+    if (q.id === "questionD3b") {
+      return {
+        ...q,
+        text: flagActive
+          ? "¿Necesitaba dormir menos (p. ej., se sentía descansado con pocas horas de sueño)?"
+          : "¿Necesita dormir menos (p. ej., se siente descansado con pocas horas de sueño)?",
+      };
+    }
+
+    if (q.id === "questionD3c") {
+      return {
+        ...q,
+        text: flagActive
+          ? "¿Hablaba usted sin parar o tan deprisa que los demás tenían dificultad para entenderle?"
+          : "¿Habla usted sin parar o tan deprisa que los demás tienen dificultad para entenderle?",
+      };
+    }
+
+    if (q.id === "questionD3d") {
+      return {
+        ...q,
+        text: flagActive
+          ? "¿Sus pensamientos pasaban tan deprisa por su cabeza que tenía dificultades para seguirlos?"
+          : "¿Sus pensamientos pasan tan deprisa por su cabeza que tiene dificultades para seguirlos?",
+      };
+    }
+
+    if (q.id === "questionD3e") {
+      return {
+        ...q,
+        text: flagActive
+          ? "¿Se distraía tan fácilmente, que la menor interrupción le hacía perder el hilo de lo que estaba haciendo o pensando?"
+          : "¿Se distrae tan fácilmente, que la menor interrupción le hace perder el hilo de lo que está haciendo o pensando?",
+      };
+    }
+
+    if (q.id === "questionD3f") {
+      return {
+        ...q,
+        text: flagActive
+          ? "¿Estaba tan activo, tan inquieto físicamente que los demás se preocupaban por usted?"
+          : "¿Está tan activo, tan inquieto físicamente que los demás se preocupan por usted?",
+      };
+    }
+
+    if (q.id === "questionD3g") {
+      return {
+        ...q,
+        text: flagActive
+          ? "¿Quería involucrarse en actividades tan placenteras, que ignoró los riesgos o consecuencias (p. ej., se embarcó en gastos descontrolados, condujo imprudentemente o mantuvo actividades sexuales indiscretas)?"
+          : "¿Quiere involucrarse en actividades tan placenteras, que ignora los riesgos o consecuencias (p. ej., se embarca en gastos descontrolados, conduce imprudentemente o mantiene actividades sexuales indiscretas)?",
+      };
+    }
+
     return q;
   });
-
   // Generar preguntas dinámicas si hay drogas seleccionadas
   if (
     answers["questionK1a_list"] &&

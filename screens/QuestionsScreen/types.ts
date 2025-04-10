@@ -18,6 +18,7 @@ export interface Section {
   questions: Question[];
   defaultAnswer?: string;
   dependsOn: (answers: any) => boolean | string;
+  beforeShow?: (answers: Record<string, any>) => void;
   isDisabled?: (answers: any) => boolean | string;
   // Nueva propiedad para evaluar condiciones como E5
   evaluateConditions?: (answers: any) => Record<
@@ -31,7 +32,7 @@ export interface Section {
 export interface Diagnosis {
   id: string;
   name: string;
-  result?: string; // Hacer que result sea opcional
+  result?: (answers: any) => string;
   criteria?: (answers: Record<string, string>) => "sí" | "no";
   dependsOn: (answers: any) => boolean | string;
 }

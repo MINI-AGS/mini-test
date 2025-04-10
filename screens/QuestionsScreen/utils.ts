@@ -55,3 +55,33 @@ export function isAnswerEqual(
 ): boolean {
   return answerContains(answers[questionId], value);
 }
+
+export function calculateSuicideRiskScore(answers: any): number {
+  const riskQuestions = [
+    { id: "questionC1", points: 1 },
+    { id: "questionC2", points: 2 },
+    { id: "questionC3", points: 6 },
+    { id: "questionC4", points: 10 },
+    { id: "questionC5", points: 10 },
+    { id: "questionC6", points: 4 },
+  ];
+
+  return riskQuestions.reduce(
+    (sum, q) => sum + (answers[q.id] === "si" ? q.points : 0),
+    0,
+  );
+}
+
+export function RiskLevelC1(answers: any): string {
+  if (answers["questionB4"] !== "si") return "No diagnosis";
+
+  // Calcula el puntaje total
+  const score = calculateSuicideRiskScore(answers);
+  // Determina el nivel de riesgo basado en el puntaje
+  let nivel = "";
+  if (score >= 10) nivel = "alto";
+  else if (score >= 6) nivel = "moderado";
+  else if (score >= 1) nivel = "leve";
+
+  return nivel; // Devuelve false si el puntaje es 0
+}

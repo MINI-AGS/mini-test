@@ -136,7 +136,6 @@ const QuestionDisplay: React.FC = () => {
     >
       {sections.map((section) => {
         if (!visibleModules.includes(section.id)) return null;
-
         const sectionQuestions = getSectionQuestions(section.id);
 
         return (
@@ -203,8 +202,13 @@ const QuestionDisplay: React.FC = () => {
       {myDiagnoses.map((diagnosis) =>
         visibleModules.includes(diagnosis.id) ? (
           <View key={diagnosis.id} style={styles.diagnosis}>
-            <Text style={styles.diagnosisTitle}>{diagnosis.name}</Text>
-            <Text>Diagn√≥stico visible</Text>
+            <Text style={styles.diagnosisTitle}>
+              {diagnosis.name}{" "}
+              {diagnosis.result && (
+                <> {(diagnosis.result as (answers: any) => string)(answers)}</>
+              )}
+            </Text>
+            <Text>Diagnostico visible</Text>
           </View>
         ) : null,
       )}
@@ -212,7 +216,7 @@ const QuestionDisplay: React.FC = () => {
       <View style={styles.debug}>
         <Text style={styles.debugTitle}>Estado de respuestas:</Text>
         <Text style={styles.debugText}>{JSON.stringify(answers, null, 2)}</Text>
-        <Text style={styles.debugTitle}>M√≥dulos visibles:</Text>
+        <Text style={styles.debugTitle}>Modulos visibles:</Text>
         <Text style={styles.debugText}>
           {JSON.stringify(visibleModules, null, 2)}
         </Text>

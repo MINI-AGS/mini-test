@@ -6,10 +6,9 @@ import {
   TextInput,
   StyleSheet,
   Dimensions,
-  TouchableOpacity,
 } from "react-native";
 import { RadioButton, Checkbox } from "react-native-paper";
-import { Section, Question, AnswerState } from "./types";
+import { Section, Question, AnswerState, Diagnosis } from "./types";
 import { sections } from "./module";
 import { myDiagnoses } from "./diagnosis";
 import { getQuestionsWithDynamicText } from "./questionRender";
@@ -22,7 +21,7 @@ const QuestionDisplay: React.FC = () => {
   const scrollViewRef = useRef<ScrollView>(null);
 
   const handleAnswer = (questionId: string, answer: string) => {
-    setAnswers((prev) => ({
+    setAnswers((prev: AnswerState) => ({
       ...prev,
       [questionId]: answer,
     }));
@@ -33,7 +32,7 @@ const QuestionDisplay: React.FC = () => {
     option: string,
     isChecked: boolean,
   ) => {
-    setAnswers((prev) => {
+    setAnswers((prev: AnswerState) => {
       const currentAnswers = Array.isArray(prev[questionId])
         ? (prev[questionId] as string[])
         : [];
@@ -67,7 +66,7 @@ const QuestionDisplay: React.FC = () => {
   useEffect(() => {
     const newVisibleModules: string[] = ["sectionA"];
 
-    sections.forEach((section) => {
+    sections.forEach((section: Section) => {
       if (section.id === "sectionA") return;
 
       if (section.dependsOn(answers)) {
@@ -75,7 +74,7 @@ const QuestionDisplay: React.FC = () => {
       }
     });
 
-    myDiagnoses.forEach((diagnosis) => {
+    myDiagnoses.forEach((diagnosis: Diagnosis) => {
       if (diagnosis.dependsOn(answers)) {
         newVisibleModules.push(diagnosis.id);
       }
@@ -84,10 +83,10 @@ const QuestionDisplay: React.FC = () => {
     const newAnswers = { ...answers };
     let hasChanges = false;
 
-    sections.forEach((section) => {
+    sections.forEach((section: Section) => {
       if (!newVisibleModules.includes(section.id)) {
         // Eliminar respuestas de preguntas est√°ticas
-        section.questions?.forEach((question) => {
+        section.questions?.forEach((question: Question) => {
           if (question.id in newAnswers) {
             delete newAnswers[question.id];
             hasChanges = true;
@@ -118,13 +117,15 @@ const QuestionDisplay: React.FC = () => {
   const getSectionQuestions = (sectionId: string) => {
     if (sectionId === "sectionK2") {
       // Para la secci√≥n K2, usamos todas las preguntas din√°micas que pertenecen a ella
-      return dynamicQuestions.filter((q) => q.section === "sectionK2");
+      return dynamicQuestions.filter(
+        (q: Question) => q.section === "sectionK2",
+      );
     }
     // Para otras secciones, filtramos usando las preguntas definidas en el m√≥dulo
-    return dynamicQuestions.filter((q) =>
+    return dynamicQuestions.filter((q: Question) =>
       sections
-        .find((s) => s.id === sectionId)
-        ?.questions?.some((sq) => sq.id === q.id),
+        .find((s: Section) => s.id === sectionId)
+        ?.questions?.some((sq: any) => sq.id === q.id),
     );
   };
 
@@ -134,20 +135,20 @@ const QuestionDisplay: React.FC = () => {
       style={[styles.container, { height }]}
       contentContainerStyle={styles.scrollContent}
     >
-      {sections.map((section) => {
+      {sections.map((section: Section) => {
         if (!visibleModules.includes(section.id)) return null;
         const sectionQuestions = getSectionQuestions(section.id);
 
         return (
           <View key={section.id} style={styles.section}>
             <Text style={styles.sectionTitle}>{section.title}</Text>
-            {sectionQuestions.map((question) => (
+            {sectionQuestions.map((question: Question) => (
               <View key={question.id} style={styles.question}>
                 <Text>{question.text}</Text>
                 {question.options ? (
                   <View style={styles.options}>
                     {question.questionType === "checkbox"
-                      ? question.options.map((option) => (
+                      ? question.options.map((option: string) => (
                           <View key={option} style={styles.checkboxOption}>
                             <Checkbox
                               status={
@@ -166,7 +167,7 @@ const QuestionDisplay: React.FC = () => {
                             <Text style={styles.optionLabel}>{option}</Text>
                           </View>
                         ))
-                      : question.options.map((option) => (
+                      : question.options.map((option: string) => (
                           <View key={option} style={styles.radioOption}>
                             <RadioButton
                               value={option}
@@ -199,13 +200,17 @@ const QuestionDisplay: React.FC = () => {
         );
       })}
 
-      {myDiagnoses.map((diagnosis) =>
+      {myDiagnoses.map((diagnosis: Diagnosis) =>
         visibleModules.includes(diagnosis.id) ? (
           <View key={diagnosis.id} style={styles.diagnosis}>
             <Text style={styles.diagnosisTitle}>
               {diagnosis.name}{" "}
               {diagnosis.result && (
-                <> {(diagnosis.result as (answers: any) => string)(answers)}</>
+                <>
+                  {(diagnosis.result as (answers: AnswerState) => string)(
+                    answers,
+                  )}
+                </>
               )}
             </Text>
             <Text>Diagnostico visible</Text>

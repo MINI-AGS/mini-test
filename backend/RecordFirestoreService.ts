@@ -830,8 +830,6 @@ class RecordFirestoreService {
       "periodoE1",
       "diagnosticE2",
       "periodoE2",
-      "diagnosticE3",
-      "periodoE3",
       "diagnosticF1",
       "diagnosticF2",
       "diagnosticF3",

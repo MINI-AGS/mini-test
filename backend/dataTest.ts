@@ -439,6 +439,8 @@ function createValidRecordData(): Record {
     periodoE1: "No",
     diagnosticE2: "No",
     periodoE2: "No",
+    diagnosticE3: "No",
+    periodoE3: "No",
     diagnosticF1: "No",
     diagnosticF2: "No",
     diagnosticF3: "No",

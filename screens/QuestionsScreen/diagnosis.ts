@@ -61,7 +61,7 @@ export const myDiagnoses: Diagnosis[] = [
   // Diagnóstico: Trastorno Distímico Actual
   {
     id: "diagnosticB1",
-    name: "Current Dysthymic Disorder",
+    name: "Trastorno Distímico Actual",
     dependsOn: (answers: AnswerState) => {
       const relatedQuestions = questions.filter(
         (q: Question) => q.section === "sectionB4", // Filtra las preguntas relacionadas con B4
@@ -91,15 +91,15 @@ export const myDiagnoses: Diagnosis[] = [
     dependsOn: (answers: AnswerState) => {
       // Calcula el puntaje directamente (sin depender de B4)
       const score = calculateSuicideRiskScore(answers);
-      if (score >= 10) return "alto";
-      if (score >= 6) return "moderado";
-      if (score >= 1) return "leve";
+      if (score >= 10) return "Alto";
+      if (score >= 6) return "Moderado";
+      if (score >= 1) return "Leve";
       return false; // Si el score es 0, no hay riesgo
     },
     result: (answers: AnswerState) => RiskLevelC1(answers), // Función externa (opcional)
   },
   {
-    id: "diagnosticD4_HipoManiaco",
+    id: "diagnosticD1", //Hipomaníaco
     name: "EPISODIO HIPOMANÍACO",
     dependsOn: (answers: AnswerState) => {
       const relatedQuestions = questions.filter(
@@ -128,7 +128,7 @@ export const myDiagnoses: Diagnosis[] = [
     },
   },
   {
-    id: "diagnosticD4_Maniaco",
+    id: "diagnosticD2", //Maníaco
     name: "EPISODIO MANÍACO",
     dependsOn: (answers: AnswerState) => {
       const relatedQuestions = questions.filter(
@@ -156,44 +156,76 @@ export const myDiagnoses: Diagnosis[] = [
       return "indeterminado";
     },
   },
+  //MODULO E
+  {
+    id: "diagnosticE1",
+    name: "Trastorno de Angustia de Por Vida",
+    dependsOn: (answers: AnswerState) => {
+      // Hay un "si" en E3 y por lo menos 4 "si" en E4
+      const respuestasE3 = questions
+        .filter((q: Question) => q.section === "sectionE23")
+        .filter((q: Question) => answers["questionE3"] === "si");
+
+      const respuestasE4 = questions
+        .filter((q: Question) => q.section === "sectionE4")
+        .filter((q: Question) => answers[q.id] === "si");
+
+      // Verifica si hay al menos 4 "si" en E4
+      const tieneCuatroSi = respuestasE4.length >= 4;
+
+      return respuestasE3.length >= 1 && tieneCuatroSi // Retorna true si hay al menos 1 "si" en E3 y 4 "si" en E4)
+    }
+  },
+  {
+    id: "diagnosticE2",
+    name: "Crisis Actual con Síntomas Limitados",
+    dependsOn: (answers: AnswerState) => {
+      // Verificar si dio positivo a diagnosticE1 y hay algun "si" en E4
+      const respuestasE5 = myDiagnoses
+        .filter((d) => d.id === "diagnosticE1")
+        .some((d) => d.dependsOn(answers) === true); // Verifica si diagnosticE1 es positivo
+      const respuestasE4 = questions
+        .filter((q: Question) => q.section === "sectionE4")
+        .filter((q: Question) => answers[q.id] === "si");
+
+    return respuestasE5 && respuestasE4.length >= 1; // Retorna true si hay al menos 1 "si" en E4 y diagnosticE1 es positivo
+    }
+  },
+  {
+    id: "diagnosticE3",
+    name: "Trastorno de Angustia Actual",
+    dependsOn: (answers: AnswerState) => {
+      // Verificar si puso "si" en E7
+      const respuestasE7 = questions
+        .filter((q: Question) => q.section === "sectionE7")
+        .filter((q: Question) => answers[q.id] === "si");
+      return respuestasE7.length >= 1; // Retorna true si hay al menos 1 "si" en E7
+    }
+   },
   //MODULO F
   {
     id: "diagnosticF1",
     name: "TRASTORNO DE ANGUSTIA sin agorafobia ACTUAL",
-    criteria: (answers: AnswerState) => {
-      // Verifica si la respuesta a la pregunta F2 es "no" y la respuesta a E7 es "sí"
-      const isF2AgoraphobiaNo = answers["questionF2"] === "no"; // Agorafobia es "no"
-      const isE7AnxietyYes =
-        resultadoDiagnostico["Trastorno de angustia de por vida"] === true;
-      // Si ambas condiciones se cumplen, el diagnóstico es positivo
-      if (isF2AgoraphobiaNo && isE7AnxietyYes) {
-        return "sí"; // Diagnóstico positivo
-      }
-      return "no"; // Si no se cumple alguna condición, el diagnóstico es negativo
-    },
     dependsOn: (answers: AnswerState) => {
-      // La sección F2 depende de que la respuesta a la pregunta F2 sea "no"
-      const isF2AgoraphobiaNo = answers["questionF2"] === "no"; // F2 es "no"
+      // La sección F1 depende de que la respuesta a la pregunta F2 sea "no"
+      const isF2AgoraphobiaNo = answers["questionF1"] === "no"; // F2 es "no"
 
       // La sección E7 depende de que E7 sea "sí"
       const isE7AnxietyYes = answers["questionE7"] === "si"; // E7 es "sí"
 
       // Si se cumplen ambas condiciones, podemos mostrar el diagnóstico
       return isF2AgoraphobiaNo && isE7AnxietyYes;
-    },
+    }
   },
-  //revisar
   {
     id: "diagnosticF2",
     name: "TRASTORNO DE ANGUSTIA con agorafobia ACTUAL",
     dependsOn: (answers: AnswerState) => {
       // La sección F2 depende de que la respuesta a la pregunta F2 sea "no"
-      const isF2AgoraphobiaNo = answers["questionF2"] === "si"; // F2 es "no"
+      const isF2AgoraphobiaNo = answers["questionF2"] === "si"; 
 
       // La sección E7 depende de que E7 sea "sí"
-      const isE7AnxietyYes = (resultadoDiagnostico[
-        "Trastorno de angustia actual"
-      ] = true);
+      const isE7AnxietyYes = answers["questionE7"] === "si"; // E7 es "sí"
 
       // Si se cumplen ambas condiciones, podemos mostrar el diagnóstico
       return isF2AgoraphobiaNo && isE7AnxietyYes;
@@ -207,32 +239,21 @@ export const myDiagnoses: Diagnosis[] = [
       const isF2AgoraphobiaYes = answers["questionF2"] === "si";
 
       // Obtener el valor de "Trastorno de angustia de por vida" desde el resultadoDiagnostico
-      const isE5AnxietyNo =
-        resultadoDiagnostico["Trastorno de angustia de por vida"] === false;
+      const isE5AnxietyNo = myDiagnoses
+        .filter((d) => d.id === "diagnosticE1")
+        .filter((d) => d.dependsOn(answers) === false); // Verifica si diagnosticE1 es negativo
 
-      // Verificar que "Trastorno de angustia de por vida" esté en el resultadoDiagnostico
-      const isE5Answered =
-        resultadoDiagnostico["Trastorno de angustia de por vida"] !== undefined;
+      const isE7AnxietyNo = myDiagnoses
+        .filter((d) => d.id === "diagnosticE3")
+        .filter((d) => d.dependsOn(answers) === false); // Verifica si diagnosticE3 es negativo
 
-      // Debug
-      console.log("Evaluando diagnóstico F3:", {
-        F2: answers["questionF2"],
-        E5: resultadoDiagnostico["Trastorno de angustia de por vida"],
-        isF2AgoraphobiaYes,
-        isE5AnxietyNo,
-        isE5Answered,
-      });
-
-      // Solo devolver true si:
-      // 1. F2 es "si" (tiene agorafobia actual)
-      // 2. E5 está respondido Y es "no" (no tiene trastorno de angustia)
-      return isF2AgoraphobiaYes && isE5Answered && isE5AnxietyNo;
+      return isF2AgoraphobiaYes && isE5AnxietyNo && isE7AnxietyNo.length >= 1; // Retorna true si hay al menos 1 "si" en F2 y diagnosticE1 es negativo
     },
   },
 
   {
     id: "diagnosticG1",
-    name: "Fobia Social Actual",
+    name: "Fobia Social (trastorno de ansiedad social) Actual",
     dependsOn: (answers: AnswerState) => {
       const relatedQuestions = questions.filter(
         (q: Question) => q.section === "sectionG4", // Filtra las preguntas relacionadas con B4
@@ -324,10 +345,13 @@ export const myDiagnoses: Diagnosis[] = [
     dependsOn: (answers: AnswerState) => {
       // Verificar si hay 1+ "SI EXTRAÑO" en <<b>> o 2+ "SI" en <<b>>
       const respuestasL1 = questions
-        .filter((q: Question) => q.section === "sectionL11")
+        .filter((q: Question) => q.section === "sectionL1b" || q.section === "sectionL2b"
+        || q.section === "sectionL3b" || q.section === "sectionL4b" || q.section === "sectionL5b"
+        || q.section === "sectionL6b" || q.section === "sectionL7b" || q.section === "sectionL8b"
+        || q.section === "sectionL9b" || q.section === "sectionL10b")
         .filter(
           (q: Question) =>
-            answers[q.id] === "si" || answers[q.id] === "si extraño",
+            answers[q.id] === "si" || answers[q.id] === "si extraños",
         );
       //Mostrar módulo si hay 1+ "SI EXTRAÑO" o 2+ "SI" en L11
       return respuestasL1.length >= 2; // Mostrar módulo si hay 1+ "SI EXTRAÑO" o 2+ "SI" en L11
@@ -340,16 +364,19 @@ export const myDiagnoses: Diagnosis[] = [
     dependsOn: (answers: AnswerState) => {
       // Verificar si hay 1+ "SI EXTRAÑO" en <<a>> o 2+ "SI" en <<a>> o si dio positivo a diagnósticoL1
       const respuestasL1 = questions
-        .filter((q: Question) => q.section === "sectionL11")
+        .filter((q: Question) => q.section === "sectionL1a" || q.section === "sectionL2a"
+        || q.section === "sectionL3a" || q.section === "sectionL4a" || q.section === "sectionL5a"
+        || q.section === "sectionL6a1" || q.section === "sectionL6a2" || q.section === "sectionL7a" 
+        || q.section === "sectionL8a" || q.section === "sectionL9a" || q.section === "sectionL10a")
         .filter(
           (q: Question) =>
-            answers[q.id] === "si" || answers[q.id] === "si extraño",
+            answers[q.id] === "si" || answers[q.id] === "si extraños",
         );
-      const respuestasL2 = questions
-        .filter((q: Question) => q.section === "sectionL12")
-        .filter((q: Question) => answers[q.id] === "si");
+      const respuestasL2 = myDiagnoses.some(
+        (diagnosis) =>
+          diagnosis.id === "diagnosticL1" && diagnosis.dependsOn(answers));
       //Mostrar módulo si hay 1+ "SI EXTRAÑO" o 2+ "SI" en L11 o 1+ "SI" en L12
-      return respuestasL1.length >= 2 || respuestasL2.length >= 1; // Mostrar módulo si hay 1+ "SI EXTRAÑO" o 2+ "SI" en L11 o 1+ "SI" en L12
+      return respuestasL1.length >= 2 || respuestasL2; // Mostrar módulo si hay 1+ "SI EXTRAÑO" o 2+ "SI" en L11 o 1+ "SI" en L12
     },
   },
   {
@@ -368,7 +395,7 @@ export const myDiagnoses: Diagnosis[] = [
       );
       const episodioManiaco = myDiagnoses.some(
         (diagnosis) =>
-          diagnosis.id === "diagnosticA2" && diagnosis.dependsOn(answers),
+          diagnosis.id === "diagnosticD2" && diagnosis.dependsOn(answers),
       );
 
       return (
@@ -422,9 +449,13 @@ export const myDiagnoses: Diagnosis[] = [
         // Verifica si el diagnóstico de anorexia nerviosa actual es falso
         .some((d) => d.dependsOn(answers) === false); // Verifica si el diagnóstico de anorexia nerviosa actual es falso
 
-      return (
-        respuestasN5.length >= 1 || respuestasN7.length >= 1 || respuestasN8
-      ); // Mostrar módulo si hay 1 "si" en N5 o hay un "no" en N7 o salto a N8
+      //Mostrar las preguntas solo cuando termino todas las preguntas de N5 y N7
+      const N5Completado = questions
+        .filter((q: Question) => q.section === "sectionN1" || q.section === "sectionN2"
+        || q.section === "sectionN3" || q.section === "sectionN4" || q.section === "sectionN5")
+        .every((q: Question) => answers[q.id] !== undefined);
+
+        return N5Completado &&(respuestasN5.length >= 1 || respuestasN7.length >= 1 || respuestasN8);
     },
   },
   {

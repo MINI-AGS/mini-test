@@ -73,15 +73,15 @@ export function calculateSuicideRiskScore(answers: AnswerState): number {
 }
 
 export function RiskLevelC1(answers: AnswerState): string {
-  if (answers["questionB4"] !== "si") return "No diagnosis";
+  //if (answers["questionB4"] !== "si") return "No diagnosis";
 
   // Calcula el puntaje total
   const score = calculateSuicideRiskScore(answers);
   // Determina el nivel de riesgo basado en el puntaje
   let nivel = "";
-  if (score >= 10) nivel = "alto";
-  else if (score >= 6) nivel = "moderado";
-  else if (score >= 1) nivel = "leve";
+  if (score >= 10) nivel = "Alto";
+  else if (score >= 6) nivel = "Moderado";
+  else if (score >= 1) nivel = "Leve";
 
   return nivel; // Devuelve false si el puntaje es 0
 }

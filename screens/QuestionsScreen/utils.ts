@@ -56,7 +56,7 @@ export function isAnswerEqual(
   return answerContains(answers[questionId], value);
 }
 
-export function calculateSuicideRiskScore(answers: any): number {
+export function calculateSuicideRiskScore(answers: AnswerState): number {
   const riskQuestions = [
     { id: "questionC1", points: 1 },
     { id: "questionC2", points: 2 },
@@ -72,16 +72,16 @@ export function calculateSuicideRiskScore(answers: any): number {
   );
 }
 
-export function RiskLevelC1(answers: any): string {
-  if (answers["questionB4"] !== "si") return "No diagnosis";
+export function RiskLevelC1(answers: AnswerState): string {
+  //if (answers["questionB4"] !== "si") return "No diagnosis";
 
   // Calcula el puntaje total
   const score = calculateSuicideRiskScore(answers);
   // Determina el nivel de riesgo basado en el puntaje
   let nivel = "";
-  if (score >= 10) nivel = "alto";
-  else if (score >= 6) nivel = "moderado";
-  else if (score >= 1) nivel = "leve";
+  if (score >= 10) nivel = "Alto";
+  else if (score >= 6) nivel = "Moderado";
+  else if (score >= 1) nivel = "Leve";
 
   return nivel; // Devuelve false si el puntaje es 0
 }

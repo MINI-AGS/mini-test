@@ -8,15 +8,6 @@ Add the description here
 
 To generate the builds for the android/iOS platforms, you can run the following commands
 
-First, make sure that you have eas installed and that you can login into the account (for the credentials, please request Yeyo for them), to install eas, run the following command
-
-```bash
-npm install -g eas-cli
-eas login
-```
-
-Then, you can run one of the following commands to build the application depending on the platform
-
 1. Android
 
 ```bash
@@ -30,6 +21,11 @@ eas build -p ios --profile preview --local
 ```
 
 Note. For the previous commands to work, we need to have eas installed and login to our account beforehand, to get the login credentials contact @YeyoM
+
+```bash
+npm install -g eas-cli
+eas login
+```
 
 ## Run the project
 

@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import HomeScreen from "./screens/HomeScreen";
+import HomeScreen from "./screens/HomeScreen/homeScreen";
 import QuestionDisplay from "./screens/QuestionsScreen/questionPage";
 import dataTest from "./backend/dataTest";
 

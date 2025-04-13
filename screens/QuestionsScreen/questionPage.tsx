@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { RadioButton, Checkbox } from "react-native-paper";
 import { Section, Question, AnswerState, Diagnosis } from "./types";
@@ -14,6 +15,9 @@ import { sections } from "./module";
 import { myDiagnoses } from "./diagnosis";
 import { getQuestionsWithDynamicText } from "./questionRender";
 import { validAnswers } from "tests/data/answerState";
+import db from "../../firebaseConfig";
+import RecordFirestoreService from "backend/RecordFirestoreService";
+import { construirRecord } from "./utils";
 
 const { height } = Dimensions.get("window");
 
@@ -27,6 +31,11 @@ const QuestionDisplay: React.FC<{ navigation: any; route: any }> = ({
   );
   const [visibleModules, setVisibleModules] = useState<string[]>(["sectionA"]);
   const scrollViewRef = useRef<ScrollView>(null);
+
+  // State control
+  const [error, setError] = React.useState<string | null>(null);
+  const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
 
   const handleAnswer = (questionId: string, answer: string) => {
     setAnswers((prev: AnswerState) => ({
@@ -137,6 +146,43 @@ const QuestionDisplay: React.FC<{ navigation: any; route: any }> = ({
     );
   };
 
+  const handleUpload = async () => {
+    setLoading(true);
+    /*
+     * Agregar algun tipo de validacion aqui !!!!!!!!!!!
+     * solo para ver si los inputs necesarios fueron llenados
+     * */
+    const service = new RecordFirestoreService(db);
+    const record = construirRecord(answers, myDiagnoses);
+    //console.log("Record a guardar:", record);
+    try {
+      const result = await service.createRecordWithValidation(
+        record.id,
+        record,
+      );
+      if (!result.success) {
+        Alert.alert("Error", "No se pudieron guardar los datos.");
+        console.error("Error al guardar:", result.message);
+        setError(result.message);
+        setLoading(false);
+        setSuccess(false);
+        return;
+      }
+      Alert.alert("Éxito", "Datos guardados en Firebase.");
+      console.log("Datos guardados en Firebase:", record);
+      setSuccess(true);
+      setLoading(false);
+      setError(null);
+    } catch (error) {
+      console.error("Error al guardar:", error);
+      Alert.alert("Error", "No se pudieron guardar los datos.");
+      setError("No se pudieron guardar los datos.");
+      setLoading(false);
+      setSuccess(false);
+      return;
+    }
+  };
+
   return (
     <ScrollView
       ref={scrollViewRef}
@@ -234,13 +280,15 @@ const QuestionDisplay: React.FC<{ navigation: any; route: any }> = ({
           {JSON.stringify(visibleModules, null, 2)}
         </Text>
       </View>
-      <TouchableOpacity
-        style={styles.submitButton}
-        onPress={() => {
-          navigation.navigate("Results", { answers });
-        }}
-      >
-        <Text style={styles.submitButtonText}>Finalizar y ver resultados</Text>
+      {error && <Text style={{ color: "red", marginBottom: 16 }}>{error}</Text>}
+      {loading && <Text style={{ marginBottom: 16 }}>Guardando...</Text>}
+      {success && (
+        <Text style={{ color: "green", marginBottom: 16 }}>
+          Datos guardados con éxito.
+        </Text>
+      )}
+      <TouchableOpacity style={styles.submitButton} onPress={handleUpload}>
+        <Text style={styles.submitButtonText}>Finalizar y subir datos</Text>
       </TouchableOpacity>
     </ScrollView>
   );

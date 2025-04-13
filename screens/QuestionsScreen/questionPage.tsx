@@ -154,13 +154,13 @@ const QuestionDisplay: React.FC<{ navigation: any; route: any }> = ({
      * */
     const service = new RecordFirestoreService(db);
     const record = construirRecord(answers, myDiagnoses);
-    //console.log("Record a guardar:", record);
     try {
       const result = await service.createRecordWithValidation(
         record.id,
         record,
       );
       if (!result.success) {
+        // Manejar el error
         Alert.alert("Error", "No se pudieron guardar los datos.");
         console.error("Error al guardar:", result.message);
         setError(result.message);
@@ -168,12 +168,14 @@ const QuestionDisplay: React.FC<{ navigation: any; route: any }> = ({
         setSuccess(false);
         return;
       }
+      // Manejar el éxito
       Alert.alert("Éxito", "Datos guardados en Firebase.");
       console.log("Datos guardados en Firebase:", record);
       setSuccess(true);
       setLoading(false);
       setError(null);
     } catch (error) {
+      // Manejar el error
       console.error("Error al guardar:", error);
       Alert.alert("Error", "No se pudieron guardar los datos.");
       setError("No se pudieron guardar los datos.");
@@ -280,6 +282,7 @@ const QuestionDisplay: React.FC<{ navigation: any; route: any }> = ({
           {JSON.stringify(visibleModules, null, 2)}
         </Text>
       </View>
+      {/** Hacer algo con esto!!! */}
       {error && <Text style={{ color: "red", marginBottom: 16 }}>{error}</Text>}
       {loading && <Text style={{ marginBottom: 16 }}>Guardando...</Text>}
       {success && (

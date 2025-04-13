@@ -17,8 +17,14 @@ import { validAnswers } from "tests/data/answerState";
 
 const { height } = Dimensions.get("window");
 
-const QuestionDisplay: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const [answers, setAnswers] = useState<AnswerState>({ ...validAnswers });
+const QuestionDisplay: React.FC<{ navigation: any; route: any }> = ({
+  navigation,
+  route,
+}) => {
+  const isTest: boolean = route.params?.test ?? false;
+  const [answers, setAnswers] = useState<AnswerState>(
+    isTest ? validAnswers : {},
+  );
   const [visibleModules, setVisibleModules] = useState<string[]>(["sectionA"]);
   const scrollViewRef = useRef<ScrollView>(null);
 

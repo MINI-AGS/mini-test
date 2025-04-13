@@ -6,6 +6,7 @@ import {
   TextInput,
   StyleSheet,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
 import { RadioButton, Checkbox } from "react-native-paper";
 import { Section, Question, AnswerState, Diagnosis } from "./types";
@@ -15,7 +16,7 @@ import { getQuestionsWithDynamicText } from "./questionRender";
 
 const { height } = Dimensions.get("window");
 
-const QuestionDisplay: React.FC = () => {
+const QuestionDisplay: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [answers, setAnswers] = useState<AnswerState>({});
   const [visibleModules, setVisibleModules] = useState<string[]>(["sectionA"]);
   const scrollViewRef = useRef<ScrollView>(null);
@@ -226,6 +227,9 @@ const QuestionDisplay: React.FC = () => {
           {JSON.stringify(visibleModules, null, 2)}
         </Text>
       </View>
+      <TouchableOpacity style={styles.submitButton} onPress={() => navigation.navigate("Results", { answers})}>
+        <Text style={styles.submitButtonText}>Finalizar y ver resultados</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -275,6 +279,18 @@ const styles = StyleSheet.create({
   },
   debugTitle: { fontWeight: "bold", marginBottom: 5 },
   debugText: { fontFamily: "monospace", marginBottom: 10 },
+  submitButton: {
+    backgroundColor: "#4CAF50",
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 20,
+  },
+  submitButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });
 
 export default QuestionDisplay;

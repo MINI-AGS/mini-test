@@ -638,6 +638,11 @@ class RecordFirestoreService {
     isValid: boolean,
   ): boolean {
     if (fieldName in record) {
+      // if the array just contains an empty string, we consider it valid
+      if (record[fieldName].length === 1 && record[fieldName][0] === "") {
+        isValid = true;
+        return isValid;
+      }
       if (!Array.isArray(record[fieldName])) {
         errors.push(`${fieldName} debe ser un array`);
         isValid = false;
@@ -656,6 +661,9 @@ class RecordFirestoreService {
         const substanceType = fieldName.split("_")[1]; // Obtiene "Estimulantes", "Cocaina", etc.
         // Aquí podríamos añadir validaciones específicas para las preguntas relacionadas
       }
+    } else {
+      errors.push(`Falta el campo ${fieldName}`);
+      isValid = false;
     }
     return isValid;
   }
@@ -921,6 +929,8 @@ class RecordFirestoreService {
           message: `Datos inválidos: ${validation.errors.join(", ")}`,
         };
       }
+
+      //console.log("Record validado:", record);
 
       // Si la validación es exitosa, crear el usuario
       const docRef = doc(this.db, this.collectionName, recordId);

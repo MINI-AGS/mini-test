@@ -19,31 +19,31 @@ service cloud.firestore {
     
     // Listas de valores permitidos para sustancias (mantenidas para verificación básica)
     function getAllowedEstimulantes() {
-      return ['anfetaminas', 'speed', 'cristal', 'dexedrina', 'ritalina', 'píldoras adelgazantes'];
+      return ['', 'anfetaminas', 'speed', 'cristal', 'dexedrina', 'ritalina', 'píldoras adelgazantes'];
     }
     
     function getAllowedCocaina() {
-      return ['inhalada', 'intravenosa', 'crack', 'speedball'];
+      return ['', 'inhalada', 'intravenosa', 'crack', 'speedball'];
     }
     
     function getAllowedNarcoticos() {
-      return ['heroína', 'morfina', 'Dilaudid', 'opio', 'Demerol', 'metadona', 'codeína', 'Percodan', 'Darvon'];
+      return ['', 'heroína', 'morfina', 'Dilaudid', 'opio', 'Demerol', 'metadona', 'codeína', 'Percodan', 'Darvon'];
     }
     
     function getAllowedAlucinogenos() {
-      return ['LSD (ácido)', 'mescalina', 'peyote', 'PCP (polvo de ángel, peace pill)', 'psilocybin', 'STP', 'hongos', 'éxtasis', 'MDA', 'MDMA'];
+      return ['', 'LSD (ácido)', 'mescalina', 'peyote', 'PCP (polvo de ángel, peace pill)', 'psilocybin', 'STP', 'hongos', 'éxtasis', 'MDA', 'MDMA'];
     }
     
     function getAllowedInhalantes() {
-      return ['pegamento', 'éter', 'óxido nitroso (laughing gas)', 'amyl o butyl nitrate (poppers)'];
+      return ['', 'pegamento', 'éter', 'óxido nitroso (laughing gas)', 'amyl o butyl nitrate (poppers)'];
     }
     
     function getAllowedMarihuana() {
-      return ['hachís', 'THC', 'pasto', 'hierba', 'mota', 'reefer'];
+      return ['', 'hachís', 'THC', 'pasto', 'hierba', 'mota', 'reefer'];
     }
     
     function getAllowedTranquilizantes() {
-      return ['Qualude', 'Seconal (<<reds>>)', 'Valium', 'Xanax', 'Librium', 'Ativan', 'Dalmane', 'Halción', 'barbitúricos', '<<Miltown>>', 'Tranquimazin', 'Lexatin', 'Orfidal'];
+      return ['', 'Qualude', 'Seconal (<<reds>>)', 'Valium', 'Xanax', 'Librium', 'Ativan', 'Dalmane', 'Halción', 'barbitúricos', '<<Miltown>>', 'Tranquimazin', 'Lexatin', 'Orfidal'];
     }
     
     // Verificación básica de sustancias

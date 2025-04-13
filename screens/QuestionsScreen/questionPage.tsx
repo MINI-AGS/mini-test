@@ -13,11 +13,12 @@ import { Section, Question, AnswerState, Diagnosis } from "./types";
 import { sections } from "./module";
 import { myDiagnoses } from "./diagnosis";
 import { getQuestionsWithDynamicText } from "./questionRender";
+import { validAnswers } from "tests/data/answerState";
 
 const { height } = Dimensions.get("window");
 
 const QuestionDisplay: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const [answers, setAnswers] = useState<AnswerState>({});
+  const [answers, setAnswers] = useState<AnswerState>({ ...validAnswers });
   const [visibleModules, setVisibleModules] = useState<string[]>(["sectionA"]);
   const scrollViewRef = useRef<ScrollView>(null);
 
@@ -227,7 +228,12 @@ const QuestionDisplay: React.FC<{ navigation: any }> = ({ navigation }) => {
           {JSON.stringify(visibleModules, null, 2)}
         </Text>
       </View>
-      <TouchableOpacity style={styles.submitButton} onPress={() => navigation.navigate("Results", { answers})}>
+      <TouchableOpacity
+        style={styles.submitButton}
+        onPress={() => {
+          navigation.navigate("Results", { answers });
+        }}
+      >
         <Text style={styles.submitButtonText}>Finalizar y ver resultados</Text>
       </TouchableOpacity>
     </ScrollView>

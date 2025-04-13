@@ -103,9 +103,7 @@ const ResultsScreen = ({ route }: { route: any }) => {
       name: answers["name"] || "",
       gender: answers["gender"],
       birthdate: birthdate ? Timestamp.fromDate(birthdate) : undefined,
-      interviewDate: interviweDate
-        ? Timestamp.fromDate(interviweDate)
-        : Timestamp.now(),
+      interviewDate: Timestamp.now(),
       startTimeInterview: answers["startTimeInterview"] || null,
       endTimeInterview: answers["endTimeInterview"] || null,
       durationInterview: answers["durationInterview"] || null,
@@ -477,7 +475,7 @@ const ResultsScreen = ({ route }: { route: any }) => {
     setLoading(true);
     const service = new RecordFirestoreService(db);
     const record = construirRecord();
-    console.log("Record a guardar:", record);
+    //console.log("Record a guardar:", record);
     try {
       const result = await service.createRecordWithValidation(
         record.id,

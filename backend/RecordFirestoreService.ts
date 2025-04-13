@@ -930,6 +930,8 @@ class RecordFirestoreService {
         };
       }
 
+      //console.log("Record validado:", record);
+
       // Si la validación es exitosa, crear el usuario
       const docRef = doc(this.db, this.collectionName, recordId);
       await setDoc(docRef, record, { merge: false });

@@ -637,7 +637,18 @@ class RecordFirestoreService {
     errors: string[],
     isValid: boolean,
   ): boolean {
+    console.log(
+      "Validando array de sustancias:",
+      fieldName,
+      allowedValues,
+      record,
+    );
     if (fieldName in record) {
+      // if the array just contains an empty string, we consider it valid
+      if (record[fieldName].length === 1 && record[fieldName][0] === "") {
+        isValid = true;
+        return isValid;
+      }
       if (!Array.isArray(record[fieldName])) {
         errors.push(`${fieldName} debe ser un array`);
         isValid = false;
@@ -656,6 +667,9 @@ class RecordFirestoreService {
         const substanceType = fieldName.split("_")[1]; // Obtiene "Estimulantes", "Cocaina", etc.
         // Aquí podríamos añadir validaciones específicas para las preguntas relacionadas
       }
+    } else {
+      errors.push(`Falta el campo ${fieldName}`);
+      isValid = false;
     }
     return isValid;
   }

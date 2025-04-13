@@ -380,8 +380,8 @@ export interface Record {
   diagnosticJ1: string;
   diagnosticJ2: string;
 
-  diagnosticK1: string;
   diagnosticK2: string;
+  diagnosticK3: string;
 
   diagnosticL1: string;
   diagnosticL2: string;

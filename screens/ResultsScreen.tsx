@@ -90,11 +90,16 @@ const ResultsScreen = ({ route }: { route: any }) => {
         ) {
           diagnosticosEvaluados[periodoId] = diagnosis.result(answers);
         }
+      } else {
+        console.warn("No se encontró el diagnóstico:", id);
+        diagnosticosEvaluados[id] = "no"; // o cualquier otro valor que consideres apropiado
       }
     });
 
+    const recordId = uuidv4();
+
     return {
-      id: uuidv4(),
+      id: recordId,
       name: answers["name"] || "",
       gender: answers["gender"],
       birthdate: birthdate ? Timestamp.fromDate(birthdate) : undefined,
@@ -472,6 +477,7 @@ const ResultsScreen = ({ route }: { route: any }) => {
     setLoading(true);
     const service = new RecordFirestoreService(db);
     const record = construirRecord();
+    console.log("Record a guardar:", record);
     try {
       const result = await service.createRecordWithValidation(
         record.id,

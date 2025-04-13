@@ -637,12 +637,6 @@ class RecordFirestoreService {
     errors: string[],
     isValid: boolean,
   ): boolean {
-    console.log(
-      "Validando array de sustancias:",
-      fieldName,
-      allowedValues,
-      record,
-    );
     if (fieldName in record) {
       // if the array just contains an empty string, we consider it valid
       if (record[fieldName].length === 1 && record[fieldName][0] === "") {

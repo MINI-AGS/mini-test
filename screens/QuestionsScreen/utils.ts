@@ -98,6 +98,7 @@ export function RiskLevelC1(answers: AnswerState): string {
 export function construirRecord(
   answers: AnswerState,
   myDiagnoses: Diagnosis[],
+  startTimeInterview: Date,
 ): Record {
   const birthdate = answers["birthdate"]
     ? new Date(answers["birthdate"])
@@ -169,15 +170,38 @@ export function construirRecord(
 
   const recordId = uuidv4();
 
+  const hoursInterviewStart = String(startTimeInterview.getHours()).padStart(
+    2,
+    "0",
+  );
+  const minutesInterviewStart = String(
+    startTimeInterview.getMinutes(),
+  ).padStart(2, "0");
+  const startTimeInterviewString = `${hoursInterviewStart}:${minutesInterviewStart}`;
+
+  const endTimeInterview = new Date();
+  const hoursInterviewEnd = String(endTimeInterview.getHours()).padStart(
+    2,
+    "0",
+  );
+  const minutesInterviewEnd = String(endTimeInterview.getMinutes()).padStart(
+    2,
+    "0",
+  );
+  const endTimeInterviewString = `${hoursInterviewEnd}:${minutesInterviewEnd}`;
+  const durationInterview = `${Math.floor(
+    (endTimeInterview.getTime() - startTimeInterview.getTime()) / 3600000,
+  )} horas`;
+
   return {
     id: recordId,
     name: answers["name"] || "",
     gender: answers["gender"],
-    birthdate: birthdate ? Timestamp.fromDate(birthdate) : undefined,
+    birthdate: birthdate ? Timestamp.fromDate(birthdate) : Timestamp.now(),
     interviewDate: Timestamp.now(),
-    startTimeInterview: answers["startTimeInterview"] || null,
-    endTimeInterview: answers["endTimeInterview"] || null,
-    durationInterview: answers["durationInterview"] || null,
+    startTimeInterview: startTimeInterviewString,
+    endTimeInterview: endTimeInterviewString,
+    durationInterview: durationInterview,
     nameInterviewer: answers["nameInterviewer"] || null,
     sexualPreference: answers["sexualPreference"] || null,
     stateOrigin: answers["stateOrigin"] || null,

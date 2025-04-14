@@ -5,51 +5,52 @@ export const questions: Question[] = [
   // Datos del entrevistado
   {
     id: "name",
-    text: "Nombre del paciente:",
+    text: "Nombre del paciente: (opcional)",
     section: "sectionData",
     questionType: "text",
   },
   {
     id: "gender",
-    text: "Sexo:",
+    text: "Sexo: (obligatorio)",
     options: ["Hombre", "Mujer", "Otro"],
     section: "sectionData",
   },
   {
-    id: "birhdate",
-    text: "Fecha de nacimiento:",
+    id: "birthdate",
+    text: "Fecha de nacimiento DD/MM/AAAA: (opcional)",
     section: "sectionData",
-    questionType: "text"
+    questionType: "text",
   },
   {
     id: "sexualPreference",
-    text: "Preferencia sexual:",
+    text: "Preferencia sexual: (opcional)",
     questionType: "text",
     section: "sectionData",
   },
   {
     id: "stateOrigin",
-    text: "Estado de origen:",
+    text: "Estado de origen: (opcional)",
     section: "sectionData",
     questionType: "text",
   },
   {
     id: "stateResidence",
-    text: "Estado de residencia:",
-    section: "sectionData",
-    questionType: "text",
-  },
-  {
-    id: "startTimeInterview",
-    text: "Hora en que inició la entrevista:",
+    text: "Estado de residencia: (opcional)",
     section: "sectionData",
     questionType: "text",
   },
   {
     id: "nameInterviewer",
-    text: "Nombre del entrevistador:",
+    text: "Nombre del entrevistador: (opcional)",
     section: "sectionData",
-    questionType: "text"
+    questionType: "text",
+  },
+  /**
+  {
+    id: "startTimeInterview",
+    text: "Hora en que inició la entrevista:",
+    section: "sectionData",
+    questionType: "text",
   },
   {
     id: "endTimeInterview",
@@ -69,6 +70,7 @@ export const questions: Question[] = [
     section: "sectionData",
     questionType: "text",
   },
+  */
   // Sección A
   {
     id: "questionA1",
@@ -874,13 +876,43 @@ export const questions: Question[] = [
   {
     id: "patientWeightWomen",
     text: "",
-    options: ["38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51"],
+    options: [
+      "38",
+      "39",
+      "40",
+      "41",
+      "42",
+      "43",
+      "44",
+      "45",
+      "46",
+      "47",
+      "48",
+      "49",
+      "50",
+      "51",
+    ],
     section: "patientWeight",
   },
   {
     id: "patientHeightWomen",
     text: "",
-    options: ["144,8", "147,3", "149,9", "152,4", "154,9", "157,5", "160,0", "162,6", "165,1", "167,6", "170,2", "172,7", "175,3", "177,8"],
+    options: [
+      "144,8",
+      "147,3",
+      "149,9",
+      "152,4",
+      "154,9",
+      "157,5",
+      "160,0",
+      "162,6",
+      "165,1",
+      "167,6",
+      "170,2",
+      "172,7",
+      "175,3",
+      "177,8",
+    ],
     section: "patientHeight",
   },
   //QuestionM5

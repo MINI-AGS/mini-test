@@ -22,7 +22,6 @@ import { construirRecord } from "./utils";
 const { height } = Dimensions.get("window");
 
 const QuestionDisplay: React.FC<{ navigation: any; route: any }> = ({
-  navigation,
   route,
 }) => {
   const isTest: boolean = route.params?.test ?? false;
@@ -36,6 +35,8 @@ const QuestionDisplay: React.FC<{ navigation: any; route: any }> = ({
   const [error, setError] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
+
+  const [startTime, setStartTime] = useState<Date | null>(null);
 
   const handleAnswer = (questionId: string, answer: string) => {
     setAnswers((prev: AnswerState) => ({
@@ -129,6 +130,12 @@ const QuestionDisplay: React.FC<{ navigation: any; route: any }> = ({
     }
   }, [answers, visibleModules]);
 
+  // get the start of the dynamic questions, and save it in a variable
+  useEffect(() => {
+    const startTime = new Date();
+    setStartTime(startTime);
+  }, []);
+
   const dynamicQuestions = getQuestionsWithDynamicText(answers);
 
   const getSectionQuestions = (sectionId: string) => {
@@ -146,14 +153,97 @@ const QuestionDisplay: React.FC<{ navigation: any; route: any }> = ({
     );
   };
 
+  interface validateAnswersReturn {
+    isValid: boolean;
+    errors: string[];
+  }
+
+  const validateAnswers = (answers: AnswerState): validateAnswersReturn => {
+    let isValid = true;
+    let errors: string[] = [];
+
+    // validate gender
+    const gender: string = answers["gender"] as string;
+    if (gender !== "Hombre" && gender !== "Mujer" && gender !== "Otro") {
+      console.log("Género no válido");
+      isValid = false;
+      errors.push("Género no válido");
+    }
+
+    // validate birthdate, should be in format DD/MM/YYYY
+    const birthdate: string = answers["birthdate"] as string;
+    if (birthdate) {
+      console.log("Validando fecha de nacimiento:", birthdate);
+      const birthdateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+      if (!birthdateRegex.test(birthdate)) {
+        isValid = false;
+        errors.push("Fecha de nacimiento no válida");
+      } else {
+        const [day, month, year] = birthdate.split("/").map(Number);
+        const birthDateObj = new Date(year, month - 1, day);
+        const currentDate = new Date();
+        if (birthDateObj > currentDate) {
+          isValid = false;
+          errors.push("Fecha de nacimiento no puede ser futura");
+        }
+      }
+    } else {
+      console.log("Fecha de nacimiento no proporcionada");
+    }
+
+    console.log(answers);
+
+    // validate weight and height
+    // questionM1a: "170",
+    // questionM1b: "55",
+
+    const weight: string = answers["questionM1b"] as string;
+    console.log("Validando peso:", weight);
+
+    const height: string = answers["questionM1a"] as string;
+    console.log("Validando altura:", height);
+
+    if (!weight || !height) {
+      isValid = false;
+      errors.push("Peso y altura son obligatorios");
+    }
+
+    const weightNum = parseFloat(weight);
+    const heightNum = parseFloat(height);
+
+    if (isNaN(weightNum) || weightNum <= 20 || weightNum >= 300) {
+      isValid = false;
+      errors.push("Peso no válido");
+    }
+
+    if (isNaN(heightNum) || heightNum <= 50 || heightNum >= 300) {
+      isValid = false;
+      errors.push("Altura no válida");
+    }
+
+    return { isValid, errors };
+  };
+
   const handleUpload = async () => {
     setLoading(true);
-    /*
-     * Agregar algun tipo de validacion aqui !!!!!!!!!!!
-     * solo para ver si los inputs necesarios fueron llenados
-     * */
+
+    const { isValid, errors } = validateAnswers(answers);
+    console.log("Validando respuestas:", isValid, errors);
+
+    if (!isValid) {
+      setError("Errores de validación: " + errors.join(", "));
+      Alert.alert("Errores de validación", errors.join(", "));
+      setSuccess(false);
+      setLoading(false);
+      return;
+    }
+
     const service = new RecordFirestoreService(db);
-    const record = construirRecord(answers, myDiagnoses);
+    const record = construirRecord(
+      answers,
+      myDiagnoses,
+      startTime || new Date(),
+    );
     try {
       const result = await service.createRecordWithValidation(
         record.id,

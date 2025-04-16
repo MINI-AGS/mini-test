@@ -824,14 +824,14 @@ export const questions: Question[] = [
   //section M
   {
     id: "questionM1a",
-    text: "¿Cuál es su estatura?",
+    text: "¿Cuál es su estatura en centímetros? ejemplo: 170.6",
     //options: ["", ""], //Chacar estos campos
     section: "sectionM1",
     questionType: "text",
   },
   {
     id: "questionM1b",
-    text: "¿En los últimos 3 meses, cuál ha sido su peso más bajo?",
+    text: "¿En los últimos 3 meses, cuál ha sido su peso más bajo en kilogramos? ejemplo: 50.5",
     //options: ["", ""], //Chacar estos campos
     section: "sectionM1",
     questionType: "text",

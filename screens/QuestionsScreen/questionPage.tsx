@@ -16,14 +16,12 @@ import { myDiagnoses } from "./diagnosis";
 import { getQuestionsWithDynamicText } from "./questionRender";
 import { validAnswers } from "tests/data/answerState";
 import db from "../../firebaseConfig";
-import { Timestamp } from "firebase/firestore";
 import RecordFirestoreService from "backend/RecordFirestoreService";
 import { construirRecord } from "./utils";
 
 const { height } = Dimensions.get("window");
 
 const QuestionDisplay: React.FC<{ navigation: any; route: any }> = ({
-  navigation,
   route,
 }) => {
   const isTest: boolean = route.params?.test ?? false;
@@ -191,6 +189,36 @@ const QuestionDisplay: React.FC<{ navigation: any; route: any }> = ({
       }
     } else {
       console.log("Fecha de nacimiento no proporcionada");
+    }
+
+    console.log(answers);
+
+    // validate weight and height
+    // questionM1a: "170",
+    // questionM1b: "55",
+
+    const weight: string = answers["questionM1b"] as string;
+    console.log("Validando peso:", weight);
+
+    const height: string = answers["questionM1a"] as string;
+    console.log("Validando altura:", height);
+
+    if (!weight || !height) {
+      isValid = false;
+      errors.push("Peso y altura son obligatorios");
+    }
+
+    const weightNum = parseFloat(weight);
+    const heightNum = parseFloat(height);
+
+    if (isNaN(weightNum) || weightNum <= 20 || weightNum >= 300) {
+      isValid = false;
+      errors.push("Peso no válido");
+    }
+
+    if (isNaN(heightNum) || heightNum <= 50 || heightNum >= 300) {
+      isValid = false;
+      errors.push("Altura no válida");
     }
 
     return { isValid, errors };

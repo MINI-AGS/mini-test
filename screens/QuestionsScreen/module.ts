@@ -23,7 +23,8 @@ export const sections: Section[] = [
   },
   {
     id: "sectionA3",
-    title: "A3 - En las últimas 2 semanas, cuando se sentia deprimido o sin interes en las cosas:",
+    title:
+      "A3 - En las últimas 2 semanas, cuando se sentia deprimido o sin interes en las cosas:",
     questions: questions.filter((q: Question) => q.section === "sectionA3"),
     dependsOn: (answers: AnswerState) => {
       return answers["questionA1"] === "si" || answers["questionA2"] === "si"; // Muestra A3 si A1 o A2 son "sí"
@@ -155,7 +156,8 @@ export const sections: Section[] = [
   },
   {
     id: "sectionB3", // ID del módulo B
-    title: "B3 - Durante este periodo en el que se sintió deprimido la mayor parte del tiempo:",
+    title:
+      "B3 - Durante este periodo en el que se sintió deprimido la mayor parte del tiempo:",
     questions: questions.filter((q: Question) => q.section === "sectionB3"),
     dependsOn: (answers: AnswerState) => {
       const relatedQuestions = questions.filter(
@@ -198,7 +200,8 @@ export const sections: Section[] = [
   },
   {
     id: "sectionD3",
-    title: "D3 - Durante el tiempo en el que se sentía exaltado, lleno de energía, o irritable notó que:",
+    title:
+      "D3 - Durante el tiempo en el que se sentía exaltado, lleno de energía, o irritable notó que:",
     questions: questions.filter((q: Question) => q.section === "sectionD3"),
     dependsOn: (answers: Record<string, string>) => {
       const currentEpisode =
@@ -261,7 +264,7 @@ export const sections: Section[] = [
     title: "",
     questions: questions.filter((q: Question) => q.section === "sectionE23"),
     dependsOn: (answers: AnswerState) => {
-      return answers["questionE1a"] === "si"  && answers["questionE1b"] === "si"; 
+      return answers["questionE1a"] === "si" && answers["questionE1b"] === "si";
     },
   },
   {
@@ -269,7 +272,7 @@ export const sections: Section[] = [
     title: "Durante la peor crísis que usted puede recordar:",
     questions: questions.filter((q: Question) => q.section === "sectionE4"),
     dependsOn: (answers: AnswerState) => {
-      return answers["questionE1a"] === "si"  && answers["questionE1b"] === "si";
+      return answers["questionE1a"] === "si" && answers["questionE1b"] === "si";
     },
   },
   {
@@ -283,9 +286,9 @@ export const sections: Section[] = [
         .filter((q: Question) => answers[q.id] === "no");
       const totalE4 = preguntasE4.length; // Total de preguntas E4 respondidas como "no"
       const resultadosE6 = myDiagnoses
-        .filter((d : Diagnosis) => d.id === "diagnosticE2")
-        .some((d : Diagnosis) => d.dependsOn(answers) === false);
-      return (resultadosE6 && totalE4 >= 1);
+        .filter((d: Diagnosis) => d.id === "diagnosticE2")
+        .some((d: Diagnosis) => d.dependsOn(answers) === false);
+      return resultadosE6 && totalE4 >= 1;
     },
   },
   {
@@ -563,7 +566,8 @@ export const sections: Section[] = [
   },
   {
     id: "sectionK1",
-    title: "Módulo K - Trastornos asociados al uso de sustancias psicoactivas no alcohólicas",
+    title:
+      "Módulo K - Trastornos asociados al uso de sustancias psicoactivas no alcohólicas",
     questions: questions.filter((q: Question) => q.section === "sectionK1"),
     dependsOn: (answers: AnswerState) => true, // Siempre visible
   },
@@ -586,133 +590,146 @@ export const sections: Section[] = [
     id: "sectionL1a",
     title: "Módulo L - Trastornos psicóticos",
     //Mostar las preguntas que esten en la seccion L12 y L11 intercaladas
-    questions: questions.filter(
-      (q: Question) => q.section === "sectionL1a",
-    ),
+    questions: questions.filter((q: Question) => q.section === "sectionL1a"),
     dependsOn: (answers: AnswerState) => true, // Siempre visible
   },
   {
     id: "sectionL1b",
     title: "",
-    questions: questions.filter(
-      (q: Question) => q.section === "sectionL1b",
-    ),
+    questions: questions.filter((q: Question) => q.section === "sectionL1b"),
     dependsOn: (answers: AnswerState) => {
-      const preguntasL1a = questions.filter(
-        (q: Question) => q.section === "sectionL1a",
-      ).filter(
-        (q: Question) => answers[q.id] === "si" || answers[q.id] === "si extraños",);
-      
+      const preguntasL1a = questions
+        .filter((q: Question) => q.section === "sectionL1a")
+        .filter(
+          (q: Question) =>
+            answers[q.id] === "si" || answers[q.id] === "si extraños",
+        );
+
       return preguntasL1a.length >= 1; // Retorna true o false
-      },
+    },
   },
   {
     id: "sectionL2a",
     title: "",
-    questions: questions.filter(
-      (q: Question) => q.section === "sectionL2a",
-    ),
+    questions: questions.filter((q: Question) => q.section === "sectionL2a"),
     dependsOn: (answers: AnswerState) => {
       // Mostrar solo si L1a es "no", L1b es "si" o "no" y L6 es false
-      const preguntasL1a = questions.filter(
-        (q: Question) => q.section === "sectionL1a",
-      ).filter((q: Question) => answers[q.id] === "no");
-      const preguntasL1b = questions.filter(
-        (q: Question) => q.section === "sectionL1b",
-      ).filter((q: Question) => answers[q.id] === "si" || answers[q.id] === "no");
-      const preguntasL6 = questions.filter(
-        (q: Question) => q.section === "sectionL6",
-      ).filter((q: Question) => answers[q.id] === "si" || answers[q.id] === "no");
-      
-      return (preguntasL1a.length >= 1 || preguntasL1b.length >= 1) && preguntasL6.length === 0; // Retorna true o false
-      },
+      const preguntasL1a = questions
+        .filter((q: Question) => q.section === "sectionL1a")
+        .filter((q: Question) => answers[q.id] === "no");
+      const preguntasL1b = questions
+        .filter((q: Question) => q.section === "sectionL1b")
+        .filter(
+          (q: Question) => answers[q.id] === "si" || answers[q.id] === "no",
+        );
+      const preguntasL6 = questions
+        .filter((q: Question) => q.section === "sectionL6")
+        .filter(
+          (q: Question) => answers[q.id] === "si" || answers[q.id] === "no",
+        );
+
+      return (
+        (preguntasL1a.length >= 1 || preguntasL1b.length >= 1) &&
+        preguntasL6.length === 0
+      ); // Retorna true o false
+    },
   },
   {
     id: "sectionL2b",
     title: "",
-    questions: questions.filter(
-      (q: Question) => q.section === "sectionL2b",
-    ),
+    questions: questions.filter((q: Question) => q.section === "sectionL2b"),
     dependsOn: (answers: AnswerState) => {
-      const preguntasL2a = questions.filter(
-        (q: Question) => q.section === "sectionL2a",
-      ).filter(
-        (q: Question) => answers[q.id] === "si" || answers[q.id] === "si extraños",);
-      
+      const preguntasL2a = questions
+        .filter((q: Question) => q.section === "sectionL2a")
+        .filter(
+          (q: Question) =>
+            answers[q.id] === "si" || answers[q.id] === "si extraños",
+        );
+
       return preguntasL2a.length >= 1; // Retorna true o false
-      },
+    },
   },
   {
     id: "sectionL3a",
     title: "",
-    questions: questions.filter(
-      (q: Question) => q.section === "sectionL3a",
-    ),
+    questions: questions.filter((q: Question) => q.section === "sectionL3a"),
     dependsOn: (answers: AnswerState) => {
       // Mostrar solo si L1a es "no", L1b es "si" o "no" y L6 es false
-      const preguntasL2a = questions.filter(
-        (q: Question) => q.section === "sectionL2a",
-      ).filter((q: Question) => answers[q.id] === "no");
-      const preguntasL2b = questions.filter(
-        (q: Question) => q.section === "sectionL2b",
-      ).filter((q: Question) => answers[q.id] === "si" || answers[q.id] === "no");
-      const preguntasL6 = questions.filter(
-        (q: Question) => q.section === "sectionL6",
-      ).filter((q: Question) => answers[q.id] === "si" || answers[q.id] === "no");
-      
-      return (preguntasL2a.length >= 1 || preguntasL2b.length >= 1) && preguntasL6.length === 0; // Retorna true o false
-      },
+      const preguntasL2a = questions
+        .filter((q: Question) => q.section === "sectionL2a")
+        .filter((q: Question) => answers[q.id] === "no");
+      const preguntasL2b = questions
+        .filter((q: Question) => q.section === "sectionL2b")
+        .filter(
+          (q: Question) => answers[q.id] === "si" || answers[q.id] === "no",
+        );
+      const preguntasL6 = questions
+        .filter((q: Question) => q.section === "sectionL6")
+        .filter(
+          (q: Question) => answers[q.id] === "si" || answers[q.id] === "no",
+        );
+
+      return (
+        (preguntasL2a.length >= 1 || preguntasL2b.length >= 1) &&
+        preguntasL6.length === 0
+      ); // Retorna true o false
+    },
   },
   {
     id: "sectionL3b",
     title: "",
-    questions: questions.filter(
-      (q: Question) => q.section === "sectionL3b",
-    ),
+    questions: questions.filter((q: Question) => q.section === "sectionL3b"),
     dependsOn: (answers: AnswerState) => {
-      const preguntasL3a = questions.filter(
-        (q: Question) => q.section === "sectionL3a",
-      ).filter(
-        (q: Question) => answers[q.id] === "si" || answers[q.id] === "si extraños",);
-      
+      const preguntasL3a = questions
+        .filter((q: Question) => q.section === "sectionL3a")
+        .filter(
+          (q: Question) =>
+            answers[q.id] === "si" || answers[q.id] === "si extraños",
+        );
+
       return preguntasL3a.length >= 1; // Retorna true o false
-      },
+    },
   },
   {
     id: "sectionL4a",
     title: "",
-    questions: questions.filter(
-      (q: Question) => q.section === "sectionL4a",
-    ),
+    questions: questions.filter((q: Question) => q.section === "sectionL4a"),
     dependsOn: (answers: AnswerState) => {
       // Mostrar solo si L1a es "no", L1b es "si" o "no" y L6 es false
-      const preguntasL3a = questions.filter(
-        (q: Question) => q.section === "sectionL3a",
-      ).filter((q: Question) => answers[q.id] === "no");
-      const preguntasL3b = questions.filter(
-        (q: Question) => q.section === "sectionL3b",
-      ).filter((q: Question) => answers[q.id] === "si" || answers[q.id] === "no");
-      const preguntasL6 = questions.filter(
-        (q: Question) => q.section === "sectionL6",
-      ).filter((q: Question) => answers[q.id] === "si" || answers[q.id] === "no");
-      
-      return (preguntasL3a.length >= 1 || preguntasL3b.length >= 1) && preguntasL6.length === 0; // Retorna true o false
-      },
+      const preguntasL3a = questions
+        .filter((q: Question) => q.section === "sectionL3a")
+        .filter((q: Question) => answers[q.id] === "no");
+      const preguntasL3b = questions
+        .filter((q: Question) => q.section === "sectionL3b")
+        .filter(
+          (q: Question) => answers[q.id] === "si" || answers[q.id] === "no",
+        );
+      const preguntasL6 = questions
+        .filter((q: Question) => q.section === "sectionL6")
+        .filter(
+          (q: Question) => answers[q.id] === "si" || answers[q.id] === "no",
+        );
+
+      return (
+        (preguntasL3a.length >= 1 || preguntasL3b.length >= 1) &&
+        preguntasL6.length === 0
+      ); // Retorna true o false
+    },
   },
   {
     id: "sectionL4b",
     title: "",
-    questions: questions.filter(
-      (q: Question) => q.section === "sectionL4b",
-    ),
+    questions: questions.filter((q: Question) => q.section === "sectionL4b"),
     dependsOn: (answers: AnswerState) => {
-      const preguntasL4a = questions.filter(
-        (q: Question) => q.section === "sectionL4a",
-      ).filter(
-        (q: Question) => answers[q.id] === "si" || answers[q.id] === "si extraños",);
-      
+      const preguntasL4a = questions
+        .filter((q: Question) => q.section === "sectionL4a")
+        .filter(
+          (q: Question) =>
+            answers[q.id] === "si" || answers[q.id] === "si extraños",
+        );
+
       return preguntasL4a.length >= 1; // Retorna true o false
-      },
+    },
   },
   {
     id: "sectionL5a",
@@ -720,33 +737,40 @@ export const sections: Section[] = [
     questions: questions.filter((q: Question) => q.section === "sectionL5a"),
     dependsOn: (answers: AnswerState) => {
       // Mostrar solo si L1a es "no", L1b es "si" o "no" y L6 es false
-      const preguntasL4a = questions.filter(
-        (q: Question) => q.section === "sectionL4a",
-      ).filter((q: Question) => answers[q.id] === "no");
-      const preguntasL4b = questions.filter(
-        (q: Question) => q.section === "sectionL4b",
-      ).filter((q: Question) => answers[q.id] === "si" || answers[q.id] === "no");
-      const preguntasL6 = questions.filter(
-        (q: Question) => q.section === "sectionL6",
-      ).filter((q: Question) => answers[q.id] === "si" || answers[q.id] === "no");
-      
-      return (preguntasL4a.length >= 1 || preguntasL4b.length >= 1) && preguntasL6.length === 0; // Retorna true o false
-      },
+      const preguntasL4a = questions
+        .filter((q: Question) => q.section === "sectionL4a")
+        .filter((q: Question) => answers[q.id] === "no");
+      const preguntasL4b = questions
+        .filter((q: Question) => q.section === "sectionL4b")
+        .filter(
+          (q: Question) => answers[q.id] === "si" || answers[q.id] === "no",
+        );
+      const preguntasL6 = questions
+        .filter((q: Question) => q.section === "sectionL6")
+        .filter(
+          (q: Question) => answers[q.id] === "si" || answers[q.id] === "no",
+        );
+
+      return (
+        (preguntasL4a.length >= 1 || preguntasL4b.length >= 1) &&
+        preguntasL6.length === 0
+      ); // Retorna true o false
+    },
   },
   {
     id: "sectionL5b",
     title: "",
-    questions: questions.filter(
-      (q: Question) => q.section === "sectionL5b",
-    ),
+    questions: questions.filter((q: Question) => q.section === "sectionL5b"),
     dependsOn: (answers: AnswerState) => {
-      const preguntasL5a = questions.filter(
-        (q: Question) => q.section === "sectionL5a",
-      ).filter(
-        (q: Question) => answers[q.id] === "si" || answers[q.id] === "si extraños",);
-      
+      const preguntasL5a = questions
+        .filter((q: Question) => q.section === "sectionL5a")
+        .filter(
+          (q: Question) =>
+            answers[q.id] === "si" || answers[q.id] === "si extraños",
+        );
+
       return preguntasL5a.length >= 1; // Retorna true o false
-      },
+    },
   },
   // QuestioL6
   {
@@ -755,28 +779,43 @@ export const sections: Section[] = [
     questions: questions.filter((q: Question) => q.section === "sectionL6a1"),
     dependsOn: (answers: AnswerState) => {
       // Obtener las respuestas de las questions L1b, L2b, L3b, L4b
-      const preguntasL1b = questions.filter(
-        (q: Question) => q.section === "sectionL1b",
-      ).filter((q: Question) => answers[q.id] === "si extraños");
-      const preguntasL2b = questions.filter(
-        (q: Question) => q.section === "sectionL2b",
-      ).filter((q: Question) => answers[q.id] === "si extraños");
-      const preguntasL3b = questions.filter(
-        (q: Question) => q.section === "sectionL3b",
-      ).filter((q: Question) => answers[q.id] === "si extraños");
-      const preguntasL4b = questions.filter(
-        (q: Question) => q.section === "sectionL4b",
-      ).filter((q: Question) => answers[q.id] === "si extraños");
-      const preguntasL5a = questions.filter(
-        (q: Question) => q.section === "sectionL5a",)
-        .filter((q: Question) => answers[q.id] === "si" || answers[q.id] === "si extraños" || answers[q.id] === "no");
-      const preguntasL5b = questions.filter(
-        (q: Question) => q.section === "sectionL5b",
-      ).filter((q: Question) => answers[q.id] === "si" || answers[q.id] === "si extraños" || answers[q.id] === "no");
+      const preguntasL1b = questions
+        .filter((q: Question) => q.section === "sectionL1b")
+        .filter((q: Question) => answers[q.id] === "si extraños");
+      const preguntasL2b = questions
+        .filter((q: Question) => q.section === "sectionL2b")
+        .filter((q: Question) => answers[q.id] === "si extraños");
+      const preguntasL3b = questions
+        .filter((q: Question) => q.section === "sectionL3b")
+        .filter((q: Question) => answers[q.id] === "si extraños");
+      const preguntasL4b = questions
+        .filter((q: Question) => q.section === "sectionL4b")
+        .filter((q: Question) => answers[q.id] === "si extraños");
+      const preguntasL5a = questions
+        .filter((q: Question) => q.section === "sectionL5a")
+        .filter(
+          (q: Question) =>
+            answers[q.id] === "si" ||
+            answers[q.id] === "si extraños" ||
+            answers[q.id] === "no",
+        );
+      const preguntasL5b = questions
+        .filter((q: Question) => q.section === "sectionL5b")
+        .filter(
+          (q: Question) =>
+            answers[q.id] === "si" ||
+            answers[q.id] === "si extraños" ||
+            answers[q.id] === "no",
+        );
 
-      return (preguntasL1b.length >= 1 || preguntasL2b.length >= 1 
-        || preguntasL3b.length >= 1 || preguntasL4b.length >= 1
-        || preguntasL5a.length >= 1 || preguntasL5b.length >= 1); // Retorna true o false
+      return (
+        preguntasL1b.length >= 1 ||
+        preguntasL2b.length >= 1 ||
+        preguntasL3b.length >= 1 ||
+        preguntasL4b.length >= 1 ||
+        preguntasL5a.length >= 1 ||
+        preguntasL5b.length >= 1
+      ); // Retorna true o false
     },
   },
   {
@@ -784,66 +823,79 @@ export const sections: Section[] = [
     title: "",
     questions: questions.filter((q: Question) => q.section === "sectionL6a2"),
     dependsOn: (answers: AnswerState) => {
-      const preguntasL6 = questions.filter(
-        (q: Question) => q.section === "sectionL6a1",
-      ).filter((q: Question) => answers[q.id] === "si");
+      const preguntasL6 = questions
+        .filter((q: Question) => q.section === "sectionL6a1")
+        .filter((q: Question) => answers[q.id] === "si");
       return preguntasL6.length >= 1; // Retorna true o false
-    }
+    },
   },
   {
     id: "sectionL6b",
     title: "",
     questions: questions.filter((q: Question) => q.section === "sectionL6b"),
     dependsOn: (answers: AnswerState) => {
-      const preguntasL6 = questions.filter(
-        (q: Question) => q.section === "sectionL6a2",
-      ).filter((q: Question) => answers[q.id] === "si extraños");
+      const preguntasL6 = questions
+        .filter((q: Question) => q.section === "sectionL6a2")
+        .filter((q: Question) => answers[q.id] === "si extraños");
       return preguntasL6.length >= 1; // Retorna true o false
-    }
+    },
   },
   {
     id: "sectionL7",
     title: "",
     questions: questions.filter((q: Question) => q.section === "sectionL7a"),
     dependsOn: (answers: AnswerState) => {
-      const preguntasL6a = questions.filter(
-        (q: Question) => q.section === "sectionL6a1",
-      ).filter((q: Question) => answers[q.id] === "no");
-      const preguntasL6b = questions.filter(
-        (q: Question) => q.section === "sectionL6b",
-      ).filter((q: Question) => answers[q.id] === "no" || answers[q.id] === "si"); 
+      const preguntasL6a = questions
+        .filter((q: Question) => q.section === "sectionL6a1")
+        .filter((q: Question) => answers[q.id] === "no");
+      const preguntasL6b = questions
+        .filter((q: Question) => q.section === "sectionL6b")
+        .filter(
+          (q: Question) => answers[q.id] === "no" || answers[q.id] === "si",
+        );
 
-      return (preguntasL6a.length >= 1 || preguntasL6b.length >= 1); // Retorna true o false
-    }
+      return preguntasL6a.length >= 1 || preguntasL6b.length >= 1; // Retorna true o false
+    },
   },
   {
     id: "sectionL7b",
     title: "",
     questions: questions.filter((q: Question) => q.section === "sectionL7b"),
     dependsOn: (answers: AnswerState) => {
-      const preguntasL7 = questions.filter(
-        (q: Question) => q.section === "sectionL7a",
-      ).filter((q: Question) => answers[q.id] === "si");
+      const preguntasL7 = questions
+        .filter((q: Question) => q.section === "sectionL7a")
+        .filter((q: Question) => answers[q.id] === "si");
       return preguntasL7.length >= 1; // Retorna true o false
-    }
+    },
   },
   {
     id: "sectionL810",
     title: "",
-    questions: questions.filter((q: Question) => q.section === "sectionL8b" || q.section === "sectionL9b" || q.section === "sectionL10b"),
+    questions: questions.filter(
+      (q: Question) =>
+        q.section === "sectionL8b" ||
+        q.section === "sectionL9b" ||
+        q.section === "sectionL10b",
+    ),
     dependsOn: (answers: AnswerState) => {
-      const preguntasL6b = questions.filter(
-        (q: Question) => q.section === "sectionL6b",
-      ).filter((q: Question) => answers[q.id] === "si extraños");
-      const preguntasL7 = questions.filter(
-        (q: Question) => q.section === "sectionL7a",
-      ).filter((q: Question) => answers[q.id] === "no");
-      const preguntasL7b = questions.filter(
-        (q: Question) => q.section === "sectionL7b",
-      ).filter((q: Question) => answers[q.id] === "no" || answers[q.id] === "si");
+      const preguntasL6b = questions
+        .filter((q: Question) => q.section === "sectionL6b")
+        .filter((q: Question) => answers[q.id] === "si extraños");
+      const preguntasL7 = questions
+        .filter((q: Question) => q.section === "sectionL7a")
+        .filter((q: Question) => answers[q.id] === "no");
+      const preguntasL7b = questions
+        .filter((q: Question) => q.section === "sectionL7b")
+        .filter(
+          (q: Question) => answers[q.id] === "no" || answers[q.id] === "si",
+        );
 
-      return (preguntasL6b.length >= 1 || preguntasL7.length >= 1 || preguntasL7b.length >= 1); // Retorna true o false
-    }
+      return (
+        preguntasL6b.length >= 1 ||
+        preguntasL7.length >= 1 ||
+        preguntasL7b.length >= 1
+      ); // Retorna true o false
+    },
   },
   //Modulo M
   {
@@ -957,13 +1009,15 @@ export const sections: Section[] = [
   },
   {
     id: "sectionO3",
-    title: "En los últimos 6 meses: cuando estaba ansioso, casi todo el tiempo:",
+    title:
+      "En los últimos 6 meses: cuando estaba ansioso, casi todo el tiempo:",
     questions: questions.filter((q: Question) => q.section === "sectionO3"),
     dependsOn: (answers: AnswerState) => answers["questionO2"] === "si",
   },
   {
     id: "sectionP1",
-    title: "Módulo P - Trastorno antisocialde la personalidad (opcional)\nConductas antes de los 15 años",
+    title:
+      "Módulo P - Trastorno antisocialde la personalidad (opcional)\nConductas antes de los 15 años",
     questions: questions.filter((q: Question) => q.section === "sectionP1"),
     dependsOn: () => true,
   },

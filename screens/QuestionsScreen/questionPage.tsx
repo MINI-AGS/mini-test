@@ -39,7 +39,6 @@ const QuestionDisplay: React.FC<{ navigation: any; route: any }> = ({
 
   const scrollViewRef = useRef<ScrollView>(null);
 
-  // Funciones de manejo de respuestas
   const handleAnswer = (questionId: string, answer: string) => {
     setAnswers(prev => ({ ...prev, [questionId]: answer }));
   };
@@ -108,7 +107,7 @@ const QuestionDisplay: React.FC<{ navigation: any; route: any }> = ({
 
     try {
       const service = new RecordFirestoreService(db);
-      const record = construirRecord(answers, myDiagnoses);
+      const record = construirRecord(answers, myDiagnoses, startTime || new Date());
       const result = await service.createRecordWithValidation(record.id, record);
       
       if (!result.success) {

@@ -1,4 +1,4 @@
-import { AnswerState, Diagnosis } from "./types";
+import { AnswerState, Diagnosis, ValidationResult } from "./types";
 import { v4 as uuidv4 } from "uuid";
 import { Timestamp } from "firebase/firestore";
 import { Record } from "@shared/interfaces";

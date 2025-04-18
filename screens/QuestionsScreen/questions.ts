@@ -5,21 +5,21 @@ export const questions: Question[] = [
   // Datos del entrevistado
   {
     id: "name",
-    text: "Nombre del paciente:",
+    text: "Nombre del paciente: (opcional)",
     section: "sectionData",
     questionType: "text",
     placeholder: "Ingrese su nombre completo",
   },
   {
     id: "gender",
-    text: "Sexo:",
+    text: "Sexo: (obligatorio)",
     options: ["Hombre", "Mujer", "Otro"],
     section: "sectionData",
     required: true,
   },
   {
-    id: "birhdate",
-    text: "Fecha de nacimiento:",
+    id: "birthdate",
+    text: "Fecha de nacimiento DD/MM/AAAA: (opcional)",
     section: "sectionData",
     questionType: "date",
     placeholder: "DD/MM/AAAA",
@@ -27,34 +27,35 @@ export const questions: Question[] = [
   },
   {
     id: "sexualPreference",
-    text: "Preferencia sexual:",
+    text: "Preferencia sexual: (opcional)",
     questionType: "text",
     section: "sectionData",
   },
   {
     id: "stateOrigin",
-    text: "Estado de origen:",
+    text: "Estado de origen: (opcional)",
     section: "sectionData",
     questionType: "text",
     placeholder: "Ingrese su estado de origen",
   },
   {
     id: "stateResidence",
-    text: "Estado de residencia:",
+    text: "Estado de residencia: (opcional)",
     section: "sectionData",
     questionType: "text",
     placeholder: "Ingrese su estado de residencia",
   },
   {
-    id: "startTimeInterview",
-    text: "Hora en que inició la entrevista:",
+    id: "nameInterviewer",
+    text: "Nombre del entrevistador: (opcional)",
     section: "sectionData",
     questionType: "date",
     placeholder: "HH:MM",
   },
+  /**
   {
-    id: "nameInterviewer",
-    text: "Nombre del entrevistador:",
+    id: "startTimeInterview",
+    text: "Hora en que inició la entrevista:",
     section: "sectionData",
     questionType: "text",
     placeholder: "Ingrese su nombre completo",
@@ -81,6 +82,7 @@ export const questions: Question[] = [
     questionType: "int",
     placeholder: "Ingrese la duración total de la entrevista en minutos",
   },
+  */
   // Sección A
   {
     id: "questionA1",
@@ -850,7 +852,7 @@ export const questions: Question[] = [
   //section M
   {
     id: "questionM1a",
-    text: "¿Cuál es su estatura?",
+    text: "¿Cuál es su estatura en centímetros? ejemplo: 170.6",
     //options: ["", ""], //Chacar estos campos
     section: "sectionM1",
     questionType: "int",
@@ -859,7 +861,7 @@ export const questions: Question[] = [
   },
   {
     id: "questionM1b",
-    text: "¿En los últimos 3 meses, cuál ha sido su peso más bajo?",
+    text: "¿En los últimos 3 meses, cuál ha sido su peso más bajo en kilogramos? ejemplo: 50.5",
     //options: ["", ""], //Chacar estos campos
     section: "sectionM1",
     questionType: "int",
@@ -907,13 +909,43 @@ export const questions: Question[] = [
   {
     id: "patientWeightWomen",
     text: "",
-    options: ["38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51"],
+    options: [
+      "38",
+      "39",
+      "40",
+      "41",
+      "42",
+      "43",
+      "44",
+      "45",
+      "46",
+      "47",
+      "48",
+      "49",
+      "50",
+      "51",
+    ],
     section: "patientWeight",
   },
   {
     id: "patientHeightWomen",
     text: "",
-    options: ["144,8", "147,3", "149,9", "152,4", "154,9", "157,5", "160,0", "162,6", "165,1", "167,6", "170,2", "172,7", "175,3", "177,8"],
+    options: [
+      "144,8",
+      "147,3",
+      "149,9",
+      "152,4",
+      "154,9",
+      "157,5",
+      "160,0",
+      "162,6",
+      "165,1",
+      "167,6",
+      "170,2",
+      "172,7",
+      "175,3",
+      "177,8",
+    ],
     section: "patientHeight",
   },
   //QuestionM5

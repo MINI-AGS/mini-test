@@ -40,6 +40,8 @@ const QuestionDisplay: React.FC<{ navigation: any; route: any }> = ({
   const scrollViewRef = useRef<ScrollView>(null);
 
   // Funciones de manejo de respuestas
+  const [startTime, setStartTime] = useState<Date | null>(null);
+
   const handleAnswer = (questionId: string, answer: string) => {
     setAnswers(prev => ({ ...prev, [questionId]: answer }));
   };

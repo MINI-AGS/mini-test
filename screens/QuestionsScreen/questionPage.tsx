@@ -11,15 +11,25 @@ import {
 import styles from "./styles";
 
 import { RadioButton, Checkbox } from "react-native-paper";
-import { Section, Question, AnswerState } from "./types";
+import { Section, Question, AnswerState, Diagnosis } from "./types";
 import { sections } from "./module";
 import { myDiagnoses } from "./diagnosis";
 import { getQuestionsWithDynamicText } from "./questionRender";
+import { validAnswers } from "tests/data/answerState";
+import db from "../../firebaseConfig";
+import RecordFirestoreService from "backend/RecordFirestoreService";
+import { construirRecord } from "./utils";
+import { validateAnswers } from "./validationutils";
+import ModalPopup from "./_ModalPopup";
 
 const { height } = Dimensions.get("window");
 
-const QuestionPage: React.FC = () => {
-  const [answers, setAnswers] = useState<AnswerState>({});
+const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
+  // Estados combinados
+  const isTest: boolean = route.params?.test ?? false;
+  const [answers, setAnswers] = useState<AnswerState>(
+    isTest ? validAnswers : {},
+  );
   const [visibleSections, setVisibleSections] = useState<string[]>([
     "sectionData",
     "sectionA",
@@ -30,57 +40,16 @@ const QuestionPage: React.FC = () => {
       moduloA: true,
     },
   );
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
+  const [startTime, setStartTime] = useState<Date | null>(null);
   const scrollViewRef = useRef<ScrollView>(null);
 
-  const handleAnswer = (questionId: string, answer: string) => {
-    setAnswers((prev) => ({
-      ...prev,
-      [questionId]: answer,
-    }));
-  };
-
-  const handleCheckboxAnswer = (
-    questionId: string,
-    option: string,
-    isChecked: boolean,
-  ) => {
-    setAnswers((prev) => {
-      const currentAnswers = Array.isArray(prev[questionId])
-        ? (prev[questionId] as string[])
-        : [];
-
-      if (isChecked) {
-        if (!currentAnswers.includes(option)) {
-          return {
-            ...prev,
-            [questionId]: [...currentAnswers, option],
-          };
-        }
-      } else {
-        return {
-          ...prev,
-          [questionId]: currentAnswers.filter((item) => item !== option),
-        };
-      }
-      return prev;
-    });
-  };
-
-  const isOptionChecked = (questionId: string, option: string): boolean => {
-    if (!answers[questionId]) return false;
-    return (
-      Array.isArray(answers[questionId]) &&
-      (answers[questionId] as string[]).includes(option)
-    );
-  };
-
-  const toggleGroup = (groupId: string) => {
-    setExpandedGroups((prev) => ({
-      ...prev,
-      [groupId]: !prev[groupId],
-    }));
-  };
-
+  // Efectos combinados
   useEffect(() => {
     const newVisibleSections: string[] = ["sectionData", "sectionA"];
 
@@ -92,18 +61,104 @@ const QuestionPage: React.FC = () => {
       }
     });
 
+    myDiagnoses.forEach((diagnosis) => {
+      if (diagnosis.dependsOn(answers)) {
+        newVisibleSections.push(diagnosis.id);
+      }
+    });
+
     setVisibleSections(newVisibleSections);
   }, [answers]);
 
-  const dynamicQuestions = getQuestionsWithDynamicText(answers).filter(
-    (question) => {
-      const section = sections.find((s) =>
-        s.questions?.some((q) => q.id === question.id),
-      );
-      return section && visibleSections.includes(section.id);
-    },
-  );
+  useEffect(() => {
+    setStartTime(new Date());
+  }, []);
 
+  // Funciones de manejo combinadas
+  const handleAnswer = (questionId: string, answer: string) => {
+    setAnswers((prev) => ({ ...prev, [questionId]: answer }));
+  };
+
+  const handleCheckboxAnswer = (
+    questionId: string,
+    option: string,
+    isChecked: boolean,
+  ) => {
+    setAnswers((prev) => {
+      const currentAnswers = Array.isArray(prev[questionId])
+        ? (prev[questionId] as string[])
+        : [];
+      return {
+        ...prev,
+        [questionId]: isChecked
+          ? [...currentAnswers, option]
+          : currentAnswers.filter((item) => item !== option),
+      };
+    });
+  };
+
+  const isOptionChecked = (questionId: string, option: string): boolean => {
+    return Array.isArray(answers[questionId])
+      ? (answers[questionId] as string[]).includes(option)
+      : false;
+  };
+
+  const toggleGroup = (groupId: string) => {
+    setExpandedGroups((prev) => ({
+      ...prev,
+      [groupId]: !prev[groupId],
+    }));
+  };
+
+  const handleUpload = async () => {
+    setLoading(true);
+
+    const { isValid, errors } = validateAnswers(answers);
+
+    if (!isValid) {
+      setError(errors.join("\n"));
+      setModalTitle("Errores de validación");
+      setModalMessage(errors.join("\n"));
+      setModalVisible(true);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const service = new RecordFirestoreService(db);
+      const record = construirRecord(
+        answers,
+        myDiagnoses,
+        startTime || new Date(),
+      );
+      const result = await service.createRecordWithValidation(
+        record.id,
+        record,
+      );
+
+      if (!result.success) {
+        throw new Error(result.message);
+      }
+
+      setModalTitle("Éxito");
+      setModalMessage("Datos guardados correctamente");
+      setModalVisible(true);
+      setSuccess(true);
+    } catch (error) {
+      setError(
+        error instanceof Error ? error.message : "Unknown error occurred",
+      );
+      setModalTitle("Error");
+      setModalMessage(
+        error instanceof Error ? error.message : "Error al guardar los datos",
+      );
+      setModalVisible(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Lógica de agrupación de preguntas
   const groupQuestionsByModule = (questions: Question[]) => {
     const groups: Record<string, { title: string; questions: Question[] }> = {};
 
@@ -127,111 +182,185 @@ const QuestionPage: React.FC = () => {
     return groups;
   };
 
+  const dynamicQuestions = getQuestionsWithDynamicText(answers).filter(
+    (question) => {
+      const section = sections.find((s) =>
+        s.questions?.some((q) => q.id === question.id),
+      );
+      return section && visibleSections.includes(section.id);
+    },
+  );
+
   const groupedQuestions = groupQuestionsByModule(dynamicQuestions);
 
   return (
-    <ScrollView
-      ref={scrollViewRef}
-      style={[styles.container, { height }]}
-      contentContainerStyle={styles.scrollContent}
-    >
-      {Object.entries(groupedQuestions).map(
-        ([groupId, { title, questions }]) => (
-          <View key={groupId} style={styles.moduleGroup}>
-            <TouchableOpacity
-              onPress={() => toggleGroup(groupId)}
-              style={styles.moduleGroupHeader}
-            >
-              <Text style={styles.moduleGroupTitle}>{title}</Text>
-              <Text>{expandedGroups[groupId] ? "▼" : "►"}</Text>
-            </TouchableOpacity>
+    <>
+      <ScrollView
+        ref={scrollViewRef}
+        style={[styles.container, { height }]}
+        contentContainerStyle={styles.scrollContent}
+      >
+        {Object.entries(groupedQuestions).map(
+          ([groupId, { title, questions }]) => (
+            <View key={groupId} style={styles.moduleGroup}>
+              <TouchableOpacity
+                onPress={() => toggleGroup(groupId)}
+                style={styles.moduleGroupHeader}
+              >
+                <Text style={styles.moduleGroupTitle}>{title}</Text>
+                <Text>{expandedGroups[groupId] ? "▼" : "►"}</Text>
+              </TouchableOpacity>
 
-            {expandedGroups[groupId] && (
-              <View style={styles.moduleGroupContent}>
-                {questions.map((question) => (
-                  <View key={question.id} style={styles.question}>
-                    <Text style={styles.questionText}>{question.text}</Text>
-                    {question.options ? (
-                      <View style={styles.options}>
-                        {question.questionType === "checkbox"
-                          ? question.options.map((option) => (
-                              <View key={option} style={styles.checkboxOption}>
-                                <Checkbox
-                                  status={
-                                    isOptionChecked(question.id, option)
-                                      ? "checked"
-                                      : "unchecked"
-                                  }
-                                  onPress={() =>
-                                    handleCheckboxAnswer(
-                                      question.id,
-                                      option,
-                                      !isOptionChecked(question.id, option),
-                                    )
-                                  }
-                                />
-                                <Text style={styles.optionLabel}>{option}</Text>
-                              </View>
-                            ))
-                          : question.options.map((option) => (
-                              <View key={option} style={styles.radioOption}>
-                                <RadioButton
-                                  value={option}
-                                  status={
-                                    answers[question.id] === option
-                                      ? "checked"
-                                      : "unchecked"
-                                  }
-                                  onPress={() =>
-                                    handleAnswer(question.id, option)
-                                  }
-                                />
-                                <Text style={styles.radioLabel}>{option}</Text>
-                              </View>
-                            ))}
-                      </View>
-                    ) : (
-                      <TextInput
-                        style={styles.input}
-                        value={
-                          typeof answers[question.id] === "string"
-                            ? (answers[question.id] as string)
-                            : ""
-                        }
-                        onChangeText={(text) => handleAnswer(question.id, text)}
-                        placeholder="Escribe tu respuesta"
-                      />
-                    )}
-                  </View>
-                ))}
-              </View>
-            )}
-          </View>
-        ),
-      )}
-
-      {myDiagnoses.map((diagnosis) =>
-        visibleSections.includes(diagnosis.id) ? (
-          <View key={diagnosis.id} style={styles.diagnosis}>
-            <Text style={styles.diagnosisTitle}>
-              {diagnosis.name}{" "}
-              {diagnosis.result && (
-                <> {(diagnosis.result as (answers: any) => string)(answers)}</>
+              {expandedGroups[groupId] && (
+                <View style={styles.moduleGroupContent}>
+                  {questions.map((question) => (
+                    <View key={question.id} style={styles.question}>
+                      <Text style={styles.questionText}>
+                        {question.text}
+                        {question.required && (
+                          <Text style={styles.required}>
+                            {" "}
+                            Pregunta Obligatoria
+                          </Text>
+                        )}
+                      </Text>
+                      {question.options ? (
+                        <View style={styles.options}>
+                          {question.questionType === "checkbox"
+                            ? question.options.map((option) => (
+                                <View
+                                  key={option}
+                                  style={styles.checkboxOption}
+                                >
+                                  <Checkbox
+                                    status={
+                                      isOptionChecked(question.id, option)
+                                        ? "checked"
+                                        : "unchecked"
+                                    }
+                                    onPress={() =>
+                                      handleCheckboxAnswer(
+                                        question.id,
+                                        option,
+                                        !isOptionChecked(question.id, option),
+                                      )
+                                    }
+                                  />
+                                  <Text style={styles.optionLabel}>
+                                    {option}
+                                  </Text>
+                                </View>
+                              ))
+                            : question.options.map((option) => (
+                                <View key={option} style={styles.radioOption}>
+                                  <RadioButton
+                                    value={option}
+                                    status={
+                                      answers[question.id] === option
+                                        ? "checked"
+                                        : "unchecked"
+                                    }
+                                    onPress={() =>
+                                      handleAnswer(question.id, option)
+                                    }
+                                  />
+                                  <Text style={styles.radioLabel}>
+                                    {option}
+                                  </Text>
+                                </View>
+                              ))}
+                        </View>
+                      ) : (
+                        <TextInput
+                          style={styles.input}
+                          value={
+                            typeof answers[question.id] === "string"
+                              ? (answers[question.id] as string)
+                              : ""
+                          }
+                          onChangeText={(text) => {
+                            if (question.questionType === "int") {
+                              const numericText = text.replace(/[^0-9]/g, "");
+                              handleAnswer(question.id, numericText);
+                            } else if (question.questionType === "text") {
+                              const textOnly = text.replace(/[0-9]/g, "");
+                              handleAnswer(question.id, textOnly);
+                            } else if (question.questionType === "date") {
+                              const filteredText = text.replace(
+                                /[^0-9:/]/g,
+                                "",
+                              );
+                              handleAnswer(question.id, filteredText);
+                            } else {
+                              handleAnswer(question.id, text);
+                            }
+                          }}
+                          placeholder={
+                            question.placeholder ?? "Escribe aquí..."
+                          }
+                          keyboardType={
+                            question.questionType === "int"
+                              ? "numeric"
+                              : "default"
+                          }
+                          maxLength={
+                            question.questionType === "int" ||
+                            question.questionType === "date"
+                              ? 10
+                              : 100
+                          }
+                        />
+                      )}
+                    </View>
+                  ))}
+                </View>
               )}
-            </Text>
-          </View>
-        ) : null,
-      )}
+            </View>
+          ),
+        )}
 
-      <View style={styles.debug}>
-        <Text style={styles.debugTitle}>Estado de respuestas:</Text>
-        <Text style={styles.debugText}>{JSON.stringify(answers, null, 2)}</Text>
-        <Text style={styles.debugTitle}>Secciones visibles:</Text>
-        <Text style={styles.debugText}>
-          {JSON.stringify(visibleSections, null, 2)}
-        </Text>
-      </View>
-    </ScrollView>
+        {myDiagnoses.map((diagnosis) =>
+          visibleSections.includes(diagnosis.id) ? (
+            <View key={diagnosis.id} style={styles.diagnosis}>
+              <Text style={styles.diagnosisTitle}>
+                {diagnosis.name}{" "}
+                {diagnosis.result && (
+                  <>
+                    {" "}
+                    {(diagnosis.result as (answers: any) => string)(answers)}
+                  </>
+                )}
+              </Text>
+            </View>
+          ) : null,
+        )}
+
+        <View style={styles.debug}>
+          <Text style={styles.debugTitle}>Estado de respuestas:</Text>
+          <Text style={styles.debugText}>
+            {JSON.stringify(answers, null, 2)}
+          </Text>
+        </View>
+
+        {loading && <Text style={{ marginBottom: 16 }}>Guardando...</Text>}
+        {success && (
+          <Text style={{ color: "green", marginBottom: 16 }}>
+            Datos guardados con éxito.
+          </Text>
+        )}
+
+        <TouchableOpacity style={styles.submitButton} onPress={handleUpload}>
+          <Text style={styles.submitButtonText}>Finalizar y subir datos</Text>
+        </TouchableOpacity>
+      </ScrollView>
+
+      <ModalPopup
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        title={modalTitle}
+        message={modalMessage}
+      />
+    </>
   );
 };
 

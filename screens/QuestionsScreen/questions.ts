@@ -1,5 +1,6 @@
 //questions.ts
 import { Question, Flags } from "./types";
+
 export const questions: Question[] = [
   // Datos del entrevistado
   {
@@ -7,18 +8,21 @@ export const questions: Question[] = [
     text: "Nombre del paciente:",
     section: "sectionData",
     questionType: "text",
+    placeholder: "Ingrese su nombre completo",
   },
   {
     id: "gender",
     text: "Sexo:",
     options: ["Hombre", "Mujer", "Otro"],
     section: "sectionData",
+    required: true,
   },
   {
-    id: "birhdate",
-    text: "Fecha de nacimiento:",
+    id: "birthdate",
+    text: "Fecha de nacimiento DD/MM/AAAA:",
     section: "sectionData",
-    questionType: "text",
+    questionType: "date",
+    placeholder: "DD/MM/AAAA",
   },
   {
     id: "sexualPreference",
@@ -31,42 +35,21 @@ export const questions: Question[] = [
     text: "Estado de origen:",
     section: "sectionData",
     questionType: "text",
+    placeholder: "Ingrese su estado de origen",
   },
   {
     id: "stateResidence",
     text: "Estado de residencia:",
     section: "sectionData",
     questionType: "text",
-  },
-  {
-    id: "startTimeInterview",
-    text: "Hora en que inició la entrevista:",
-    section: "sectionData",
-    questionType: "text",
+    placeholder: "Ingrese su estado de residencia",
   },
   {
     id: "nameInterviewer",
     text: "Nombre del entrevistador:",
     section: "sectionData",
-    questionType: "text",
-  },
-  {
-    id: "endTimeInterview",
-    text: "Hora en que terminó la entrevista:",
-    section: "sectionData",
-    questionType: "text",
-  },
-  {
-    id: "interviewDate",
-    text: "Fecha de la entrevista",
-    section: "sectionData",
-    questionType: "text",
-  },
-  {
-    id: "durationInterview",
-    text: "Duración total:",
-    section: "sectionData",
-    questionType: "text",
+    questionType: "date",
+    placeholder: "HH:MM",
   },
   // Sección A
   {
@@ -75,12 +58,14 @@ export const questions: Question[] = [
     text: "¿En las últimas 2 semanas, se ha sentido deprimido o decaído la mayor parte del día, casi todos los días?",
     options: ["si", "no"], //
     section: "sectionA",
+    required: true,
   },
   {
     id: "questionA2",
     text: "¿En las últimas 2 semanas, ha perdido el interés en la mayoría de las cosas o ha disfrutado menos de las cosas que usualmente le agradaban?",
     options: ["si", "no"],
     section: "sectionA",
+    required: true,
   },
   // Preguntas de la sección A3
   {
@@ -273,24 +258,28 @@ export const questions: Question[] = [
     text: "¿Alguna vez ha tenido un período de tiempo en el que se ha sentido exaltado,eufórico, o tan lleno de energía, o seguro de sí mismo, que esto le ha ocasionado problemas u otras personas han pensado que usted no estaba en su estado habitual? (No considere períodos en el que estaba intoxicado con drogas o alcohol.)",
     options: ["si", "no"],
     section: "sectionD12",
+    required: true,
   },
   {
     id: "questionD1b",
     text: "¿En este momento se siente «exaltado», «eufórico», o lleno de energía?",
     options: ["si", "no"],
     section: "sectionD12",
+    required: true,
   },
   {
     id: "questionD2a",
     text: "¿Ha estado usted alguna vez persistentemente irritado durante varios días, de tal manera que tenía discusiones, peleaba o le gritaba a personas fuera de su familia? ¿Ha notado usted o los demás, que ha estado más irritable o que reacciona de una manera exagerada,comparado a otras personas, en situaciones que incluso usted creía justificadas?  ",
     options: ["si", "no"],
     section: "sectionD12",
+    required: true,
   },
   {
     id: "questionD2b",
     text: "¿En este momento se siente excesivamente irritable?",
     options: ["si", "no"],
     section: "sectionD12",
+    required: true,
   },
   //aqui viene un condicional
   //SI D1b O D2b = SÍ: EXPLORAR SOLAMENTE EL EPISODIO ACTUAL
@@ -349,12 +338,14 @@ export const questions: Question[] = [
     text: "En más de una ocasión, tuvo una crisis o ataques en los cuales se sintió súbitamente ansioso, asustado, incómodo o inquieto, incluso en situaciones en la cual la mayoría de las personas no se sentirían así?",
     options: ["si", "no"],
     section: "sectionE1a",
+    required: true,
   },
   {
     id: "questionE1b",
     text: "¿Estas crisis o ataques alcanzan su máxima expresión en los primeros 10 minutos?",
     options: ["si", "no"],
     section: "sectionE1b",
+    required: true,
   },
   {
     id: "questionE2",
@@ -459,6 +450,7 @@ export const questions: Question[] = [
     text: "¿Se ha sentido particularmente incómodo o ansioso en lugares o situaciones donde podría tener una crisis o ataque, o síntomas de una crisis como los que acabamos de discutir, o situaciones donde no dispondría de ayuda o escapar pudiera resultar un tanto difícil: como estar en una multitud, permanecer en fila, estar solo fuera de casa, permanecer solo en casa, viajar en autobús, tren o automóvil?",
     options: ["si", "no"],
     section: "sectionF1",
+    required: true,
   },
   {
     id: "questionF2",
@@ -472,6 +464,7 @@ export const questions: Question[] = [
     text: "¿En el pasado mes, tuvo miedo o sintió vergüenza de que lo estén observando, de ser el centro de atención o temió una humillación? Incluyendo cosas como el hablar en público, comer en público o con otros, el escribir mientras alguien le mira o el estar en situaciones sociales.",
     options: ["si", "no"],
     section: "sectionG1",
+    required: true,
   },
   {
     id: "questionG2",
@@ -497,6 +490,7 @@ export const questions: Question[] = [
     text: "¿Este último mes, ha estado usted molesto con pensamientos recurrentes, impulsos o imágenes no deseadas, desagradables, inapropiadas, intrusas o angustiosas? (...)",
     options: ["si", "no"],
     section: "sectionH1",
+    required: true,
   },
   {
     id: "questionH2",
@@ -515,6 +509,7 @@ export const questions: Question[] = [
     text: "¿En el pasado mes, ha hecho usted algo repetidamente, sin ser capaz de evitarlo, como lavar o limpiar en exceso (...)?",
     options: ["si", "no"],
     section: "sectionH4",
+    required: true,
   },
   {
     id: "questionH5",
@@ -620,6 +615,7 @@ export const questions: Question[] = [
     text: "¿En los últimos 12 meses, ha tomado 3 o más bebidas alcohólicas en un período de 3 horas en tres o más ocasiones?",
     options: ["si", "no"],
     section: "sectionJ1",
+    required: true,
   },
   {
     id: "questionJ2a",
@@ -692,10 +688,11 @@ export const questions: Question[] = [
     text: "¿En los últimos 12 meses, tomó alguna de estas sustancias, en más de una ocasión, para sentirse mejor o para cambiar su estado de ánimo?",
     options: ["si", "no"],
     section: "sectionK1",
+    required: true,
   },
   {
     id: "questionK1a_list",
-    text: "¿En los últimos 12 meses, tomó alguna de estas sustancias, en más de una ocasión, para sentirse mejor o para cambiar su estado de ánimo?",
+    text: "Seleccione el tipo de sustancias que haya usado:",
     options: [
       "Estimulantes: anfetaminas, speed, cristal, dexedrina, ritalina, píldoras adelgazantes",
       "Cocaína: inhalada, intravenosa, crack, speedball",
@@ -714,130 +711,135 @@ export const questions: Question[] = [
     id: "questionL1a",
     text: "¿Alguna vez ha tenido la impresión de que alguien le espiaba, o conspiraba contra usted, o que trataban de hacerle daño?",
     options: ["si", "no", "si extraños"],
-    section: "sectionL12",
+    section: "sectionL1a",
   },
   {
     id: "questionL1b",
     text: "¿Actualmente cree usted esto?",
     options: ["si", "no", "si extraños"],
-    section: "sectionL11",
+    section: "sectionL1b",
   },
   {
     id: "questionL2a",
     text: "¿Ha tenido usted la impresión de que alguien podía leer o escuchar sus pensamientos, o que usted podía leer o escuchar los pensamientos de otros?",
     options: ["si", "no", "si extraños"],
-    section: "sectionL12",
+    section: "sectionL2a",
   },
   {
     id: "questionL2b",
     text: "¿Actualmente cree usted esto?",
     options: ["si", "no", "si extraños"],
-    section: "sectionL11",
+    section: "sectionL2b",
   },
   {
     id: "questionL3a",
     text: "¿Alguna vez ha creído que alguien o que una fuerza externa haya metido pensamientos ajenos en su mente o le hicieron actuar de una manera no usual en usted? ¿Alguna vez ha tenido la impresión de que está poseído?",
     options: ["si", "no", "si extraños"],
-    section: "sectionL12",
+    section: "sectionL3a",
   },
   {
     id: "questionL3b",
     text: "¿Actualmente cree usted esto?",
     options: ["si", "no", "si extraños"],
-    section: "sectionL11",
+    section: "sectionL3b",
   },
   {
     id: "questionL4a",
     text: "¿Alguna vez ha creído que le envían mensajes especiales a través de la radio, el televisor o el periódico, o que una persona que no conocía personalmente se interesaba particularmente por usted?",
     options: ["si", "no", "si extraños"],
-    section: "sectionL12",
+    section: "sectionL4a",
   },
   {
     id: "questionL4b",
     text: "¿Actualmente cree usted esto?",
     options: ["si", "no", "si extraños"],
-    section: "sectionL11",
+    section: "sectionL4b",
   },
   {
     id: "questionL5a",
     text: "¿Consideran sus familiares o amigos que algunas de sus creencias son extrañas o poco usuales?",
     options: ["si", "no", "si extraños"],
-    section: "sectionL12",
+    section: "sectionL5a",
   },
   {
     id: "questionL5b",
     text: "¿Actualmente, consideran los demás sus ideas como extrañas?",
     options: ["si", "no", "si extraños"],
-    section: "sectionL11",
+    section: "sectionL5b",
   },
   {
     id: "questionL6a1",
     text: "¿Alguna vez ha escuchado cosas que otras personas no podían escuchar, como voces?",
     options: ["si", "no"],
-    section: "sectionL12",
+    section: "sectionL6a1",
   },
   {
     id: "questionL6a2",
     text: "¿Escuchó una voz que comentaba acerca de sus pensamientos o sus actos, o escuchó dos o más voces conversando entre sí?",
     options: ["si extraños"],
-    section: "sectionL12",
+    section: "sectionL6a2",
   },
   {
     id: "questionL6b",
     text: "¿Ha escuchado estas cosas en el pasado mes?",
     options: ["si", "no", "si extraños"],
-    section: "sectionL11",
+    section: "sectionL6b",
   },
   {
     id: "questionL7a",
     text: "¿Alguna vez, estando despierto, ha tenido visiones o ha visto cosas que otros no podían ver?",
     options: ["si", "no"],
-    section: "sectionL12",
+    section: "sectionL7a",
   },
   {
     id: "questionL7b",
     text: "¿Ha visto estas cosas el pasado mes?",
     options: ["si", "no"],
-    section: "sectionL11",
+    section: "sectionL7b",
   },
   {
     id: "questionL8b",
     text: "¿PRESENTA EL PACIENTE ACTUALMENTE UN LENGUAJE DESORGANIZADO, INCOHERENTE O CON MARCADA PÉRDIDA DE LAS ASOCIACIONES?",
     options: ["si", "no"],
-    section: "sectionL11",
+    section: "sectionL8b",
   },
   {
     id: "questionL9b",
     text: "¿PRESENTA EL PACIENTE ACTUALMENTE UN COMPORTAMIENTO DESORGANIZADO O CATATÓNICO?",
     options: ["si", "no"],
-    section: "sectionL11",
+    section: "sectionL9b",
   },
   {
     id: "questionL10b",
     text: "¿HAY SÍNTOMAS NEGATIVOS DE ESQUIZOFRENIA PROMINENTES DURANTE LA ENTREVISTA (UN APLANAMIENTO AFECTIVO SIGNIFICATIVO, POBREZA DEL LENGUAJE [ALOGIA] O INCAPACIDAD PARA INICIAR O PERSISTIR EN ACTIVIDADES CON UNA FINALIDAD DETERMINADA)?",
     options: ["si", "no"],
-    section: "sectionL11",
+    section: "sectionL10b",
   },
   //section M
   {
     id: "questionM1a",
-    text: "¿Cuál es su estatura?",
+    text: "¿Cuál es su estatura en centímetros? ejemplo: 170.6",
     //options: ["", ""], //Chacar estos campos
     section: "sectionM1",
-    questionType: "text",
+    questionType: "int",
+    placeholder: "cm",
+    required: true,
   },
   {
     id: "questionM1b",
-    text: "¿En los últimos 3 meses, cuál ha sido su peso más bajo?",
+    text: "¿En los últimos 3 meses, cuál ha sido su peso más bajo en kilogramos? ejemplo: 50.5",
     //options: ["", ""], //Chacar estos campos
     section: "sectionM1",
-    questionType: "text",
+    questionType: "int",
+    placeholder: "kg sin decimales",
+    required: true,
   },
   {
     id: "questionM1c",
     text: "¿ES EL PESO DEL PACIENTE INFERIOR AL PESO MÍNIMO CORRESPONDIENTE A SU ESTATURA (VER TABLA A CONTINUACIÓN)?",
     options: ["si", "no"],
     section: "sectionM1",
+    required: true,
   },
   {
     id: "questionM2",
@@ -924,12 +926,14 @@ export const questions: Question[] = [
     text: "¿En los últimos 3 meses, se ha dado usted atracones, en los cuales comía grandes cantidades de alimentos en un período de 2 horas?",
     options: ["si", "no"],
     section: "sectionN1",
+    required: true,
   },
   {
     id: "questionN2",
     text: "¿En los últimos 3 meses, se ha dado usted al menos 2 atracones por semana?",
     options: ["si", "no"],
     section: "sectionN2",
+    required: true,
   },
   {
     id: "questionN3",
@@ -960,12 +964,14 @@ export const questions: Question[] = [
     text: "¿Se ha sentido excesivamente preocupado o ansioso debido a varias cosas durante los últimos 6 meses?",
     options: ["si", "no"],
     section: "sectionO1a",
+    required: true,
   },
   {
     id: "questionO1b",
     text: "¿Se presentan estas preocupaciones casi todos los días?",
     options: ["si", "no"],
     section: "sectionO1b",
+    required: true,
   },
   {
     id: "questionO2",

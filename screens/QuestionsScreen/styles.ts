@@ -6,9 +6,29 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: "#F5F5F5",
   },
+  submitButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  submitButton: {
+    backgroundColor: "#007BFF",
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+    marginVertical: 10,
+  },
   scrollContent: {
     paddingBottom: 100,
     paddingHorizontal: 8,
+  },
+  required: {
+    color: "red",
+    fontWeight: "bold",
+  },
+  section: {
+    marginBottom: 20,
   },
   moduleGroup: {
     marginBottom: 16,

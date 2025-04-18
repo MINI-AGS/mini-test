@@ -364,6 +364,8 @@ export interface Record {
   periodoE1: string;
   diagnosticE2: string;
   periodoE2: string;
+  diagnosticE3: string;
+  periodoE3: string;
 
   diagnosticF1: string;
   diagnosticF2: string;
@@ -378,8 +380,8 @@ export interface Record {
   diagnosticJ1: string;
   diagnosticJ2: string;
 
-  diagnosticK1: string;
   diagnosticK2: string;
+  diagnosticK3: string;
 
   diagnosticL1: string;
   diagnosticL2: string;

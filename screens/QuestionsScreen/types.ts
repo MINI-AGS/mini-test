@@ -4,12 +4,19 @@ export interface AnswerState {
   [key: string]: string | string[];
 }
 
+export interface ValidationResult {
+  isValid: boolean;
+  errors: string[];
+}
+
 export interface Question {
   id: string;
   text: string;
   options?: string[];
   section: string;
-  questionType?: "radio" | "checkbox" | "text";
+  questionType?: "radio" | "checkbox" | "text" | "int" | "date"; // Tipo de pregunta (radio por defecto)
+  placeholder?: string; // Placeholder para preguntas de texto
+  required?: boolean; // Indica si la pregunta es obligatoria
 }
 
 export interface Section {

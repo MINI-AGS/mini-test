@@ -22,6 +22,11 @@ eas build -p ios --profile preview --local
 
 Note. For the previous commands to work, we need to have eas installed and login to our account beforehand, to get the login credentials contact @YeyoM
 
+```bash
+npm install -g eas-cli
+eas login
+```
+
 ## Run the project
 
 To run the project, you need to have the following installed:

@@ -9,7 +9,7 @@ export interface Question {
   text: string;
   options?: string[];
   section: string;
-  questionType?: "radio" | "checkbox" | "text"; // Tipo de pregunta (radio por defecto)
+  questionType?: "radio" | "checkbox" | "text";
 }
 
 export interface Section {
@@ -28,6 +28,7 @@ export interface Section {
       result?: string;
     }
   >;
+  moduleGroup?: string; // Nueva propiedad para agrupación
 }
 export interface Diagnosis {
   id: string;
@@ -40,4 +41,10 @@ export interface Diagnosis {
 export interface Flags {
   id: string;
   dependsOn: (answers: Record<string, string>) => boolean;
+}
+export interface ModuleGroup {
+  id: string;
+  title: string;
+  sectionIds: string[]; // IDs de secciones que pertenecen a este módulo
+  defaultExpanded?: boolean;
 }

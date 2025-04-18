@@ -1,6 +1,5 @@
 //questions.ts
 import { Question, Flags } from "./types";
-
 export const questions: Question[] = [
   // Datos del entrevistado
   {
@@ -19,7 +18,7 @@ export const questions: Question[] = [
     id: "birhdate",
     text: "Fecha de nacimiento:",
     section: "sectionData",
-    questionType: "text"
+    questionType: "text",
   },
   {
     id: "sexualPreference",
@@ -49,7 +48,7 @@ export const questions: Question[] = [
     id: "nameInterviewer",
     text: "Nombre del entrevistador:",
     section: "sectionData",
-    questionType: "text"
+    questionType: "text",
   },
   {
     id: "endTimeInterview",
@@ -874,13 +873,43 @@ export const questions: Question[] = [
   {
     id: "patientWeightWomen",
     text: "",
-    options: ["38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51"],
+    options: [
+      "38",
+      "39",
+      "40",
+      "41",
+      "42",
+      "43",
+      "44",
+      "45",
+      "46",
+      "47",
+      "48",
+      "49",
+      "50",
+      "51",
+    ],
     section: "patientWeight",
   },
   {
     id: "patientHeightWomen",
     text: "",
-    options: ["144,8", "147,3", "149,9", "152,4", "154,9", "157,5", "160,0", "162,6", "165,1", "167,6", "170,2", "172,7", "175,3", "177,8"],
+    options: [
+      "144,8",
+      "147,3",
+      "149,9",
+      "152,4",
+      "154,9",
+      "157,5",
+      "160,0",
+      "162,6",
+      "165,1",
+      "167,6",
+      "170,2",
+      "172,7",
+      "175,3",
+      "177,8",
+    ],
     section: "patientHeight",
   },
   //QuestionM5

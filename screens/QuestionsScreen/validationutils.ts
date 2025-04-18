@@ -66,5 +66,15 @@ export const validateAnswers = (answers: AnswerState): ValidationResult => {
     errors.push("Altura debe estar entre 50-300 cm");
   }
 
+  // Validar que escogio alguna sustancia de questionK1a_list solo si questionK1a es "Sí"
+  const questionK1a = answers["questionK1a"] as string;
+  const substanceAnswers = answers["questionK1a_list"] as string[];
+  if (questionK1a === "si") {
+    if (!substanceAnswers || substanceAnswers.length === 0) {
+      isValid = false;
+      errors.push(`La pregunta "Seleccione el tipo de sustancias que haya usado:" es requerida`);
+    }
+  }
+
   return { isValid, errors };
 };

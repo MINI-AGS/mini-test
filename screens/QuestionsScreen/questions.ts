@@ -559,14 +559,14 @@ export const questions: Question[] = [
     text: "¿Ha vivido o ha sido testigo de un acontecimiento extremadamente traumático (...)?",
     options: ["si", "no"],
     section: "sectionI1",
-    required: true,
+    required: false,
   },
   {
     id: "questionI2",
     text: "¿Durante el pasado mes, ha revivido el evento de una manera angustiosa (...)?",
     options: ["si", "no"],
     section: "sectionI2",
-    required: true,
+    required: false,
   },
   {
     id: "questionI3a",

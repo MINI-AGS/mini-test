@@ -35,6 +35,7 @@ export interface Section {
       result?: string;
     }
   >;
+  moduleGroup?: string; // Nueva propiedad para agrupación
 }
 export interface Diagnosis {
   id: string;
@@ -47,4 +48,10 @@ export interface Diagnosis {
 export interface Flags {
   id: string;
   dependsOn: (answers: Record<string, string>) => boolean;
+}
+export interface ModuleGroup {
+  id: string;
+  title: string;
+  sectionIds: string[]; // IDs de secciones que pertenecen a este módulo
+  defaultExpanded?: boolean;
 }

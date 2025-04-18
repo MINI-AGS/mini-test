@@ -4,7 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import Toast from "react-native-toast-message";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import HomeScreen from "./screens/HomeScreen";
+import HomeScreen from "./screens/HomeScreen/homeScreen";
 import QuestionDisplay from "./screens/QuestionsScreen/questionPage";
 
 const Stack = createStackNavigator();

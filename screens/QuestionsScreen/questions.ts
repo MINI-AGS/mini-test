@@ -52,37 +52,6 @@ export const questions: Question[] = [
     questionType: "date",
     placeholder: "HH:MM",
   },
-  /**
-  {
-    id: "startTimeInterview",
-    text: "Hora en que inició la entrevista:",
-    section: "sectionData",
-    questionType: "text",
-    placeholder: "Ingrese su nombre completo",
-  },
-  {
-    id: "endTimeInterview",
-    text: "Hora en que terminó la entrevista:",
-    section: "sectionData",
-    questionType: "date",
-    placeholder: "HH:MM",
-  },
-  {
-    id: "interviewDate",
-    text: "Fecha de la entrevista",
-    section: "sectionData",
-    questionType: "date",
-    placeholder: "DD/MM/AAAA",
-    required: true,
-  },
-  {
-    id: "durationInterview",
-    text: "Duración total:",
-    section: "sectionData",
-    questionType: "int",
-    placeholder: "Ingrese la duración total de la entrevista en minutos",
-  },
-  */
   // Sección A
   {
     id: "questionA1",

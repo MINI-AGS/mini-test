@@ -5,6 +5,10 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
   },
+  required: {
+    color: "red",
+    fontWeight: "bold",
+  },
   section: {
     marginBottom: 20,
   },

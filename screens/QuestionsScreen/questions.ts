@@ -8,18 +8,22 @@ export const questions: Question[] = [
     text: "Nombre del paciente:",
     section: "sectionData",
     questionType: "text",
+    placeholder: "Ingrese su nombre completo",
   },
   {
     id: "gender",
     text: "Sexo:",
     options: ["Hombre", "Mujer", "Otro"],
     section: "sectionData",
+    required: true,
   },
   {
     id: "birhdate",
     text: "Fecha de nacimiento:",
     section: "sectionData",
-    questionType: "text"
+    questionType: "date",
+    placeholder: "DD/MM/AAAA",
+    required: true,
   },
   {
     id: "sexualPreference",
@@ -32,42 +36,50 @@ export const questions: Question[] = [
     text: "Estado de origen:",
     section: "sectionData",
     questionType: "text",
+    placeholder: "Ingrese su estado de origen",
   },
   {
     id: "stateResidence",
     text: "Estado de residencia:",
     section: "sectionData",
     questionType: "text",
+    placeholder: "Ingrese su estado de residencia",
   },
   {
     id: "startTimeInterview",
     text: "Hora en que inició la entrevista:",
     section: "sectionData",
-    questionType: "text",
+    questionType: "date",
+    placeholder: "HH:MM",
   },
   {
     id: "nameInterviewer",
     text: "Nombre del entrevistador:",
     section: "sectionData",
-    questionType: "text"
+    questionType: "text",
+    placeholder: "Ingrese su nombre completo",
   },
   {
     id: "endTimeInterview",
     text: "Hora en que terminó la entrevista:",
     section: "sectionData",
-    questionType: "text",
+    questionType: "date",
+    placeholder: "HH:MM",
   },
   {
     id: "interviewDate",
     text: "Fecha de la entrevista",
     section: "sectionData",
-    questionType: "text",
+    questionType: "date",
+    placeholder: "DD/MM/AAAA",
+    required: true,
   },
   {
     id: "durationInterview",
     text: "Duración total:",
     section: "sectionData",
-    questionType: "text",
+    questionType: "int",
+    placeholder: "Ingrese la duración total de la entrevista en minutos",
   },
   // Sección A
   {
@@ -76,12 +88,14 @@ export const questions: Question[] = [
     text: "¿En las últimas 2 semanas, se ha sentido deprimido o decaído la mayor parte del día, casi todos los días?",
     options: ["si", "no"], //
     section: "sectionA",
+    required: true,
   },
   {
     id: "questionA2",
     text: "¿En las últimas 2 semanas, ha perdido el interés en la mayoría de las cosas o ha disfrutado menos de las cosas que usualmente le agradaban?",
     options: ["si", "no"],
     section: "sectionA",
+    required: true,
   },
   // Preguntas de la sección A3
   {
@@ -274,24 +288,28 @@ export const questions: Question[] = [
     text: "¿Alguna vez ha tenido un período de tiempo en el que se ha sentido exaltado,eufórico, o tan lleno de energía, o seguro de sí mismo, que esto le ha ocasionado problemas u otras personas han pensado que usted no estaba en su estado habitual? (No considere períodos en el que estaba intoxicado con drogas o alcohol.)",
     options: ["si", "no"],
     section: "sectionD12",
+    required: true,
   },
   {
     id: "questionD1b",
     text: "¿En este momento se siente «exaltado», «eufórico», o lleno de energía?",
     options: ["si", "no"],
     section: "sectionD12",
+    required: true,
   },
   {
     id: "questionD2a",
     text: "¿Ha estado usted alguna vez persistentemente irritado durante varios días, de tal manera que tenía discusiones, peleaba o le gritaba a personas fuera de su familia? ¿Ha notado usted o los demás, que ha estado más irritable o que reacciona de una manera exagerada,comparado a otras personas, en situaciones que incluso usted creía justificadas?  ",
     options: ["si", "no"],
     section: "sectionD12",
+    required: true,
   },
   {
     id: "questionD2b",
     text: "¿En este momento se siente excesivamente irritable?",
     options: ["si", "no"],
     section: "sectionD12",
+    required: true,
   },
   //aqui viene un condicional
   //SI D1b O D2b = SÍ: EXPLORAR SOLAMENTE EL EPISODIO ACTUAL
@@ -350,12 +368,14 @@ export const questions: Question[] = [
     text: "En más de una ocasión, tuvo una crisis o ataques en los cuales se sintió súbitamente ansioso, asustado, incómodo o inquieto, incluso en situaciones en la cual la mayoría de las personas no se sentirían así?",
     options: ["si", "no"],
     section: "sectionE1a",
+    required: true,
   },
   {
     id: "questionE1b",
     text: "¿Estas crisis o ataques alcanzan su máxima expresión en los primeros 10 minutos?",
     options: ["si", "no"],
     section: "sectionE1b",
+    required: true,
   },
   {
     id: "questionE2",
@@ -460,6 +480,7 @@ export const questions: Question[] = [
     text: "¿Se ha sentido particularmente incómodo o ansioso en lugares o situaciones donde podría tener una crisis o ataque, o síntomas de una crisis como los que acabamos de discutir, o situaciones donde no dispondría de ayuda o escapar pudiera resultar un tanto difícil: como estar en una multitud, permanecer en fila, estar solo fuera de casa, permanecer solo en casa, viajar en autobús, tren o automóvil?",
     options: ["si", "no"],
     section: "sectionF1",
+    required: true,
   },
   {
     id: "questionF2",
@@ -473,6 +494,7 @@ export const questions: Question[] = [
     text: "¿En el pasado mes, tuvo miedo o sintió vergüenza de que lo estén observando, de ser el centro de atención o temió una humillación? Incluyendo cosas como el hablar en público, comer en público o con otros, el escribir mientras alguien le mira o el estar en situaciones sociales.",
     options: ["si", "no"],
     section: "sectionG1",
+    required: true,
   },
   {
     id: "questionG2",
@@ -498,6 +520,7 @@ export const questions: Question[] = [
     text: "¿Este último mes, ha estado usted molesto con pensamientos recurrentes, impulsos o imágenes no deseadas, desagradables, inapropiadas, intrusas o angustiosas? (...)",
     options: ["si", "no"],
     section: "sectionH1",
+    required: true,
   },
   {
     id: "questionH2",
@@ -516,6 +539,7 @@ export const questions: Question[] = [
     text: "¿En el pasado mes, ha hecho usted algo repetidamente, sin ser capaz de evitarlo, como lavar o limpiar en exceso (...)?",
     options: ["si", "no"],
     section: "sectionH4",
+    required: true,
   },
   {
     id: "questionH5",
@@ -535,12 +559,14 @@ export const questions: Question[] = [
     text: "¿Ha vivido o ha sido testigo de un acontecimiento extremadamente traumático (...)?",
     options: ["si", "no"],
     section: "sectionI1",
+    required: true,
   },
   {
     id: "questionI2",
     text: "¿Durante el pasado mes, ha revivido el evento de una manera angustiosa (...)?",
     options: ["si", "no"],
     section: "sectionI2",
+    required: true,
   },
   {
     id: "questionI3a",
@@ -621,6 +647,7 @@ export const questions: Question[] = [
     text: "¿En los últimos 12 meses, ha tomado 3 o más bebidas alcohólicas en un período de 3 horas en tres o más ocasiones?",
     options: ["si", "no"],
     section: "sectionJ1",
+    required: true,
   },
   {
     id: "questionJ2a",
@@ -693,6 +720,7 @@ export const questions: Question[] = [
     text: "¿En los últimos 12 meses, tomó alguna de estas sustancias, en más de una ocasión, para sentirse mejor o para cambiar su estado de ánimo?",
     options: ["si", "no"],
     section: "sectionK1",
+    required: true,
   },
   {
     id: "questionK1a_list",
@@ -825,20 +853,25 @@ export const questions: Question[] = [
     text: "¿Cuál es su estatura?",
     //options: ["", ""], //Chacar estos campos
     section: "sectionM1",
-    questionType: "text",
+    questionType: "int",
+    placeholder: "cm",
+    required: true,
   },
   {
     id: "questionM1b",
     text: "¿En los últimos 3 meses, cuál ha sido su peso más bajo?",
     //options: ["", ""], //Chacar estos campos
     section: "sectionM1",
-    questionType: "text",
+    questionType: "int",
+    placeholder: "kg sin decimales",
+    required: true,
   },
   {
     id: "questionM1c",
     text: "¿ES EL PESO DEL PACIENTE INFERIOR AL PESO MÍNIMO CORRESPONDIENTE A SU ESTATURA (VER TABLA A CONTINUACIÓN)?",
     options: ["si", "no"],
     section: "sectionM1",
+    required: true,
   },
   {
     id: "questionM2",
@@ -895,12 +928,14 @@ export const questions: Question[] = [
     text: "¿En los últimos 3 meses, se ha dado usted atracones, en los cuales comía grandes cantidades de alimentos en un período de 2 horas?",
     options: ["si", "no"],
     section: "sectionN1",
+    required: true,
   },
   {
     id: "questionN2",
     text: "¿En los últimos 3 meses, se ha dado usted al menos 2 atracones por semana?",
     options: ["si", "no"],
     section: "sectionN2",
+    required: true,
   },
   {
     id: "questionN3",
@@ -931,12 +966,14 @@ export const questions: Question[] = [
     text: "¿Se ha sentido excesivamente preocupado o ansioso debido a varias cosas durante los últimos 6 meses?",
     options: ["si", "no"],
     section: "sectionO1a",
+    required: true,
   },
   {
     id: "questionO1b",
     text: "¿Se presentan estas preocupaciones casi todos los días?",
     options: ["si", "no"],
     section: "sectionO1b",
+    required: true,
   },
   {
     id: "questionO2",

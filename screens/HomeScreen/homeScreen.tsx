@@ -23,7 +23,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
     En cumplimiento con la Ley Federal de Protección de Datos Personales, te informamos que:\n\n
     1. Tus datos personales serán protegidos y tratados de manera confidencial.\n
     2. La información recabada será utilizada exclusivamente para fines estadísticos y de mejora en nuestros servicios.\n
-    3. Puedes ejercer tus derechos ARCO (Acceso, Rectificación, Cancelación u Oposición) enviando un correo a privacidad@encuestasana.com.\n
+    3. Puedes ejercer tus derechos ARCO (Acceso, Rectificación, Cancelación u Oposición) enviando un correo a mini.test.ags@gmail.com\n
     4. No compartiremos tu información con terceros sin tu consentimiento expreso.\n\n
     Última actualización: ${new Date().getFullYear()}
   `;

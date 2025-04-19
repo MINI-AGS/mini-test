@@ -406,7 +406,14 @@ export const myDiagnoses: Diagnosis[] = [
     dependsOn: (answers: AnswerState) => {
       // Verificar si hay 1+ "si" en preguntas L1b a L7b
       const respuestasL13b = questions
-        .filter((q: Question) => q.section === "sectionL13b")
+        .filter((q: Question) => 
+          q.section === "sectionL1b" ||
+          q.section === "sectionL2b" ||
+          q.section === "sectionL3b" ||
+          q.section === "sectionL4b" ||
+          q.section === "sectionL5b" ||
+          q.section === "sectionL6b" ||
+          q.section === "sectionL7b")
         .filter((q: Question) => answers[q.id] === "si");
 
       const episodioDepresivoMayor = myDiagnoses.some(
@@ -419,7 +426,7 @@ export const myDiagnoses: Diagnosis[] = [
       );
 
       return (
-        respuestasL13b.length >= 1 || episodioDepresivoMayor || episodioManiaco
+        respuestasL13b.length >= 1 && (episodioDepresivoMayor || episodioManiaco)
       ); // Mostrar módulo si hay 1+ "si" en L13b o si hay diagnóstico de episodio depresivo mayor o maniaco
     },
   },

@@ -29,6 +29,7 @@ export const questions: Question[] = [
     text: "Preferencia sexual:",
     questionType: "text",
     section: "sectionData",
+    required: true,
   },
   {
     id: "stateOrigin",
@@ -36,6 +37,7 @@ export const questions: Question[] = [
     section: "sectionData",
     questionType: "text",
     placeholder: "Ingrese su estado de origen",
+    required: true,
   },
   {
     id: "stateResidence",
@@ -43,13 +45,15 @@ export const questions: Question[] = [
     section: "sectionData",
     questionType: "text",
     placeholder: "Ingrese su estado de residencia",
+    required: true,
   },
   {
     id: "nameInterviewer",
     text: "Nombre del entrevistador:",
     section: "sectionData",
-    questionType: "date",
-    placeholder: "HH:MM",
+    questionType: "text",
+    placeholder: "Ingrese el nombre de quien lo esta entrevistando",
+    required: true,
   },
   // Sección A
   {
@@ -345,7 +349,6 @@ export const questions: Question[] = [
     text: "¿Estas crisis o ataques alcanzan su máxima expresión en los primeros 10 minutos?",
     options: ["si", "no"],
     section: "sectionE1b",
-    required: true,
   },
   {
     id: "questionE2",
@@ -509,7 +512,6 @@ export const questions: Question[] = [
     text: "¿En el pasado mes, ha hecho usted algo repetidamente, sin ser capaz de evitarlo, como lavar o limpiar en exceso (...)?",
     options: ["si", "no"],
     section: "sectionH4",
-    required: true,
   },
   {
     id: "questionH5",
@@ -818,7 +820,7 @@ export const questions: Question[] = [
   //section M
   {
     id: "questionM1a",
-    text: "¿Cuál es su estatura en centímetros? ejemplo: 170.6",
+    text: "¿Cuál es su estatura en centímetros, sin decimales? Ejemplo: 170",
     //options: ["", ""], //Chacar estos campos
     section: "sectionM1",
     questionType: "int",
@@ -827,7 +829,7 @@ export const questions: Question[] = [
   },
   {
     id: "questionM1b",
-    text: "¿En los últimos 3 meses, cuál ha sido su peso más bajo en kilogramos? ejemplo: 50.5",
+    text: "¿En los últimos 3 meses, cuál ha sido su peso más bajo en kilogramos, sin decimales? Ejemplo: 50",
     //options: ["", ""], //Chacar estos campos
     section: "sectionM1",
     questionType: "int",
@@ -933,7 +935,6 @@ export const questions: Question[] = [
     text: "¿En los últimos 3 meses, se ha dado usted al menos 2 atracones por semana?",
     options: ["si", "no"],
     section: "sectionN2",
-    required: true,
   },
   {
     id: "questionN3",
@@ -971,7 +972,6 @@ export const questions: Question[] = [
     text: "¿Se presentan estas preocupaciones casi todos los días?",
     options: ["si", "no"],
     section: "sectionO1b",
-    required: true,
   },
   {
     id: "questionO2",

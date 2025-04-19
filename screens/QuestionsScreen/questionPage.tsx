@@ -8,24 +8,34 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
+import { RadioButton, Checkbox } from "react-native-paper";
 import styles from "./styles";
 
-import { RadioButton, Checkbox } from "react-native-paper";
+// Types
 import { Section, Question, AnswerState, Diagnosis } from "./types";
+
+// Data
 import { sections } from "./module";
 import { myDiagnoses } from "./diagnosis";
+
+// Utils
 import { getQuestionsWithDynamicText } from "./questionRender";
 import { validAnswers } from "tests/data/answerState";
-import db from "../../firebaseConfig";
-import RecordFirestoreService from "backend/RecordFirestoreService";
 import { construirRecord } from "./utils";
 import { validateAnswers } from "./validationutils";
-import ModalPopup from "./_ModalPopup";
 
+// Services
+import db from "../../firebaseConfig";
+import RecordFirestoreService from "backend/RecordFirestoreService";
+
+// Importaciones CORRECTAS basadas en tu estructura de archivos:
+import LoadingModal from "../modals/LoadingModal";
+import ErrorModal from "../modals/ErrorModal";
+import SuccessModal from "../modals/SuccessModal";
 const { height } = Dimensions.get("window");
 
 const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
-  // Estados combinados
+  // States
   const isTest: boolean = route.params?.test ?? false;
   const [answers, setAnswers] = useState<AnswerState>(
     isTest ? validAnswers : {},
@@ -40,22 +50,22 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
       moduloA: true,
     },
   );
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalTitle, setModalTitle] = useState("");
-  const [modalMessage, setModalMessage] = useState("");
   const [startTime, setStartTime] = useState<Date | null>(null);
   const scrollViewRef = useRef<ScrollView>(null);
 
-  // Efectos combinados
+  // Modal states
+  const [loadingModalVisible, setLoadingModalVisible] = useState(false);
+  const [errorModalVisible, setErrorModalVisible] = useState(false);
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
+
+  // Effects
   useEffect(() => {
     const newVisibleSections: string[] = ["sectionData", "sectionA"];
 
     sections.forEach((section) => {
       if (section.id === "sectionData" || section.id === "sectionA") return;
-
       if (section.dependsOn(answers)) {
         newVisibleSections.push(section.id);
       }
@@ -74,7 +84,7 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
     setStartTime(new Date());
   }, []);
 
-  // Funciones de manejo combinadas
+  // Handlers
   const handleAnswer = (questionId: string, answer: string) => {
     setAnswers((prev) => ({ ...prev, [questionId]: answer }));
   };
@@ -111,16 +121,15 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
   };
 
   const handleUpload = async () => {
-    setLoading(true);
+    setLoadingModalVisible(true);
 
     const { isValid, errors } = validateAnswers(answers);
 
     if (!isValid) {
-      setError(errors.join("\n"));
+      setLoadingModalVisible(false);
       setModalTitle("Errores de validación");
       setModalMessage(errors.join("\n"));
-      setModalVisible(true);
-      setLoading(false);
+      setErrorModalVisible(true);
       return;
     }
 
@@ -140,25 +149,20 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
         throw new Error(result.message);
       }
 
-      setModalTitle("Éxito");
-      setModalMessage("Datos guardados correctamente");
-      setModalVisible(true);
-      setSuccess(true);
+      setLoadingModalVisible(false);
+      setModalMessage("¡Los datos se guardaron correctamente!");
+      setSuccessModalVisible(true);
     } catch (error) {
-      setError(
-        error instanceof Error ? error.message : "Unknown error occurred",
-      );
+      setLoadingModalVisible(false);
       setModalTitle("Error");
       setModalMessage(
         error instanceof Error ? error.message : "Error al guardar los datos",
       );
-      setModalVisible(true);
-    } finally {
-      setLoading(false);
+      setErrorModalVisible(true);
     }
   };
 
-  // Lógica de agrupación de preguntas
+  // Group questions logic
   const groupQuestionsByModule = (questions: Question[]) => {
     const groups: Record<string, { title: string; questions: Question[] }> = {};
 
@@ -220,7 +224,7 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
                         {question.required && (
                           <Text style={styles.required}>
                             {" "}
-                            Pregunta Obligatoria
+                            Pregunta obligatoria
                           </Text>
                         )}
                       </Text>
@@ -325,10 +329,7 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
               <Text style={styles.diagnosisTitle}>
                 {diagnosis.name}{" "}
                 {diagnosis.result && (
-                  <>
-                    {" "}
-                    {(diagnosis.result as (answers: any) => string)(answers)}
-                  </>
+                  <>{(diagnosis.result as (answers: any) => string)(answers)}</>
                 )}
               </Text>
             </View>
@@ -342,23 +343,28 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
           </Text>
         </View>
 
-        {loading && <Text style={{ marginBottom: 16 }}>Guardando...</Text>}
-        {success && (
-          <Text style={{ color: "green", marginBottom: 16 }}>
-            Datos guardados con éxito.
-          </Text>
-        )}
-
         <TouchableOpacity style={styles.submitButton} onPress={handleUpload}>
           <Text style={styles.submitButtonText}>Finalizar y subir datos</Text>
         </TouchableOpacity>
       </ScrollView>
 
-      <ModalPopup
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
+      {/* Modals */}
+      <LoadingModal
+        visible={loadingModalVisible}
+        onCancel={() => setLoadingModalVisible(false)}
+      />
+
+      <ErrorModal
+        visible={errorModalVisible}
         title={modalTitle}
         message={modalMessage}
+        onClose={() => setErrorModalVisible(false)}
+      />
+
+      <SuccessModal
+        visible={successModalVisible}
+        message={modalMessage}
+        onClose={() => setSuccessModalVisible(false)}
       />
     </>
   );

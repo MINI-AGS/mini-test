@@ -117,6 +117,50 @@ const styles = StyleSheet.create({
     fontFamily: "monospace",
     fontSize: 13,
   },
+  modalOverlay: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+},
+modalContainer: {
+  width: '80%',
+  backgroundColor: 'white',
+  borderRadius: 10,
+  padding: 20,
+  alignItems: 'center',
+},
+modalTitle: {
+  fontSize: 18,
+  fontWeight: 'bold',
+  marginBottom: 10,
+  textAlign: 'center',
+},
+modalMessage: {
+  fontSize: 16,
+  marginVertical: 10,
+  textAlign: 'center',
+},
+modalButton: {
+  marginTop: 15,
+  padding: 10,
+  backgroundColor: '#2196F3',
+  borderRadius: 5,
+  minWidth: 100,
+  alignItems: 'center',
+},
+modalButtonText: {
+  color: 'white',
+  fontWeight: 'bold',
+},
+cancelButton: {
+  marginTop: 15,
+  padding: 10,
+},
+cancelButtonText: {
+  color: '#f44336',
+  fontWeight: 'bold',
+},
 });
 
 export default styles;

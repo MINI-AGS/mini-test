@@ -176,7 +176,7 @@ export function construirRecord(
     }
   });
 
-    /**
+  /**
  * Genera un UUID v4 compatible con todos los entornos,
  * incluso si "crypto.getRandomValues" o "crypto.randomUUID" no están disponibles.
  */
@@ -187,7 +187,7 @@ export function construirRecord(
     const interviewer = answers["nameInterviewer"] || "unknown";
     return `${name}_${interviewDate}_4_${interviewer}`;
   }
-  
+
   const recordId = generateUUID(); // Genera un nuevo UUID para el registro
 
   const hoursInterviewStart = String(startTimeInterview.getHours()).padStart(

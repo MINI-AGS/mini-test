@@ -730,7 +730,7 @@ export const sections: Section[] = [
   },
   {
     id: "sectionP1",
-    title: "Transtorno Antisocial De Personalidad",
+    title: "Trastorno Antisocial De Personalidad",
     moduleGroup: "moduloP",
     questions: questions.filter((q) => q.section === "sectionP1"),
     dependsOn: () => true,

@@ -263,15 +263,14 @@ export const sections: Section[] = [
       const resultado = tieneE3 && totalE4 >= 4;
 
       resultadoDiagnostico["Trastorno de angustia de por vida"] = resultado;
-
-      console.log(
-        "[Actualización E5] E3:",
-        tieneE3,
-        "| Síntomas E4:",
-        totalE4,
-        "| Resultado:",
-        resultado,
-      );
+      //console.log(
+      //  "[Actualización E5] E3:",
+      //  tieneE3,
+      //  "| Síntomas E4:",
+      //  totalE4,
+      //  "| Resultado:",
+      //  resultado
+      //);
 
       return resultado;
     },
@@ -291,16 +290,14 @@ export const sections: Section[] = [
       const resultadoE6 = !resultadoE5 && hayAlgunaE4;
 
       resultadoDiagnostico["Crisis actual"] = resultadoE6;
-
-      console.log(
-        "[Actualización E6] E5:",
-        resultadoE5,
-        "| Al menos un síntoma E4:",
-        hayAlgunaE4,
-        "| Resultado E6:",
-        resultadoE6,
-      );
-
+      //console.log(
+      //  "[Actualización E6] E5:",
+      //  resultadoE5,
+      //  "| Al menos un síntoma E4:",
+      //  hayAlgunaE4,
+      //  "| Resultado E6:",
+      //  resultadoE6
+      //);
       return resultadoE6;
     },
   },
@@ -313,12 +310,12 @@ export const sections: Section[] = [
       if (resultadoE6 === false) {
         const resultadoE7 = answers["questionE7"] === "si";
         resultadoDiagnostico["Trastorno de angustia actual"] = resultadoE7;
-        console.log(
-          "[Actualización E7] Respuesta E7:",
-          answers["questionE7"],
-          "| Resultado E7:",
-          resultadoE7,
-        );
+        //console.log(
+        //  "[Actualización E7] Respuesta E7:",
+        //  answers["questionE7"],
+        //  "| Resultado E7:",
+        //  resultadoE7
+        //);
         return true;
       }
       return false;
@@ -338,42 +335,42 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionF2"),
     dependsOn: (answers): boolean => {
       const respuestaF1 = answers["questionF1"];
-      console.log("[F2 dependsOn] F1 actual:", respuestaF1);
+      //console.log("[F2 dependsOn] F1 actual:", respuestaF1);
 
       if (respuestaF1 === undefined) {
-        console.log("[F2 dependsOn] F1 no respondido - ocultando F2");
+        //console.log("[F2 dependsOn] F1 no respondido - ocultando F2");
         return false;
       }
 
       if (respuestaF1 === "no") {
-        console.log('[F2 dependsOn] F1 es "no" - ocultando F2');
+        //console.log('[F2 dependsOn] F1 es "no" - ocultando F2');
         return false;
       }
 
-      console.log('[F2 dependsOn] F1 es "sí" - mostrando F2');
+      //console.log('[F2 dependsOn] F1 es "sí" - mostrando F2');
       return true;
     },
     beforeShow: (answers) => {
-      console.log("[F2 beforeShow] Valores actuales:", {
-        F1: answers["questionF1"],
-        F2: answers["questionF2"],
-      });
+      //console.log("[F2 beforeShow] Valores actuales:", {
+      //  F1: answers["questionF1"],
+      //  F2: answers["questionF2"],
+      //});
 
       if (answers["questionF1"] === "no" && answers["questionF2"] !== "no") {
-        console.log(
-          '[F2 beforeShow] Auto-respondiendo "no" en F2 porque F1 es "no"',
-        );
+        //console.log(
+        //  '[F2 beforeShow] Auto-respondiendo "no" en F2 porque F1 es "no"'
+        //);
         answers["questionF2"] = "no";
 
-        console.log("[F2 beforeShow] Valores después de actualizar:", {
-          F1: answers["questionF1"],
-          F2: answers["questionF2"],
-        });
+        //console.log("[F2 beforeShow] Valores después de actualizar:", {
+        //  F1: answers["questionF1"],
+        //  F2: answers["questionF2"],
+        //});
       } else {
-        console.log("[F2 beforeShow] No se requiere auto-respuesta", {
-          razón:
-            answers["questionF1"] !== "no" ? 'F1 no es "no"' : 'F2 ya es "no"',
-        });
+        //console.log("[F2 beforeShow] No se requiere auto-respuesta", {
+        //  razón:
+        //    answers["questionF1"] !== "no" ? 'F1 no es "no"' : 'F2 ya es "no"',
+        //});
       }
     },
   },

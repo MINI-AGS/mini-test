@@ -163,7 +163,7 @@ export function construirRecord(
         diagnosticosEvaluados[periodoId] = diagnosis.result(answers);
       }
     } else {
-      console.warn("No se encontró el diagnóstico:", id);
+      //console.warn("No se encontró el diagnóstico:", id);
       diagnosticosEvaluados[id] = "no"; // o cualquier otro valor que consideres apropiado
     }
   });

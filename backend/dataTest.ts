@@ -12,9 +12,9 @@ async function testRecordFirestoreService() {
   recordFirestoreService.collectionName = "data";
 
   // 1. PRUEBA DE CREACIÓN CON DATOS VÁLIDOS
-  console.log(
-    "--------------- PRUEBA 1: Crear usuario con datos válidos ---------------",
-  );
+  //console.log(
+  //  "--------------- PRUEBA 1: Crear usuario con datos válidos ---------------",
+  //);
   const validRecordId = `paciente_valid_${Date.now()}`;
   const validRecordData = createValidRecordData();
 
@@ -25,39 +25,39 @@ async function testRecordFirestoreService() {
         validRecordId,
         validRecordData,
       );
-    console.log("Resultado de creación con validación:", createResult);
+    //console.log("Resultado de creación con validación:", createResult);
 
     if (createResult.success) {
       // Obtener el usuario para verificar que se guardó correctamente
       const retrievedRecord =
         await recordFirestoreService.getRecord(validRecordId);
-      console.log(
-        "Record recuperado:",
-        retrievedRecord ? "Éxito" : "No encontrado",
-      );
+      //console.log(
+      //  "Record recuperado:",
+      //  retrievedRecord ? "Éxito" : "No encontrado",
+      //);
     }
   } catch (error) {
     console.error("Error en prueba 1:", error);
   }
 
   // 3. PRUEBA DE LISTAR USUARIOS
-  console.log("--------------- PRUEBA 3: Listar usuarios ---------------");
+  //console.log("--------------- PRUEBA 3: Listar usuarios ---------------");
   try {
     const records: Record[] = await recordFirestoreService.listRecords();
-    console.log(
-      `Se encontraron ${records.length} usuarios en la base de datos`,
-    );
+    //console.log(
+    //  `Se encontraron ${records.length} usuarios en la base de datos`,
+    //);
     // Mostrar solo nombres para no saturar la consola
-    console.log(
-      "Nombres de usuarios:",
-      records.map((record) => record.name || "Sin nombre"),
-    );
+    //console.log(
+    //  "Nombres de usuarios:",
+    //  records.map((record) => record.name || "Sin nombre"),
+    //);
   } catch (error) {
-    console.error("Error en prueba 3:", error);
+    //console.error("Error en prueba 3:", error);
   }
 
   // 4. PRUEBA DE REEMPLAZO DE USUARIO
-  console.log("--------------- PRUEBA 4: Reemplazar usuario ---------------");
+  //console.log("--------------- PRUEBA 4: Reemplazar usuario ---------------");
   try {
     // Primero verificamos que el usuario existe
     const recordExists = await recordFirestoreService.getRecord(validRecordId);
@@ -75,25 +75,25 @@ async function testRecordFirestoreService() {
         validRecordId,
         updatedRecordData,
       );
-      console.log(`Record ${validRecordId} reemplazado`);
+      //console.log(`Record ${validRecordId} reemplazado`);
 
       // Verificar los cambios
       const updatedRecord =
         await recordFirestoreService.getRecord(validRecordId);
-      console.log(
-        "Datos actualizados:",
-        updatedRecord
-          ? {
-              name: updatedRecord.name,
-              gender: updatedRecord.gender,
-            }
-          : "No encontrado",
-      );
+      //console.log(
+      //  "Datos actualizados:",
+      //  updatedRecord
+      //    ? {
+      //        name: updatedRecord.name,
+      //        gender: updatedRecord.gender,
+      //      }
+      //    : "No encontrado",
+      //);
     } else {
-      console.log(`El usuario ${validRecordId} no existe para reemplazar`);
+      //console.log(`El usuario ${validRecordId} no existe para reemplazar`);
     }
   } catch (error) {
-    console.error("Error en prueba 4:", error);
+    //console.error("Error en prueba 4:", error);
   }
 
   // 5. PRUEBA DE ELIMINACIÓN DE USUARIO
@@ -110,9 +110,9 @@ async function testRecordFirestoreService() {
   // }
 
   // 6. PRUEBA DE VALIDACIÓN DE SUSTANCIAS INCORRECTAS
-  console.log(
-    "--------------- PRUEBA 6: Validación de sustancias incorrectas ---------------",
-  );
+  //console.log(
+  //  "--------------- PRUEBA 6: Validación de sustancias incorrectas ---------------",
+  //);
   try {
     const invalidSubstanceData = {
       ...validRecordData,
@@ -121,10 +121,10 @@ async function testRecordFirestoreService() {
 
     const validationResult =
       recordFirestoreService.validateRecordData(invalidSubstanceData);
-    console.log(
-      "Resultado de validación de sustancias incorrectas:",
-      validationResult,
-    );
+    //console.log(
+    //  "Resultado de validación de sustancias incorrectas:",
+    //  validationResult,
+    //);
   } catch (error) {
     console.error("Error en prueba 6:", error);
   }
@@ -464,4 +464,3 @@ function createValidRecordData(): Record {
 
 // Exportar la función principal
 export default testRecordFirestoreService;
-

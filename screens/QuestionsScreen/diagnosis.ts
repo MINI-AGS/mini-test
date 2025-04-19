@@ -108,22 +108,22 @@ export const myDiagnoses: Diagnosis[] = [
       return relatedQuestions.some((q: Question) => answers[q.id] === "no");
     },
     result: (answers: AnswerState) => {
-      console.log("--- Evaluando si episodio hipomaníaco es actual/pasado ---");
+      //console.log("--- Evaluando si episodio hipomaníaco es actual/pasado ---");
       const D1b = answers["questionD1b"];
       const D2b = answers["questionD2b"];
 
-      console.log("Valor de D1b:", D1b);
-      console.log("Valor de D2b:", D2b);
+      //console.log("Valor de D1b:", D1b);
+      //console.log("Valor de D2b:", D2b);
 
       if (D1b === "si" || D2b === "si") {
-        console.log("Resultado: actual (porque D1b o D2b es SÍ)");
+        //console.log("Resultado: actual (porque D1b o D2b es SÍ)");
         return "actual";
       } else if (D1b === "no" && D2b === "no") {
-        console.log("Resultado: pasado (porque D1b y D2b son NO)");
+        //console.log("Resultado: pasado (porque D1b y D2b son NO)");
         return "pasado";
       }
 
-      console.log("Resultado: indeterminado (no cumple condiciones claras)");
+      //console.log("Resultado: indeterminado (no cumple condiciones claras)");
       return "indeterminado";
     },
   },
@@ -137,22 +137,22 @@ export const myDiagnoses: Diagnosis[] = [
       return relatedQuestions.some((q: Question) => answers[q.id] === "si");
     },
     result: (answers: AnswerState) => {
-      console.log("--- Evaluando si episodio hipomaníaco es actual/pasado ---");
+      //console.log("--- Evaluando si episodio hipomaníaco es actual/pasado ---");
       const D1b = answers["questionD1b"];
       const D2b = answers["questionD2b"];
 
-      console.log("Valor de D1b:", D1b);
-      console.log("Valor de D2b:", D2b);
+      //console.log("Valor de D1b:", D1b);
+      //console.log("Valor de D2b:", D2b);
 
       if (D1b === "si" || D2b === "si") {
-        console.log("Resultado: actual (porque D1b o D2b es SÍ)");
+        //console.log("Resultado: actual (porque D1b o D2b es SÍ)");
         return "actual";
       } else if (D1b === "no" && D2b === "no") {
-        console.log("Resultado: pasado (porque D1b y D2b son NO)");
+        //console.log("Resultado: pasado (porque D1b y D2b son NO)");
         return "pasado";
       }
 
-      console.log("Resultado: indeterminado (no cumple condiciones claras)");
+      //console.log("Resultado: indeterminado (no cumple condiciones claras)");
       return "indeterminado";
     },
   },
@@ -173,8 +173,8 @@ export const myDiagnoses: Diagnosis[] = [
       // Verifica si hay al menos 4 "si" en E4
       const tieneCuatroSi = respuestasE4.length >= 4;
 
-      return respuestasE3.length >= 1 && tieneCuatroSi // Retorna true si hay al menos 1 "si" en E3 y 4 "si" en E4)
-    }
+      return respuestasE3.length >= 1 && tieneCuatroSi; // Retorna true si hay al menos 1 "si" en E3 y 4 "si" en E4)
+    },
   },
   {
     id: "diagnosticE2",
@@ -188,8 +188,8 @@ export const myDiagnoses: Diagnosis[] = [
         .filter((q: Question) => q.section === "sectionE4")
         .filter((q: Question) => answers[q.id] === "si");
 
-    return respuestasE5 && respuestasE4.length >= 1; // Retorna true si hay al menos 1 "si" en E4 y diagnosticE1 es positivo
-    }
+      return respuestasE5 && respuestasE4.length >= 1; // Retorna true si hay al menos 1 "si" en E4 y diagnosticE1 es positivo
+    },
   },
   {
     id: "diagnosticE3",
@@ -200,8 +200,8 @@ export const myDiagnoses: Diagnosis[] = [
         .filter((q: Question) => q.section === "sectionE7")
         .filter((q: Question) => answers[q.id] === "si");
       return respuestasE7.length >= 1; // Retorna true si hay al menos 1 "si" en E7
-    }
-   },
+    },
+  },
   //MODULO F
   {
     id: "diagnosticF1",
@@ -215,14 +215,14 @@ export const myDiagnoses: Diagnosis[] = [
 
       // Si se cumplen ambas condiciones, podemos mostrar el diagnóstico
       return isF2AgoraphobiaNo && isE7AnxietyYes;
-    }
+    },
   },
   {
     id: "diagnosticF2",
     name: "TRASTORNO DE ANGUSTIA con agorafobia ACTUAL",
     dependsOn: (answers: AnswerState) => {
       // La sección F2 depende de que la respuesta a la pregunta F2 sea "no"
-      const isF2AgoraphobiaNo = answers["questionF2"] === "si"; 
+      const isF2AgoraphobiaNo = answers["questionF2"] === "si";
 
       // La sección E7 depende de que E7 sea "sí"
       const isE7AnxietyYes = answers["questionE7"] === "si"; // E7 es "sí"
@@ -345,10 +345,19 @@ export const myDiagnoses: Diagnosis[] = [
     dependsOn: (answers: AnswerState) => {
       // Verificar si hay 1+ "SI EXTRAÑO" en <<b>> o 2+ "SI" en <<b>>
       const respuestasL1 = questions
-        .filter((q: Question) => q.section === "sectionL1b" || q.section === "sectionL2b"
-        || q.section === "sectionL3b" || q.section === "sectionL4b" || q.section === "sectionL5b"
-        || q.section === "sectionL6b" || q.section === "sectionL7b" || q.section === "sectionL8b"
-        || q.section === "sectionL9b" || q.section === "sectionL10b")
+        .filter(
+          (q: Question) =>
+            q.section === "sectionL1b" ||
+            q.section === "sectionL2b" ||
+            q.section === "sectionL3b" ||
+            q.section === "sectionL4b" ||
+            q.section === "sectionL5b" ||
+            q.section === "sectionL6b" ||
+            q.section === "sectionL7b" ||
+            q.section === "sectionL8b" ||
+            q.section === "sectionL9b" ||
+            q.section === "sectionL10b",
+        )
         .filter(
           (q: Question) =>
             answers[q.id] === "si" || answers[q.id] === "si extraños",
@@ -364,17 +373,28 @@ export const myDiagnoses: Diagnosis[] = [
     dependsOn: (answers: AnswerState) => {
       // Verificar si hay 1+ "SI EXTRAÑO" en <<a>> o 2+ "SI" en <<a>> o si dio positivo a diagnósticoL1
       const respuestasL1 = questions
-        .filter((q: Question) => q.section === "sectionL1a" || q.section === "sectionL2a"
-        || q.section === "sectionL3a" || q.section === "sectionL4a" || q.section === "sectionL5a"
-        || q.section === "sectionL6a1" || q.section === "sectionL6a2" || q.section === "sectionL7a" 
-        || q.section === "sectionL8a" || q.section === "sectionL9a" || q.section === "sectionL10a")
+        .filter(
+          (q: Question) =>
+            q.section === "sectionL1a" ||
+            q.section === "sectionL2a" ||
+            q.section === "sectionL3a" ||
+            q.section === "sectionL4a" ||
+            q.section === "sectionL5a" ||
+            q.section === "sectionL6a1" ||
+            q.section === "sectionL6a2" ||
+            q.section === "sectionL7a" ||
+            q.section === "sectionL8a" ||
+            q.section === "sectionL9a" ||
+            q.section === "sectionL10a",
+        )
         .filter(
           (q: Question) =>
             answers[q.id] === "si" || answers[q.id] === "si extraños",
         );
       const respuestasL2 = myDiagnoses.some(
         (diagnosis) =>
-          diagnosis.id === "diagnosticL1" && diagnosis.dependsOn(answers));
+          diagnosis.id === "diagnosticL1" && diagnosis.dependsOn(answers),
+      );
       //Mostrar módulo si hay 1+ "SI EXTRAÑO" o 2+ "SI" en L11 o 1+ "SI" en L12
       return respuestasL1.length >= 2 || respuestasL2; // Mostrar módulo si hay 1+ "SI EXTRAÑO" o 2+ "SI" en L11 o 1+ "SI" en L12
     },
@@ -451,11 +471,20 @@ export const myDiagnoses: Diagnosis[] = [
 
       //Mostrar las preguntas solo cuando termino todas las preguntas de N5 y N7
       const N5Completado = questions
-        .filter((q: Question) => q.section === "sectionN1" || q.section === "sectionN2"
-        || q.section === "sectionN3" || q.section === "sectionN4" || q.section === "sectionN5")
+        .filter(
+          (q: Question) =>
+            q.section === "sectionN1" ||
+            q.section === "sectionN2" ||
+            q.section === "sectionN3" ||
+            q.section === "sectionN4" ||
+            q.section === "sectionN5",
+        )
         .every((q: Question) => answers[q.id] !== undefined);
 
-        return N5Completado &&(respuestasN5.length >= 1 || respuestasN7.length >= 1 || respuestasN8);
+      return (
+        N5Completado &&
+        (respuestasN5.length >= 1 || respuestasN7.length >= 1 || respuestasN8)
+      );
     },
   },
   {

@@ -6,21 +6,9 @@ export const validateAnswers = (answers: AnswerState): ValidationResult => {
   let errors: string[] = [];
   let successMessage: string | null = null;
 
-  // Validar preguntas requeridas
-  questions.forEach((question: Question) => {
-    if (question.required) {
-      const answer = answers[question.id];
-      if (!answer || (typeof answer === "string" && answer.trim() === "")) {
-        isValid = false;
-        errors.push(`La pregunta "${question.text}" es requerida,`);
-      }
-    }
-  });
-
   // validate gender
   const gender: string = answers["gender"] as string;
   if (gender !== "Hombre" && gender !== "Mujer" && gender !== "Otro") {
-    console.log("Género no válido");
     isValid = false;
     errors.push("Género no válido");
   }
@@ -28,7 +16,6 @@ export const validateAnswers = (answers: AnswerState): ValidationResult => {
   // validate birthdate, should be in format DD/MM/YYYY
   const birthdate: string = answers["birthdate"] as string;
   if (birthdate) {
-    console.log("Validando fecha de nacimiento:", birthdate);
     const birthdateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
     if (!birthdateRegex.test(birthdate)) {
       isValid = false;
@@ -42,16 +29,12 @@ export const validateAnswers = (answers: AnswerState): ValidationResult => {
         errors.push("Fecha de nacimiento no puede ser futura");
       }
     }
-  } else {
-    console.log("Fecha de nacimiento no proporcionada");
   }
 
   // Validación de peso y altura
   const weight: string = answers["questionM1b"] as string;
-  console.log("Validando peso:", weight);
 
   const height: string = answers["questionM1a"] as string;
-  console.log("Validando altura:", height);
 
   if (!weight || !height) {
     isValid = false;
@@ -70,6 +53,17 @@ export const validateAnswers = (answers: AnswerState): ValidationResult => {
     isValid = false;
     errors.push("Altura no válida");
   }
+
+  // Validar preguntas requeridas
+  questions.forEach((question: Question) => {
+    if (question.required) {
+      const answer = answers[question.id];
+      if (!answer || (typeof answer === "string" && answer.trim() === "")) {
+        isValid = false;
+        errors.push(`La pregunta "${question.text}" es requerida,`);
+      }
+    }
+  });
 
   // Si todas las validaciones pasan, establecer mensaje de éxito
   if (isValid && errors.length === 0) {

@@ -1,5 +1,4 @@
-import { AnswerState, Diagnosis, ValidationResult } from "./types";;
-import { Timestamp } from "firebase/firestore";
+import { AnswerState, Diagnosis, ValidationResult } from "./types";
 import { Record } from "@shared/interfaces";
 
 /**

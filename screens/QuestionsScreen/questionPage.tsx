@@ -249,6 +249,8 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
                                         !isOptionChecked(question.id, option),
                                       )
                                     }
+                                    color="#6200ee"
+                                    uncheckedColor="#888"
                                   />
                                   <Text style={styles.optionLabel}>
                                     {option}

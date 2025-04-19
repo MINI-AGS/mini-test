@@ -9,3 +9,10 @@ declare global {
     interface RootParamList extends RootStackParamList {}
   }
 }
+
+export interface ErrorModalProps {
+  visible: boolean;
+  title: string;
+  message: string;
+  onClose: () => void;
+}

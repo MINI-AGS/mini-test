@@ -2,6 +2,7 @@ import { AnswerState, Diagnosis, ValidationResult } from "./types";
 import { v4 as uuidv4 } from "uuid";
 import { Timestamp } from "firebase/firestore";
 import { Record } from "@shared/interfaces";
+import { randomUUID as nodeRandomUUID } from "crypto";
 
 /**
  * Convierte de forma segura un valor que puede ser string o array de strings a minúsculas
@@ -168,7 +169,9 @@ export function construirRecord(
     }
   });
 
-  const recordId = uuidv4();
+  const recordId = typeof crypto?.getRandomValues === "function"
+    ? uuidv4()
+    : nodeRandomUUID(); // Genera un ID único para el registro
 
   const hoursInterviewStart = String(startTimeInterview.getHours()).padStart(
     2,

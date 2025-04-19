@@ -128,6 +128,11 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
     if (!isValid) {
       setLoadingModalVisible(false);
       setModalTitle("Errores de validación");
+      const totalErrors = errors.length;
+      if (totalErrors > 3) {
+        errors.length = 3; // Limitar a 3 errores
+      }
+      errors.push("... y " + (totalErrors - 3) + " errores más.");
       setModalMessage(errors.join("\n"));
       setErrorModalVisible(true);
       return;

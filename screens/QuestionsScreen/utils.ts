@@ -8,10 +8,6 @@ import { Record } from "@shared/interfaces";
  * incluso si "crypto.getRandomValues" o "crypto.randomUUID" no están disponibles.
  */
 function generateUUID(): string {
-  if (typeof crypto?.getRandomValues === "function") {
-    return uuidv4();
-  }
-
   // Fallback manual (no criptográficamente seguro, pero compatible)
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
     const r = (Math.random() * 16) | 0;

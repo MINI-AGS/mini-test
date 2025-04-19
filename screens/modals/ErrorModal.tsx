@@ -1,13 +1,7 @@
 import React from "react";
 import { Modal, View, Text, TouchableOpacity } from "react-native";
 import styles from "../QuestionsScreen/styles";
-
-interface ErrorModalProps {
-  visible: boolean;
-  title: string;
-  message: string;
-  onClose: () => void;
-}
+import { ErrorModalProps } from "../navigation";
 
 const ErrorModal: React.FC<ErrorModalProps> = ({
   visible,

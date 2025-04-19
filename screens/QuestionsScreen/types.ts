@@ -10,6 +10,12 @@ export interface ValidationResult {
   successMessage: string | null;
 }
 
+export interface CustomCheckboxProps {
+  checked: boolean;
+  onPress: () => void;
+  label: string;
+}
+
 export interface Question {
   id: string;
   text: string;

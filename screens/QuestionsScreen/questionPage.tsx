@@ -8,18 +8,12 @@ import {
   Dimensions,
   TouchableOpacity,
   Platform,
+  Image,
 } from "react-native";
-import { RadioButton, Checkbox } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
+import { RadioButton } from "react-native-paper";
 import styles from "./styles";
 
-import {
-  Section,
-  Question,
-  AnswerState,
-  Diagnosis,
-  CustomCheckboxProps,
-} from "./types";
+import { Question, AnswerState, CustomCheckboxProps } from "./types";
 import { sections } from "./module";
 import { myDiagnoses } from "./diagnosis";
 
@@ -408,6 +402,12 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({
                                 ? 10
                                 : 100
                             }
+                          />
+                        )}
+                        {question.image && (
+                          <Image
+                            source={{ uri: question.image }}
+                            style={styles.questionImage}
                           />
                         )}
                       </View>

@@ -288,49 +288,55 @@ const styles = StyleSheet.create({
     backgroundColor: "#3F88C5",
   },
   modalOverlay: {
-  flex: 1,
-  justifyContent: 'center',
-  alignItems: 'center',
-  backgroundColor: 'rgba(0, 0, 0, 0.5)',
-},
-modalContainer: {
-  width: '80%',
-  backgroundColor: 'white',
-  borderRadius: 10,
-  padding: 20,
-  alignItems: 'center',
-},
-modalTitle: {
-  fontSize: 18,
-  fontWeight: 'bold',
-  marginBottom: 10,
-  textAlign: 'center',
-},
-modalMessage: {
-  fontSize: 16,
-  marginVertical: 10,
-  textAlign: 'center',
-},
-modalButton: {
-  marginTop: 15,
-  padding: 10,
-  backgroundColor: '#2196F3',
-  borderRadius: 5,
-  minWidth: 100,
-  alignItems: 'center',
-},
-modalButtonText: {
-  color: 'white',
-  fontWeight: 'bold',
-},
-cancelButton: {
-  marginTop: 15,
-  padding: 10,
-},
-cancelButtonText: {
-  color: '#f44336',
-  fontWeight: 'bold',
-},
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContainer: {
+    width: "80%",
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 20,
+    alignItems: "center",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  modalMessage: {
+    fontSize: 16,
+    marginVertical: 10,
+    textAlign: "center",
+  },
+  modalButton: {
+    marginTop: 15,
+    padding: 10,
+    backgroundColor: "#2196F3",
+    borderRadius: 5,
+    minWidth: 100,
+    alignItems: "center",
+  },
+  modalButtonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  cancelButton: {
+    marginTop: 15,
+    padding: 10,
+  },
+  cancelButtonText: {
+    color: "#f44336",
+    fontWeight: "bold",
+  },
+  questionImage: {
+    width: "100%",
+    aspectRatio: 1322 / 342, // maintain image aspect ratio
+    borderRadius: 5,
+    resizeMode: "cover",
+  },
 });
 
 export default styles;

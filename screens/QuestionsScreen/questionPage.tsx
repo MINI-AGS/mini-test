@@ -7,9 +7,10 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import { RadioButton, Checkbox } from "react-native-paper";
-import styles from "./styles";
+import styles, { getModuleGroupStyle } from "./styles";
 
 // Types
 import { Section, Question, AnswerState, Diagnosis } from "./types";
@@ -33,6 +34,70 @@ import LoadingModal from "../modals/LoadingModal";
 import ErrorModal from "../modals/ErrorModal";
 import SuccessModal from "../modals/SuccessModal";
 const { height } = Dimensions.get("window");
+
+// Define interface for checkbox props
+interface CustomCheckboxProps {
+  checked: boolean;
+  onPress: () => void;
+  label: string;
+}
+
+// Custom checkbox styles
+const checkboxStyles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 8,
+    paddingVertical: 6,
+  },
+  box: {
+    width: 22,
+    height: 22,
+    borderWidth: 2,
+    borderColor: "#6200ee",
+    borderRadius: 3,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "transparent",
+    marginRight: 10,
+    ...Platform.select({
+      web: {
+        cursor: "pointer",
+      },
+    }),
+  },
+  checked: {
+    backgroundColor: "#6200ee",
+  },
+  checkmark: {
+    color: "white",
+    fontSize: 14,
+    fontWeight: "bold",
+  },
+  label: {
+    fontSize: 15,
+    flex: 1,
+  },
+});
+
+// Custom Checkbox component that works better cross-platform
+const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ checked, onPress, label }) => {
+  return (
+    <TouchableOpacity 
+      onPress={onPress} 
+      style={checkboxStyles.container}
+      activeOpacity={0.7}
+    >
+      <View style={[
+        checkboxStyles.box,
+        checked && checkboxStyles.checked
+      ]}>
+        {checked && <Text style={checkboxStyles.checkmark}>✓</Text>}
+      </View>
+      <Text style={checkboxStyles.label}>{label}</Text>
+    </TouchableOpacity>
+  );
+};
 
 const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
   // States
@@ -197,6 +262,22 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
 
   const groupedQuestions = groupQuestionsByModule(dynamicQuestions);
 
+  // Render checkbox option with proper typing
+  const renderCheckboxOption = (question: Question, option: string) => {
+    const isChecked = isOptionChecked(question.id, option);
+    const handlePress = () => 
+      handleCheckboxAnswer(question.id, option, !isChecked);
+    
+    return (
+      <CustomCheckbox
+        key={option}
+        checked={isChecked}
+        onPress={handlePress}
+        label={option}
+      />
+    );
+  };
+
   return (
     <>
       <ScrollView
@@ -206,7 +287,7 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
       >
         {Object.entries(groupedQuestions).map(
           ([groupId, { title, questions }]) => (
-            <View key={groupId} style={styles.moduleGroup}>
+            <View key={groupId} style={getModuleGroupStyle(groupId)}>
               <TouchableOpacity
                 onPress={() => toggleGroup(groupId)}
                 style={styles.moduleGroupHeader}
@@ -231,32 +312,9 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
                       {question.options ? (
                         <View style={styles.options}>
                           {question.questionType === "checkbox"
-                            ? question.options.map((option) => (
-                                <View
-                                  key={option}
-                                  style={styles.checkboxOption}
-                                >
-                                  <Checkbox
-                                    status={
-                                      isOptionChecked(question.id, option)
-                                        ? "checked"
-                                        : "unchecked"
-                                    }
-                                    onPress={() =>
-                                      handleCheckboxAnswer(
-                                        question.id,
-                                        option,
-                                        !isOptionChecked(question.id, option),
-                                      )
-                                    }
-                                    color="#6200ee"
-                                    uncheckedColor="#888"
-                                  />
-                                  <Text style={styles.optionLabel}>
-                                    {option}
-                                  </Text>
-                                </View>
-                              ))
+                            ? question.options.map((option) => 
+                                renderCheckboxOption(question, option)
+                              )
                             : question.options.map((option) => (
                                 <View key={option} style={styles.radioOption}>
                                   <RadioButton

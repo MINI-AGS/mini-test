@@ -5,6 +5,32 @@ import { Record } from "@shared/interfaces";
 import { randomUUID as nodeRandomUUID } from "crypto";
 
 /**
+ * Genera un UUID v4 compatible con todos los entornos,
+ * incluso si "crypto.getRandomValues" o "crypto.randomUUID" no están disponibles.
+ */
+function generateUUID(): string {
+  if (typeof crypto?.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+
+  if (typeof crypto?.getRandomValues === "function") {
+    return uuidv4();
+  }
+
+  if (typeof nodeRandomUUID === "function") {
+    return nodeRandomUUID();
+  }
+
+  // Fallback manual (no criptográficamente seguro, pero compatible)
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
+
+/**
  * Convierte de forma segura un valor que puede ser string o array de strings a minúsculas
  * @param value - El valor a convertir (string, string[] o undefined)
  * @returns La versión en minúsculas del valor
@@ -169,9 +195,7 @@ export function construirRecord(
     }
   });
 
-  const recordId = typeof crypto?.getRandomValues === "function"
-    ? uuidv4()
-    : nodeRandomUUID(); // Genera un ID único para el registro
+  const recordId = generateUUID(); // Genera un nuevo UUID para el registro
 
   const hoursInterviewStart = String(startTimeInterview.getHours()).padStart(
     2,

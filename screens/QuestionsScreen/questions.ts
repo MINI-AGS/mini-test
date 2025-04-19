@@ -29,7 +29,6 @@ export const questions: Question[] = [
     text: "Preferencia sexual:",
     questionType: "text",
     section: "sectionData",
-    required: true,
   },
   {
     id: "stateOrigin",
@@ -37,7 +36,6 @@ export const questions: Question[] = [
     section: "sectionData",
     questionType: "text",
     placeholder: "Ingrese su estado de origen",
-    required: true,
   },
   {
     id: "stateResidence",
@@ -45,7 +43,6 @@ export const questions: Question[] = [
     section: "sectionData",
     questionType: "text",
     placeholder: "Ingrese su estado de residencia",
-    required: true,
   },
   {
     id: "nameInterviewer",
@@ -53,7 +50,6 @@ export const questions: Question[] = [
     section: "sectionData",
     questionType: "text",
     placeholder: "Ingrese el nombre de quien lo esta entrevistando",
-    required: true,
   },
   // Sección A
   {

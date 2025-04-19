@@ -120,10 +120,11 @@ export function construirRecord(
     const [day, month, year] = birthdateAnswer.split("/").map(Number);
     birthdate = new Date(year, month - 1, day);
   } else {
-    birthdate = null;
+    // 01/01/1900
+    birthdate = new Date(1900, 0, 1);
   }
 
-  console.log("birthdate", birthdate);
+  //console.log("birthdate", birthdate);
 
   const diagnosticosRelevantes = [
     "diagnosticA1",

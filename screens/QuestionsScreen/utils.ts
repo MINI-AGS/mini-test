@@ -99,9 +99,18 @@ export function construirRecord(
   myDiagnoses: Diagnosis[],
   startTimeInterview: Date,
 ): Record {
-  const birthdate = answers["birthdate"]
-    ? new Date(answers["birthdate"])
-    : null;
+  const birthdateAnswer = answers["birthdate"] as string;
+  let birthdate: Date | null = null;
+
+  if (birthdateAnswer && birthdateAnswer !== "") {
+    const [day, month, year] = birthdateAnswer.split("/").map(Number);
+    birthdate = new Date(year, month - 1, day);
+  } else {
+    // 01/01/1900
+    birthdate = new Date(1900, 0, 1);
+  }
+
+  //console.log("birthdate", birthdate);
 
   const diagnosticosRelevantes = [
     "diagnosticA1",

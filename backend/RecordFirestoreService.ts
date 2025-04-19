@@ -213,43 +213,43 @@ class RecordFirestoreService {
       isValid = false;
     }
 
-    if (record.name !== undefined && typeof record.name !== "string") {
-      errors.push("El nombre debe ser una cadena de texto");
-      isValid = false;
-    }
+    //if (record.name !== undefined && typeof record.name !== "string") {
+    //  errors.push("El nombre debe ser una cadena de texto");
+    //  isValid = false;
+    //}
 
-    if (
-      record.birthdate !== undefined &&
-      !(record.birthdate instanceof Object) &&
-      !("seconds" in (record.birthdate || {}))
-    ) {
-      errors.push("La fecha de nacimiento debe ser un objeto Timestamp");
-      isValid = false;
-    }
+    //if (
+    //  record.birthdate !== undefined &&
+    //  !(record.birthdate instanceof Object) &&
+    //  !("seconds" in (record.birthdate || {}))
+    //) {
+    //  errors.push("La fecha de nacimiento debe ser un objeto Timestamp");
+    //  isValid = false;
+    //}
 
-    if (
-      record.nameInterviewer !== undefined &&
-      typeof record.nameInterviewer !== "string"
-    ) {
-      errors.push("El nombre del entrevistador debe ser una cadena de texto");
-      isValid = false;
-    }
+    //if (
+    //  record.nameInterviewer !== undefined &&
+    //  typeof record.nameInterviewer !== "string"
+    //) {
+    //  errors.push("El nombre del entrevistador debe ser una cadena de texto");
+    //  isValid = false;
+    //}
 
-    if (
-      record.sexualPreference !== undefined &&
-      typeof record.sexualPreference !== "string"
-    ) {
-      errors.push("La preferencia sexual debe ser una cadena de texto");
-      isValid = false;
-    }
+    //if (
+    //  record.sexualPreference !== undefined &&
+    //  typeof record.sexualPreference !== "string"
+    //) {
+    //  errors.push("La preferencia sexual debe ser una cadena de texto");
+    //  isValid = false;
+    //}
 
-    if (
-      record.stateResidence !== undefined &&
-      typeof record.stateResidence !== "string"
-    ) {
-      errors.push("El estado de residencia debe ser una cadena de texto");
-      isValid = false;
-    }
+    //if (
+    //  record.stateResidence !== undefined &&
+    //  typeof record.stateResidence !== "string"
+    //) {
+    //  errors.push("El estado de residencia debe ser una cadena de texto");
+    //  isValid = false;
+    //}
 
     return isValid;
   }

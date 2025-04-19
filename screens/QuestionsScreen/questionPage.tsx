@@ -212,11 +212,14 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({
         record,
       );
 
+      console.log("Result:", result);
+
       if (!result.success) throw new Error(result.message);
 
       setLoadingModalVisible(false);
       navigation.navigate("EndScreen", { answers });
     } catch (error) {
+      console.error("Error uploading data:", error);
       setLoadingModalVisible(false);
       setModalTitle("Error");
       setModalMessage(

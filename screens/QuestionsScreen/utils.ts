@@ -4,6 +4,20 @@ import { Timestamp } from "firebase/firestore";
 import { Record } from "@shared/interfaces";
 
 /**
+ * Genera un UUID v4 compatible con todos los entornos,
+ * incluso si "crypto.getRandomValues" o "crypto.randomUUID" no están disponibles.
+ */
+function generateUUID(): string {
+  // Fallback manual (no criptográficamente seguro, pero compatible)
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
+
+/**
  * Convierte de forma segura un valor que puede ser string o array de strings a minúsculas
  * @param value - El valor a convertir (string, string[] o undefined)
  * @returns La versión en minúsculas del valor
@@ -168,7 +182,7 @@ export function construirRecord(
     }
   });
 
-  const recordId = uuidv4();
+  const recordId = generateUUID(); // Genera un nuevo UUID para el registro
 
   const hoursInterviewStart = String(startTimeInterview.getHours()).padStart(
     2,

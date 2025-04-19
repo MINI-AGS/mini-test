@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { RadioButton, Checkbox } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import styles from "./styles";
 
 // Types
@@ -31,10 +32,12 @@ import RecordFirestoreService from "backend/RecordFirestoreService";
 // Importaciones CORRECTAS basadas en tu estructura de archivos:
 import LoadingModal from "../modals/LoadingModal";
 import ErrorModal from "../modals/ErrorModal";
-import SuccessModal from "../modals/SuccessModal";
 const { height } = Dimensions.get("window");
 
-const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
+const QuestionPage: React.FC<{ navigation: any; route: any }> = ({
+  route,
+  navigation,
+}) => {
   // States
   const isTest: boolean = route.params?.test ?? false;
   const [answers, setAnswers] = useState<AnswerState>(
@@ -56,7 +59,6 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
   // Modal states
   const [loadingModalVisible, setLoadingModalVisible] = useState(false);
   const [errorModalVisible, setErrorModalVisible] = useState(false);
-  const [successModalVisible, setSuccessModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalMessage, setModalMessage] = useState("");
 
@@ -150,8 +152,8 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
       }
 
       setLoadingModalVisible(false);
-      setModalMessage("¡Los datos se guardaron correctamente!");
-      setSuccessModalVisible(true);
+      // Navegar a EndScreen con las respuestas
+      navigation.navigate("EndScreen", { answers });
     } catch (error) {
       setLoadingModalVisible(false);
       setModalTitle("Error");
@@ -323,26 +325,6 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
           ),
         )}
 
-        {myDiagnoses.map((diagnosis) =>
-          visibleSections.includes(diagnosis.id) ? (
-            <View key={diagnosis.id} style={styles.diagnosis}>
-              <Text style={styles.diagnosisTitle}>
-                {diagnosis.name}{" "}
-                {diagnosis.result && (
-                  <>{(diagnosis.result as (answers: any) => string)(answers)}</>
-                )}
-              </Text>
-            </View>
-          ) : null,
-        )}
-
-        <View style={styles.debug}>
-          <Text style={styles.debugTitle}>Estado de respuestas:</Text>
-          <Text style={styles.debugText}>
-            {JSON.stringify(answers, null, 2)}
-          </Text>
-        </View>
-
         <TouchableOpacity style={styles.submitButton} onPress={handleUpload}>
           <Text style={styles.submitButtonText}>Finalizar y subir datos</Text>
         </TouchableOpacity>
@@ -359,12 +341,6 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
         title={modalTitle}
         message={modalMessage}
         onClose={() => setErrorModalVisible(false)}
-      />
-
-      <SuccessModal
-        visible={successModalVisible}
-        message={modalMessage}
-        onClose={() => setSuccessModalVisible(false)}
       />
     </>
   );

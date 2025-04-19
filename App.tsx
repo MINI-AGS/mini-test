@@ -6,21 +6,34 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "./screens/HomeScreen/homeScreen";
 import QuestionDisplay from "./screens/QuestionsScreen/questionPage";
+import EndScreen from "./screens/EndScreen/EndScreen";
+import { RootStackParamList } from "./screens/navigation";
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
     <>
       <NavigationContainer>
         <StatusBar style="auto" />
-        <Stack.Navigator>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Questions" component={QuestionDisplay} />
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{ title: "Inicio" }}
+          />
+          <Stack.Screen
+            name="Questions"
+            component={QuestionDisplay}
+            options={{ title: "Cuestionario" }}
+          />
+          <Stack.Screen
+            name="EndScreen"
+            component={EndScreen}
+            options={{ title: "Resultados" }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
-
-      {/* 👇 Este Toast debe ir aquí para que los popups funcionen en cualquier pantalla */}
       <Toast />
     </>
   );

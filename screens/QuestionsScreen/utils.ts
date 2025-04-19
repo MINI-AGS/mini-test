@@ -1,20 +1,6 @@
 import { AnswerState, Diagnosis, ValidationResult } from "./types";
-import { v4 as uuidv4 } from "uuid";
 import { Timestamp } from "firebase/firestore";
 import { Record } from "@shared/interfaces";
-
-/**
- * Genera un UUID v4 compatible con todos los entornos,
- * incluso si "crypto.getRandomValues" o "crypto.randomUUID" no están disponibles.
- */
-function generateUUID(): string {
-  // Fallback manual (no criptográficamente seguro, pero compatible)
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-    const r = (Math.random() * 16) | 0;
-    const v = c === "x" ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-}
 
 /**
  * Convierte de forma segura un valor que puede ser string o array de strings a minúsculas
@@ -190,6 +176,18 @@ export function construirRecord(
     }
   });
 
+    /**
+ * Genera un UUID v4 compatible con todos los entornos,
+ * incluso si "crypto.getRandomValues" o "crypto.randomUUID" no están disponibles.
+ */
+  function generateUUID(): string {
+    // Para crear una UUID v4, necesitamos 16 bytes, vamos a concatenar el valor de name_interviewDate_4_interviewer
+    const name = answers["name"] || "unknown";
+    const interviewDate = Timestamp.now().toDate().toISOString();
+    const interviewer = answers["nameInterviewer"] || "unknown";
+    return `${name}_${interviewDate}_4_${interviewer}`;
+  }
+  
   const recordId = generateUUID(); // Genera un nuevo UUID para el registro
 
   const hoursInterviewStart = String(startTimeInterview.getHours()).padStart(

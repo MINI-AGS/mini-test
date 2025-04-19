@@ -598,7 +598,7 @@ export const sections: Section[] = [
   {
     id: "sectionL1a",
     title: "Trastornos psicóticos",
-    //Mostar las preguntas que esten en la seccion L12 y L11 intercaladas
+    moduleGroup: "moduloL",
     questions: questions.filter(
       (q: Question) => q.section === "sectionL1a",
     ),
@@ -607,6 +607,7 @@ export const sections: Section[] = [
   {
     id: "sectionL1b",
     title: "",
+    moduleGroup: "moduloL",
     questions: questions.filter(
       (q: Question) => q.section === "sectionL1b",
     ),
@@ -622,6 +623,7 @@ export const sections: Section[] = [
   {
     id: "sectionL2a",
     title: "",
+    moduleGroup: "moduloL",
     questions: questions.filter(
       (q: Question) => q.section === "sectionL2a",
     ),
@@ -643,6 +645,7 @@ export const sections: Section[] = [
   {
     id: "sectionL2b",
     title: "",
+    moduleGroup: "moduloL",
     questions: questions.filter(
       (q: Question) => q.section === "sectionL2b",
     ),
@@ -658,6 +661,7 @@ export const sections: Section[] = [
   {
     id: "sectionL3a",
     title: "",
+    moduleGroup: "moduloL",
     questions: questions.filter(
       (q: Question) => q.section === "sectionL3a",
     ),
@@ -679,6 +683,7 @@ export const sections: Section[] = [
   {
     id: "sectionL3b",
     title: "",
+    moduleGroup: "moduloL",
     questions: questions.filter(
       (q: Question) => q.section === "sectionL3b",
     ),
@@ -694,6 +699,7 @@ export const sections: Section[] = [
   {
     id: "sectionL4a",
     title: "",
+    moduleGroup: "moduloL",
     questions: questions.filter(
       (q: Question) => q.section === "sectionL4a",
     ),
@@ -715,6 +721,7 @@ export const sections: Section[] = [
   {
     id: "sectionL4b",
     title: "",
+    moduleGroup: "moduloL",
     questions: questions.filter(
       (q: Question) => q.section === "sectionL4b",
     ),
@@ -730,6 +737,7 @@ export const sections: Section[] = [
   {
     id: "sectionL5a",
     title: "",
+    moduleGroup: "moduloL",
     questions: questions.filter((q: Question) => q.section === "sectionL5a"),
     dependsOn: (answers: AnswerState) => {
       // Mostrar solo si L1a es "no", L1b es "si" o "no" y L6 es false
@@ -749,6 +757,7 @@ export const sections: Section[] = [
   {
     id: "sectionL5b",
     title: "",
+    moduleGroup: "moduloL",
     questions: questions.filter(
       (q: Question) => q.section === "sectionL5b",
     ),
@@ -765,6 +774,7 @@ export const sections: Section[] = [
   {
     id: "sectionL6",
     title: "",
+    moduleGroup: "moduloL",
     questions: questions.filter((q: Question) => q.section === "sectionL6a1"),
     dependsOn: (answers: AnswerState) => {
       // Obtener las respuestas de las questions L1b, L2b, L3b, L4b
@@ -795,6 +805,7 @@ export const sections: Section[] = [
   {
     id: "sectionL6a2",
     title: "",
+    moduleGroup: "moduloL",
     questions: questions.filter((q: Question) => q.section === "sectionL6a2"),
     dependsOn: (answers: AnswerState) => {
       const preguntasL6 = questions.filter(
@@ -806,6 +817,7 @@ export const sections: Section[] = [
   {
     id: "sectionL6b",
     title: "",
+    moduleGroup: "moduloL",
     questions: questions.filter((q: Question) => q.section === "sectionL6b"),
     dependsOn: (answers: AnswerState) => {
       const preguntasL6 = questions.filter(
@@ -817,6 +829,7 @@ export const sections: Section[] = [
   {
     id: "sectionL7",
     title: "",
+    moduleGroup: "moduloL",
     questions: questions.filter((q: Question) => q.section === "sectionL7a"),
     dependsOn: (answers: AnswerState) => {
       const preguntasL6a = questions.filter(
@@ -832,6 +845,7 @@ export const sections: Section[] = [
   {
     id: "sectionL7b",
     title: "",
+    moduleGroup: "moduloL",
     questions: questions.filter((q: Question) => q.section === "sectionL7b"),
     dependsOn: (answers: AnswerState) => {
       const preguntasL7 = questions.filter(
@@ -843,6 +857,7 @@ export const sections: Section[] = [
   {
     id: "sectionL810",
     title: "",
+    moduleGroup: "moduloL",
     questions: questions.filter((q: Question) => q.section === "sectionL8b" || q.section === "sectionL9b" || q.section === "sectionL10b"),
     dependsOn: (answers: AnswerState) => {
       const preguntasL6b = questions.filter(

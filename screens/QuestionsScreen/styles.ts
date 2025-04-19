@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
       default: 14,
     }),
     color: "#333",
-    flex: 1,
     paddingRight: Platform.select({
       web: 16,
       default: 12,
@@ -333,9 +332,11 @@ const styles = StyleSheet.create({
   },
   questionImage: {
     width: "100%",
+    maxWidth: width * 0.8,
+    maxHeight: 200,
     aspectRatio: 1322 / 342, // maintain image aspect ratio
     borderRadius: 5,
-    resizeMode: "cover",
+    resizeMode: "contain",
   },
 });
 

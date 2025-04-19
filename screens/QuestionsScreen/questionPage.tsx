@@ -10,7 +10,7 @@ import {
   Platform,
 } from "react-native";
 import { RadioButton, Checkbox } from "react-native-paper";
-import styles, { getModuleGroupStyle } from "./styles";
+import styles from "./styles";
 
 // Types
 import { Section, Question, AnswerState, Diagnosis } from "./types";
@@ -293,7 +293,7 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
       >
         {Object.entries(groupedQuestions).map(
           ([groupId, { title, questions }]) => (
-            <View key={groupId} style={getModuleGroupStyle(groupId)}>
+            <View key={groupId} style={styles.moduleGroup}>
               <TouchableOpacity
                 onPress={() => toggleGroup(groupId)}
                 style={styles.moduleGroupHeader}

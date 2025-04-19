@@ -7,6 +7,7 @@ export interface AnswerState {
 export interface ValidationResult {
   isValid: boolean;
   errors: string[];
+  successMessage: string | null;
 }
 
 export interface Question {

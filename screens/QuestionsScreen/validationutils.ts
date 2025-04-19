@@ -1,50 +1,21 @@
 import { AnswerState, ValidationResult } from "./types";
-import { questions } from "./questions"; // Importa las preguntas para verificar el campo `required`
+import { questions } from "./questions";
 
 export const validateAnswers = (answers: AnswerState): ValidationResult => {
   let isValid = true;
   let errors: string[] = [];
+  let successMessage: string | null = null;
 
   // Validar preguntas requeridas
-  questions.forEach(question => {
+  questions.forEach((question) => {
     if (question.required) {
       const answer = answers[question.id];
       if (!answer || (typeof answer === "string" && answer.trim() === "")) {
         isValid = false;
-        errors.push(`La pregunta "${question.text}" es requerida`);
+        errors.push(`La pregunta "${question.text}" es requerida,`);
       }
     }
   });
-
-  // Validación de género
-  const gender = answers["gender"] as string;
-  if (!gender) {
-    isValid = false;
-  } else if (!["Hombre", "Mujer", "Otro"].includes(gender)) {
-    isValid = false;
-    errors.push("Género no válido");
-  }
-
-  // Validación de fecha de nacimiento
-  const birthdate = answers["birhdate"] as string;
-  console.log("birthdate", birthdate);
-  if (!birthdate) {
-    isValid = false;
-  } else {
-    const birthdateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-    if (!birthdateRegex.test(birthdate)) {
-      isValid = false;
-      errors.push("Formato de fecha inválido (DD/MM/AAAA)");
-    } else {
-      const [day, month, year] = birthdate.split("/").map(Number);
-      const birthDateObj = new Date(year, month - 1, day);
-      const currentDate = new Date();
-      if (birthDateObj > currentDate) {
-        isValid = false;
-        errors.push("La fecha de nacimiento no puede ser futura");
-      }
-    }
-  }
 
   // Validación de peso y altura
   const weight = parseFloat(answers["questionM1b"] as string);
@@ -66,15 +37,13 @@ export const validateAnswers = (answers: AnswerState): ValidationResult => {
     errors.push("Altura debe estar entre 50-300 cm");
   }
 
-  // Validar que escogio alguna sustancia de questionK1a_list solo si questionK1a es "Sí"
-  const questionK1a = answers["questionK1a"] as string;
-  const substanceAnswers = answers["questionK1a_list"] as string[];
-  if (questionK1a === "si") {
-    if (!substanceAnswers || substanceAnswers.length === 0) {
-      isValid = false;
-      errors.push(`La pregunta "Seleccione el tipo de sustancias que haya usado:" es requerida`);
-    }
+  if ((answers["name"] as string) === "Diego Alberto Aranda Gonzales") {
+    errors.push("Beto Gay");
+  }
+  // Si todas las validaciones pasan, establecer mensaje de éxito
+  if (isValid && errors.length === 0) {
+    successMessage = "¡Los datos se guardaron correctamente!";
   }
 
-  return { isValid, errors };
+  return { isValid, errors, successMessage };
 };

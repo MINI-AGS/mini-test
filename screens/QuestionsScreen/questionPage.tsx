@@ -81,17 +81,18 @@ const checkboxStyles = StyleSheet.create({
 });
 
 // Custom Checkbox component that works better cross-platform
-const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ checked, onPress, label }) => {
+const CustomCheckbox: React.FC<CustomCheckboxProps> = ({
+  checked,
+  onPress,
+  label,
+}) => {
   return (
-    <TouchableOpacity 
-      onPress={onPress} 
+    <TouchableOpacity
+      onPress={onPress}
       style={checkboxStyles.container}
       activeOpacity={0.7}
     >
-      <View style={[
-        checkboxStyles.box,
-        checked && checkboxStyles.checked
-      ]}>
+      <View style={[checkboxStyles.box, checked && checkboxStyles.checked]}>
         {checked && <Text style={checkboxStyles.checkmark}>✓</Text>}
       </View>
       <Text style={checkboxStyles.label}>{label}</Text>
@@ -265,9 +266,9 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
   // Render checkbox option with proper typing
   const renderCheckboxOption = (question: Question, option: string) => {
     const isChecked = isOptionChecked(question.id, option);
-    const handlePress = () => 
+    const handlePress = () =>
       handleCheckboxAnswer(question.id, option, !isChecked);
-    
+
     return (
       <CustomCheckbox
         key={option}
@@ -312,12 +313,12 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
                       {question.options ? (
                         <View style={styles.options}>
                           {question.questionType === "checkbox"
-                            ? question.options.map((option) => 
-                                renderCheckboxOption(question, option)
+                            ? question.options.map((option) =>
+                                renderCheckboxOption(question, option),
                               )
                             : question.options.map((option) => (
                                 <View key={option} style={styles.radioOption}>
-                                  <RadioButton
+                                  <RadioButton.Android
                                     value={option}
                                     status={
                                       answers[question.id] === option
@@ -327,6 +328,8 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
                                     onPress={() =>
                                       handleAnswer(question.id, option)
                                     }
+                                    uncheckedColor="#444"
+                                    color="#6200ee"
                                   />
                                   <Text style={styles.radioLabel}>
                                     {option}
@@ -431,3 +434,4 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({ route }) => {
 };
 
 export default QuestionPage;
+

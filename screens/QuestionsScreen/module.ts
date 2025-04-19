@@ -39,10 +39,10 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionA4a"),
     dependsOn: (answers) => {
       const relatedQuestionsA3 = questions.filter(
-        (q) => q.section === "sectionA3"
+        (q) => q.section === "sectionA3",
       );
       const relatedQuestionsA = questions.filter(
-        (q) => q.section === "sectionA"
+        (q) => q.section === "sectionA",
       );
 
       const totalYesAnswers = [
@@ -60,7 +60,7 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionA4b"),
     dependsOn: (answers) => {
       const relatedQuestions = questions.filter(
-        (q) => q.section === "sectionA4a"
+        (q) => q.section === "sectionA4a",
       );
       return relatedQuestions.some((q) => answers[q.id] === "si");
     },
@@ -72,7 +72,7 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionA5b"),
     dependsOn: (answers) => {
       const majorDepressiveEpisode = myDiagnoses.find(
-        (diagnosis) => diagnosis.id === "diagnosticA1"
+        (diagnosis) => diagnosis.id === "diagnosticA1",
       );
       const a5aCondition = safeToLowerCase(answers["questionA2"]) === "si";
       const a4bCondition = safeToLowerCase(answers["questionA4b"]) === "si";
@@ -86,14 +86,15 @@ export const sections: Section[] = [
   },
   {
     id: "sectionA6",
-    title: "Modulo A6 - Durante las ultimas 2 semanas, cuando se sintio deprimido o sin interes en la mayoria de las cosas:",
+    title:
+      "Modulo A6 - Durante las ultimas 2 semanas, cuando se sintio deprimido o sin interes en la mayoria de las cosas:",
     moduleGroup: "moduloA",
     questions: questions.filter((q) => q.section === "sectionA6"),
     dependsOn: (answers) => {
       const a5aCondition = safeToLowerCase(answers["questionA2"]) === "si";
       const a5bCondition = safeToLowerCase(answers["questionA5b"]) === "si";
       const majorDepressiveEpisode = myDiagnoses.find(
-        (diagnosis) => diagnosis.id === "diagnosticA1"
+        (diagnosis) => diagnosis.id === "diagnosticA1",
       );
       const sectionA5bVisible =
         (majorDepressiveEpisode?.dependsOn(answers) ?? false) &&
@@ -110,13 +111,13 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionB1"),
     dependsOn: (answers) => {
       const majorDepressiveEpisode = myDiagnoses.find(
-        (diagnosis) => diagnosis.id === "diagnosticA1"
+        (diagnosis) => diagnosis.id === "diagnosticA1",
       );
       const majorDepressiveEpisodeRecidivist = myDiagnoses.find(
-        (diagnosis) => diagnosis.id === "diagnosticA2"
+        (diagnosis) => diagnosis.id === "diagnosticA2",
       );
       const majorDepressiveEpisodeWithMelancholic = myDiagnoses.find(
-        (diagnosis) => diagnosis.id === "diagnosticA3"
+        (diagnosis) => diagnosis.id === "diagnosticA3",
       );
       return !(
         majorDepressiveEpisode?.dependsOn(answers) ||
@@ -126,7 +127,7 @@ export const sections: Section[] = [
     },
     isDisabled: (answers) => {
       const majorDepressiveEpisode = myDiagnoses.find(
-        (diagnosis) => diagnosis.id === "diagnosticA1"
+        (diagnosis) => diagnosis.id === "diagnosticA1",
       );
       return majorDepressiveEpisode?.dependsOn(answers) ?? false;
     },
@@ -138,7 +139,7 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionB2"),
     dependsOn: (answers) => {
       const relatedQuestions = questions.filter(
-        (q) => q.section === "sectionB1"
+        (q) => q.section === "sectionB1",
       );
       return relatedQuestions.some((q) => answers[q.id] === "si");
     },
@@ -150,7 +151,7 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionB3"),
     dependsOn: (answers) => {
       const relatedQuestions = questions.filter(
-        (q) => q.section === "sectionB2"
+        (q) => q.section === "sectionB2",
       );
       return relatedQuestions.some((q) => answers[q.id] === "no");
     },
@@ -162,10 +163,10 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionB4"),
     dependsOn: (answers) => {
       const relatedQuestionsB3 = questions.filter(
-        (q) => q.section === "sectionB3"
+        (q) => q.section === "sectionB3",
       );
       const totalYesAnswersB3 = relatedQuestionsB3.filter(
-        (q) => answers[q.id] === "si"
+        (q) => answers[q.id] === "si",
       ).length;
       return totalYesAnswersB3 >= 2;
     },
@@ -214,7 +215,7 @@ export const sections: Section[] = [
         "questionD3g",
       ];
       const positiveSymptoms = d3Symptoms.filter(
-        (q) => answers[q] === "si"
+        (q) => answers[q] === "si",
       ).length;
       const condition1 = positiveSymptoms >= 3;
       const condition2 =
@@ -239,7 +240,7 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionE1b"),
     dependsOn: (answers) => {
       const relatedQuestions = questions.filter(
-        (q) => q.section === "sectionE1a"
+        (q) => q.section === "sectionE1a",
       );
       return relatedQuestions.some((q) => answers[q.id] === "si");
     },
@@ -255,7 +256,8 @@ export const sections: Section[] = [
   },
   {
     id: "sectionE4",
-    title: "Modulo sectionE4 - Durante la peor crísis que usted puede recordar:",
+    title:
+      "Modulo sectionE4 - Durante la peor crísis que usted puede recordar:",
     moduleGroup: "moduloE",
     questions: questions.filter((q) => q.section === "sectionE4"),
     dependsOn: (answers) => {
@@ -277,14 +279,14 @@ export const sections: Section[] = [
 
       resultadoDiagnostico["Trastorno de angustia de por vida"] = resultado;
 
-      console.log(
-        "[Actualización E5] E3:",
-        tieneE3,
-        "| Síntomas E4:",
-        totalE4,
-        "| Resultado:",
-        resultado
-      );
+      //console.log(
+      //  "[Actualización E5] E3:",
+      //  tieneE3,
+      //  "| Síntomas E4:",
+      //  totalE4,
+      //  "| Resultado:",
+      //  resultado
+      //);
 
       return resultado;
     },
@@ -306,14 +308,14 @@ export const sections: Section[] = [
 
       resultadoDiagnostico["Crisis actual"] = resultadoE6;
 
-      console.log(
-        "[Actualización E6] E5:",
-        resultadoE5,
-        "| Al menos un síntoma E4:",
-        hayAlgunaE4,
-        "| Resultado E6:",
-        resultadoE6
-      );
+      //console.log(
+      //  "[Actualización E6] E5:",
+      //  resultadoE5,
+      //  "| Al menos un síntoma E4:",
+      //  hayAlgunaE4,
+      //  "| Resultado E6:",
+      //  resultadoE6
+      //);
 
       return resultadoE6;
     },
@@ -328,12 +330,12 @@ export const sections: Section[] = [
       if (resultadoE6 === false) {
         const resultadoE7 = answers["questionE7"] === "si";
         resultadoDiagnostico["Trastorno de angustia actual"] = resultadoE7;
-        console.log(
-          "[Actualización E7] Respuesta E7:",
-          answers["questionE7"],
-          "| Resultado E7:",
-          resultadoE7
-        );
+        //console.log(
+        //  "[Actualización E7] Respuesta E7:",
+        //  answers["questionE7"],
+        //  "| Resultado E7:",
+        //  resultadoE7
+        //);
         return true;
       }
       return false;
@@ -353,42 +355,42 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionF2"),
     dependsOn: (answers): boolean => {
       const respuestaF1 = answers["questionF1"];
-      console.log("[F2 dependsOn] F1 actual:", respuestaF1);
+      //console.log("[F2 dependsOn] F1 actual:", respuestaF1);
 
       if (respuestaF1 === undefined) {
-        console.log("[F2 dependsOn] F1 no respondido - ocultando F2");
+        //console.log("[F2 dependsOn] F1 no respondido - ocultando F2");
         return false;
       }
 
       if (respuestaF1 === "no") {
-        console.log('[F2 dependsOn] F1 es "no" - ocultando F2');
+        //console.log('[F2 dependsOn] F1 es "no" - ocultando F2');
         return false;
       }
 
-      console.log('[F2 dependsOn] F1 es "sí" - mostrando F2');
+      //console.log('[F2 dependsOn] F1 es "sí" - mostrando F2');
       return true;
     },
     beforeShow: (answers) => {
-      console.log("[F2 beforeShow] Valores actuales:", {
-        F1: answers["questionF1"],
-        F2: answers["questionF2"],
-      });
+      //console.log("[F2 beforeShow] Valores actuales:", {
+      //  F1: answers["questionF1"],
+      //  F2: answers["questionF2"],
+      //});
 
       if (answers["questionF1"] === "no" && answers["questionF2"] !== "no") {
-        console.log(
-          '[F2 beforeShow] Auto-respondiendo "no" en F2 porque F1 es "no"'
-        );
+        //console.log(
+        //  '[F2 beforeShow] Auto-respondiendo "no" en F2 porque F1 es "no"'
+        //);
         answers["questionF2"] = "no";
 
-        console.log("[F2 beforeShow] Valores después de actualizar:", {
-          F1: answers["questionF1"],
-          F2: answers["questionF2"],
-        });
+        //console.log("[F2 beforeShow] Valores después de actualizar:", {
+        //  F1: answers["questionF1"],
+        //  F2: answers["questionF2"],
+        //});
       } else {
-        console.log("[F2 beforeShow] No se requiere auto-respuesta", {
-          razón:
-            answers["questionF1"] !== "no" ? 'F1 no es "no"' : 'F2 ya es "no"',
-        });
+        //console.log("[F2 beforeShow] No se requiere auto-respuesta", {
+        //  razón:
+        //    answers["questionF1"] !== "no" ? 'F1 no es "no"' : 'F2 ya es "no"',
+        //});
       }
     },
   },
@@ -406,7 +408,7 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionG2"),
     dependsOn: (answers) => {
       const relatedQuestions = questions.filter(
-        (q) => q.section === "sectionG1"
+        (q) => q.section === "sectionG1",
       );
       return relatedQuestions.some((q) => answers[q.id] === "si");
     },
@@ -418,7 +420,7 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionG3"),
     dependsOn: (answers) => {
       const relatedQuestions = questions.filter(
-        (q) => q.section === "sectionG2"
+        (q) => q.section === "sectionG2",
       );
       return relatedQuestions.some((q) => answers[q.id] === "si");
     },
@@ -430,7 +432,7 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionG4"),
     dependsOn: (answers) => {
       const relatedQuestions = questions.filter(
-        (q) => q.section === "sectionG3"
+        (q) => q.section === "sectionG3",
       );
       return relatedQuestions.some((q) => answers[q.id] === "si");
     },
@@ -449,7 +451,7 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionH2"),
     dependsOn: (answers) => {
       const relatedQuestions = questions.filter(
-        (q) => q.section === "sectionH1"
+        (q) => q.section === "sectionH1",
       );
       return relatedQuestions.some((q) => answers[q.id] === "si");
     },
@@ -461,7 +463,7 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionH3"),
     dependsOn: (answers) => {
       const relatedQuestions = questions.filter(
-        (q) => q.section === "sectionH2"
+        (q) => q.section === "sectionH2",
       );
       return relatedQuestions.some((q) => answers[q.id] === "si");
     },
@@ -472,14 +474,10 @@ export const sections: Section[] = [
     moduleGroup: "moduloH",
     questions: questions.filter((q) => q.section === "sectionH4"),
     dependsOn: (answers) => {
-      const h1Questions = questions.filter(
-        (q) => q.section === "sectionH1"
-      );
+      const h1Questions = questions.filter((q) => q.section === "sectionH1");
       const h1IsNo = h1Questions.some((q) => answers[q.id] === "no");
 
-      const h2Questions = questions.filter(
-        (q) => q.section === "sectionH2"
-      );
+      const h2Questions = questions.filter((q) => q.section === "sectionH2");
       const h1IsSiAndH2IsNo =
         h1Questions.some((q) => answers[q.id] === "si") &&
         h2Questions.some((q) => answers[q.id] === "no");
@@ -493,12 +491,8 @@ export const sections: Section[] = [
     moduleGroup: "moduloH",
     questions: questions.filter((q) => q.section === "sectionH5"),
     dependsOn: (answers) => {
-      const h3Questions = questions.filter(
-        (q) => q.section === "sectionH3"
-      );
-      const h4Questions = questions.filter(
-        (q) => q.section === "sectionH4"
-      );
+      const h3Questions = questions.filter((q) => q.section === "sectionH3");
+      const h4Questions = questions.filter((q) => q.section === "sectionH4");
       return (
         h3Questions.some((q) => answers[q.id] === "si") ||
         h4Questions.some((q) => answers[q.id] === "si")
@@ -511,9 +505,7 @@ export const sections: Section[] = [
     moduleGroup: "moduloH",
     questions: questions.filter((q) => q.section === "sectionH6"),
     dependsOn: (answers) => {
-      const h5Questions = questions.filter(
-        (q) => q.section === "sectionH5"
-      );
+      const h5Questions = questions.filter((q) => q.section === "sectionH5");
       return h5Questions.some((q) => answers[q.id] === "si");
     },
   },
@@ -531,7 +523,7 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionI2"),
     dependsOn: (answers) => {
       const relatedQuestions = questions.filter(
-        (q) => q.section === "sectionI1"
+        (q) => q.section === "sectionI1",
       );
       return relatedQuestions.some((q) => answers[q.id] === "si");
     },
@@ -543,7 +535,7 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionI3"),
     dependsOn: (answers) => {
       const relatedQuestions = questions.filter(
-        (q) => q.section === "sectionI2"
+        (q) => q.section === "sectionI2",
       );
       return relatedQuestions.some((q) => answers[q.id] === "si");
     },
@@ -571,11 +563,9 @@ export const sections: Section[] = [
         .filter((q) => answers[q.id] === "si");
       const tiene2oMasEnI3 = respuestasI3.length >= 2;
 
-      const preguntasI4 = questions.filter(
-        (q) => q.section === "sectionI4"
-      );
+      const preguntasI4 = questions.filter((q) => q.section === "sectionI4");
       const I4Completado = preguntasI4.every(
-        (q) => answers[q.id] !== undefined
+        (q) => answers[q.id] !== undefined,
       );
 
       return tiene2oMasEnI3 && I4Completado;
@@ -595,7 +585,7 @@ export const sections: Section[] = [
     questions: questions.filter((q) => q.section === "sectionJ2"),
     dependsOn: (answers) => {
       const relatedQuestions = questions.filter(
-        (q) => q.section === "sectionJ1"
+        (q) => q.section === "sectionJ1",
       );
       return relatedQuestions.some((q) => answers[q.id] === "si");
     },
@@ -606,11 +596,9 @@ export const sections: Section[] = [
     moduleGroup: "moduloJ",
     questions: questions.filter((q) => q.section === "sectionJ3"),
     dependsOn: (answers): boolean => {
-      const preguntasJ2 = questions.filter(
-        (q) => q.section === "sectionJ2"
-      );
+      const preguntasJ2 = questions.filter((q) => q.section === "sectionJ2");
       const J2Completo = preguntasJ2.every(
-        (q) => answers[q.id] !== undefined && answers[q.id] !== null
+        (q) => answers[q.id] !== undefined && answers[q.id] !== null,
       );
       const respuestasSiJ2 = J2Completo
         ? preguntasJ2.filter((q) => answers[q.id] === "si").length
@@ -620,7 +608,8 @@ export const sections: Section[] = [
   },
   {
     id: "sectionK1",
-    title: "Modulo K - Trastornos asociados al uso de sustancias psicoactivas no alcohólicas",
+    title:
+      "Modulo K - Trastornos asociados al uso de sustancias psicoactivas no alcohólicas",
     moduleGroup: "moduloK",
     questions: questions.filter((q) => q.section === "sectionK1"),
     dependsOn: (answers) => true,
@@ -634,7 +623,8 @@ export const sections: Section[] = [
   },
   {
     id: "sectionK2",
-    title: "Modulo K2 - Considerando su uso del tipo de droga, en los últimos 12 meses:",
+    title:
+      "Modulo K2 - Considerando su uso del tipo de droga, en los últimos 12 meses:",
     moduleGroup: "moduloK",
     questions: questions.filter((q) => q.section === "sectionK2"),
     dependsOn: (answers) => answers["questionK1a_list"],
@@ -644,7 +634,7 @@ export const sections: Section[] = [
     title: "Módulo L - Trastornos psicóticos",
     moduleGroup: "moduloL",
     questions: questions.filter(
-      (q) => q.section === "sectionL12" || q.section === "sectionL11"
+      (q) => q.section === "sectionL12" || q.section === "sectionL11",
     ),
     dependsOn: (answers) => true,
   },
@@ -682,11 +672,9 @@ export const sections: Section[] = [
     moduleGroup: "moduloM",
     questions: questions.filter((q) => q.section === "sectionM6"),
     dependsOn: (answers) => {
-      const preguntasM4 = questions.filter(
-        (q) => q.section === "sectionM4"
-      );
+      const preguntasM4 = questions.filter((q) => q.section === "sectionM4");
       const respuestasSiM4 = preguntasM4.filter(
-        (q) => answers[q.id] === "si"
+        (q) => answers[q.id] === "si",
       ).length;
       const isFemale = questions
         .filter((q) => q.section === "sectionData")
@@ -768,7 +756,8 @@ export const sections: Section[] = [
   },
   {
     id: "sectionO3",
-    title: "modulo O3 - En los últimos 6 meses: cuando estaba ansioso, casi todo el tiempo:",
+    title:
+      "modulo O3 - En los últimos 6 meses: cuando estaba ansioso, casi todo el tiempo:",
     moduleGroup: "moduloO",
     questions: questions.filter((q) => q.section === "sectionO3"),
     dependsOn: (answers) => answers["questionO2"] === "si",
@@ -786,13 +775,12 @@ export const sections: Section[] = [
     moduleGroup: "moduloP",
     questions: questions.filter((q) => q.section === "sectionP2"),
     dependsOn: (answers) => {
-      const preguntasP1 = questions.filter(
-        (q) => q.section === "sectionP1"
-      );
+      const preguntasP1 = questions.filter((q) => q.section === "sectionP1");
       const respuestasSiP1 = preguntasP1.filter(
-        (q) => answers[q.id] === "si"
+        (q) => answers[q.id] === "si",
       ).length;
       return respuestasSiP1 >= 2;
     },
   },
 ];
+

@@ -24,9 +24,9 @@ class RecordFirestoreService {
     try {
       const docRef = doc(this.db, this.collectionName, "ejemplos");
       await setDoc(docRef, { test: true });
-      console.log("Firestore connection successful");
+      //console.log("Firestore connection successful");
     } catch (error) {
-      console.error("Error connecting to Firestore:", error);
+      //console.error("Error connecting to Firestore:", error);
       throw error;
     }
   }
@@ -37,9 +37,9 @@ class RecordFirestoreService {
       const docRef = doc(this.db, this.collectionName, recordId);
       // Usando setDoc con la opción merge: false para asegurar que solo se use para crear
       await setDoc(docRef, record, { merge: false });
-      console.log(`Record ${recordId} successfully created`);
+      //console.log(`Record ${recordId} successfully created`);
     } catch (error) {
-      console.error(`Error creating record ${recordId}:`, error);
+      //console.error(`Error creating record ${recordId}:`, error);
       throw error;
     }
   }
@@ -55,7 +55,7 @@ class RecordFirestoreService {
       }
       return null;
     } catch (error) {
-      console.error(`Error getting record ${recordId}:`, error);
+      //console.error(`Error getting record ${recordId}:`, error);
       throw error;
     }
   }
@@ -73,7 +73,7 @@ class RecordFirestoreService {
 
       return records;
     } catch (error) {
-      console.error("Error listing records:", error);
+      //console.error("Error listing records:", error);
       throw error;
     }
   }
@@ -83,9 +83,9 @@ class RecordFirestoreService {
     try {
       const docRef = doc(this.db, this.collectionName, recordId);
       await deleteDoc(docRef);
-      console.log(`Record ${recordId} successfully deleted`);
+      //console.log(`Record ${recordId} successfully deleted`);
     } catch (error) {
-      console.error(`Error deleting record ${recordId}:`, error);
+      //console.error(`Error deleting record ${recordId}:`, error);
       throw error;
     }
   }
@@ -99,9 +99,9 @@ class RecordFirestoreService {
       // Luego creamos uno nuevo con los datos actualizados
       await this.createRecord(recordId, newRecordData);
 
-      console.log(`Record ${recordId} successfully replaced`);
+      //console.log(`Record ${recordId} successfully replaced`);
     } catch (error) {
-      console.error(`Error replacing record ${recordId}:`, error);
+      //console.error(`Error replacing record ${recordId}:`, error);
       throw error;
     }
   }
@@ -941,7 +941,7 @@ class RecordFirestoreService {
         message: `Record ${recordId} creado con éxito`,
       };
     } catch (error) {
-      console.error(`Error al crear usuario ${recordId}:`, error);
+      //console.error(`Error al crear usuario ${recordId}:`, error);
       return {
         success: false,
         message: `Error al crear usuario: ${error instanceof Error ? error.message : String(error)}`,

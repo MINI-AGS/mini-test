@@ -22,6 +22,10 @@ export const validateAnswers = (answers: AnswerState): ValidationResult => {
       errors.push("Fecha de nacimiento no válida");
     } else {
       const [day, month, year] = birthdate.split("/").map(Number);
+      if (day < 1 || day > 31 || month < 1 || month > 12) {
+        isValid = false;
+        errors.push("Fecha de nacimiento no válida");
+      }
       const birthDateObj = new Date(year, month - 1, day);
       const currentDate = new Date();
       if (birthDateObj > currentDate) {

@@ -41,17 +41,19 @@ export default StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 40,
   },
   leftContainer: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "red", // Cambiado a rojo para destacar
+    //backgroundColor: "red", // Cambiado a rojo para destacar
     ...Platform.select({
       web: {
         width: "100%",
         height: "100%",
         maxWidth: 600,
         maxHeight: 600,
+        marginTop: width < 1000 ? 300 : 0,
       },
       default: {
         width: "100%",
@@ -66,8 +68,10 @@ export default StyleSheet.create({
     ...Platform.select({
       // AJUSTAR CÍRCULO EN WEB
       web: {
-        width: 550,
-        height: 550,
+        width: width < 1000 ? width * 0.8 : 500,
+        height: width < 1000 ? width * 0.8 : 500,
+        maxWidth: width < 100 ? 400 : 500,
+        maxHeight: width < 100 ? 400 : 500,
         borderRadius: 275,
         // Efecto de contorno blanco:
         boxShadow: `
@@ -107,9 +111,13 @@ export default StyleSheet.create({
     position: "absolute",
     ...Platform.select({
       // AJUSTAR ESTA IMAGEN EN WEB
-      web: {},
+      web: {
+        top: width < 1000 ? 50 : -100,
+        width: width < 1000 ? 600 : 1000,
+        height: width < 1000 ? 600 : 1000,
+      },
       default: {
-        top: 0,
+        top: -50,
         width: 450,
         height: 450,
       },
@@ -146,7 +154,7 @@ export default StyleSheet.create({
     marginBottom: 16,
     ...Platform.select({
       web: {
-        fontSize: 80, // AUMENTADO
+        fontSize: width < 1000 ? 40 : 60,
         marginBottom: 60, // Más espacio en web
       },
       default: {
@@ -161,7 +169,7 @@ export default StyleSheet.create({
     lineHeight: 30,
     ...Platform.select({
       web: {
-        fontSize: 30,
+        fontSize: width < 1000 ? 24 : 30,
         marginBottom: 20,
         textAlign: "justify", // ★ Texto justificado
         textAlignLast: "center", // ★ Última línea centrada

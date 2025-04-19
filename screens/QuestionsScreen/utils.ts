@@ -2,23 +2,14 @@ import { AnswerState, Diagnosis, ValidationResult } from "./types";
 import { v4 as uuidv4 } from "uuid";
 import { Timestamp } from "firebase/firestore";
 import { Record } from "@shared/interfaces";
-import { randomUUID as nodeRandomUUID } from "crypto";
 
 /**
  * Genera un UUID v4 compatible con todos los entornos,
  * incluso si "crypto.getRandomValues" o "crypto.randomUUID" no están disponibles.
  */
 function generateUUID(): string {
-  if (typeof crypto?.randomUUID === "function") {
-    return crypto.randomUUID();
-  }
-
   if (typeof crypto?.getRandomValues === "function") {
     return uuidv4();
-  }
-
-  if (typeof nodeRandomUUID === "function") {
-    return nodeRandomUUID();
   }
 
   // Fallback manual (no criptográficamente seguro, pero compatible)

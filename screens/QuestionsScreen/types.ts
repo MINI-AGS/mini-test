@@ -24,6 +24,7 @@ export interface Question {
   questionType?: "radio" | "checkbox" | "text" | "int" | "date"; // Tipo de pregunta (radio por defecto)
   placeholder?: string; // Placeholder para preguntas de texto
   required?: boolean; // Indica si la pregunta es obligatoria
+  image?: string; // URL de la imagen
 }
 
 export interface Section {

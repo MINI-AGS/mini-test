@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
       default: 14,
     }),
     color: "#333",
-    flex: 1,
     paddingRight: Platform.select({
       web: 16,
       default: 12,
@@ -288,49 +287,57 @@ const styles = StyleSheet.create({
     backgroundColor: "#3F88C5",
   },
   modalOverlay: {
-  flex: 1,
-  justifyContent: 'center',
-  alignItems: 'center',
-  backgroundColor: 'rgba(0, 0, 0, 0.5)',
-},
-modalContainer: {
-  width: '80%',
-  backgroundColor: 'white',
-  borderRadius: 10,
-  padding: 20,
-  alignItems: 'center',
-},
-modalTitle: {
-  fontSize: 18,
-  fontWeight: 'bold',
-  marginBottom: 10,
-  textAlign: 'center',
-},
-modalMessage: {
-  fontSize: 16,
-  marginVertical: 10,
-  textAlign: 'center',
-},
-modalButton: {
-  marginTop: 15,
-  padding: 10,
-  backgroundColor: '#2196F3',
-  borderRadius: 5,
-  minWidth: 100,
-  alignItems: 'center',
-},
-modalButtonText: {
-  color: 'white',
-  fontWeight: 'bold',
-},
-cancelButton: {
-  marginTop: 15,
-  padding: 10,
-},
-cancelButtonText: {
-  color: '#f44336',
-  fontWeight: 'bold',
-},
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContainer: {
+    width: "80%",
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 20,
+    alignItems: "center",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  modalMessage: {
+    fontSize: 16,
+    marginVertical: 10,
+    textAlign: "center",
+  },
+  modalButton: {
+    marginTop: 15,
+    padding: 10,
+    backgroundColor: "#2196F3",
+    borderRadius: 5,
+    minWidth: 100,
+    alignItems: "center",
+  },
+  modalButtonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  cancelButton: {
+    marginTop: 15,
+    padding: 10,
+  },
+  cancelButtonText: {
+    color: "#f44336",
+    fontWeight: "bold",
+  },
+  questionImage: {
+    width: "100%",
+    maxWidth: width * 0.8,
+    maxHeight: 200,
+    aspectRatio: 1322 / 342, // maintain image aspect ratio
+    borderRadius: 5,
+    resizeMode: "contain",
+  },
 });
 
 export default styles;

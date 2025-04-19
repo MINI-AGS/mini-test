@@ -838,6 +838,7 @@ export const questions: Question[] = [
     options: ["si", "no"],
     section: "sectionM1",
     required: true,
+    image: "assets/assets/tabla.png",
   },
   {
     id: "questionM2",

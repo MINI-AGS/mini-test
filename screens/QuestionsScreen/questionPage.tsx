@@ -8,18 +8,13 @@ import {
   Dimensions,
   TouchableOpacity,
   Platform,
+  Image,
+  Linking,
 } from "react-native";
-import { RadioButton, Checkbox } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
+import { RadioButton } from "react-native-paper";
 import styles from "./styles";
 
-import {
-  Section,
-  Question,
-  AnswerState,
-  Diagnosis,
-  CustomCheckboxProps,
-} from "./types";
+import { Question, AnswerState, CustomCheckboxProps } from "./types";
 import { sections } from "./module";
 import { myDiagnoses } from "./diagnosis";
 
@@ -409,6 +404,30 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({
                                 : 100
                             }
                           />
+                        )}
+                        {question.image && (
+                          <>
+                            <Image
+                              source={require("../../assets/tabla.png")}
+                              style={styles.questionImage}
+                            />
+                            <Text
+                              style={{
+                                color: "blue",
+                                fontSize: 12,
+                                marginTop: 5,
+                              }}
+                              onPress={() =>
+                                Linking.openURL(
+                                  "https://drive.google.com/file/d/1pD8y8pOd-jITdLzOcMiaXTt93mYnxfvp/view?usp=sharing",
+                                )
+                              }
+                            >
+                              {
+                                "Si te resulta difícil, consulta la imagen en el siguiente enlace"
+                              }
+                            </Text>
+                          </>
                         )}
                       </View>
                     ))}

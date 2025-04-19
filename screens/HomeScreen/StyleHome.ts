@@ -1,43 +1,133 @@
 import { StyleSheet, Dimensions, Platform } from "react-native";
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 export default StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: "#BCE9FF",
+    maxWidth: width,
+    maxHeight: height,
+    padding: 0,
+    margin: 0,
   },
   container: {
     flex: 1,
-    justifyContent: "flex-start", // Cambiado a "flex-start" para alinear arriba
-    alignItems: "center",
-    paddingTop: 30, // Espacio superior para bajar todo el contenido
+    display: "flex",
     backgroundColor: "#BCE9FF",
-    position: "relative", // Necesario para el círculo absoluto
+    height: "100%",
+    ...Platform.select({
+      web: {
+        maxWidth: width,
+        maxHeight: height,
+      },
+      default: {
+        paddingTop: 30, // Espacio superior para bajar todo el contenido
+        alignItems: "center",
+        justifyContent: "flex-start",
+        width: "100%",
+        height: "100%",
+      },
+    }),
   },
-  unifiedContent: {
-    width: width * 0.85,
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    height: "100%",
+  },
+  vertical: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  leftContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "red", // Cambiado a rojo para destacar
+    ...Platform.select({
+      web: {
+        width: "100%",
+        height: "100%",
+        maxWidth: 600,
+        maxHeight: 600,
+      },
+      default: {
+        width: "100%",
+        height: "45%",
+      },
+    }),
+  },
+  circle: {
+    width: 220,
+    borderRadius: 110,
+    backgroundColor: "#22B5FF", // Fondo azul mantenido
+    ...Platform.select({
+      // AJUSTAR CÍRCULO EN WEB
+      web: {
+        width: 550,
+        height: 550,
+        borderRadius: 275,
+        // Efecto de contorno blanco:
+        boxShadow: `
+          0 0 10px #FFFFFF,
+          0 0 20px #FFFFFF,
+          0 0 30px rgba(255, 255, 255, 0.5)
+        `,
+        border: "3px solid rgba(255, 255, 255, 0.9)",
+        filter: "blur(0.3px)",
+      },
+      default: {
+        height: 220,
+        alignSelf: "center",
+      },
+    }),
+    position: "absolute",
+    zIndex: 1,
+    borderWidth: Platform.select({ web: 2, default: 1 }),
+    borderColor: "rgba(255, 255, 255, 0.7)",
+    // Efectos para móvil (se mantienen igual)
+    ...Platform.select({
+      ios: {
+        shadowColor: "#FFFFFF",
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.9,
+        shadowRadius: 15,
+      },
+      android: {
+        elevation: 15,
+        borderColor: "rgba(255, 255, 255, 0.9)",
+        borderWidth: 2,
+      },
+    }),
+  },
+  homeImage: {
+    zIndex: 3,
+    position: "absolute",
+    ...Platform.select({
+      // AJUSTAR ESTA IMAGEN EN WEB
+      web: {},
+      default: {
+        top: 0,
+        width: 450,
+        height: 450,
+      },
+    }),
+  },
+  rightContainer: {
     maxWidth: 400,
     padding: 24,
     alignItems: "center",
     backgroundColor: "#BCE9FF",
-    borderRadius: 12,
-    position: "relative",
     zIndex: 2, // Asegura que esté sobre el círculo
     ...Platform.select({
       web: {
-        marginTop: 120,
-        marginLeft: 850, // Ajusta este valor para moverlo a la derecha en web
-        alignSelf: "flex-start", // Lo sacamos del centrado automático
-        maxWidth: 700, // Solo afecta en web
+        width: "100%",
+        height: "100%",
+        maxWidth: 600,
+        maxHeight: 600,
       },
-      default: {
-        top: 275, // Nueva propiedad añadida (igual que tu círculo)
-        marginTop: 0, // Cambiado de 320 a 0 porque ahora usamos top        alignSelf: "center", // Centrado en móvil
-        alignSelf: "center",
-      },
-    }),
-    ...Platform.select({
       ios: {
         shadowColor: "#BCE9FF",
         shadowOffset: { width: 0, height: 2 },
@@ -54,7 +144,6 @@ export default StyleSheet.create({
     color: "#000", // más negro como en la imagen
     textAlign: "center",
     marginBottom: 16,
-    maxWidth: 800, // ← Añadido aquí específicamente para el title
     ...Platform.select({
       web: {
         fontSize: 80, // AUMENTADO
@@ -65,14 +154,11 @@ export default StyleSheet.create({
       },
     }),
   },
-
   description: {
     color: "#333",
     textAlign: "center",
     marginBottom: 24,
     lineHeight: 30,
-    maxWidth: 480, // ← Añadido aquí específicamente para el title
-
     ...Platform.select({
       web: {
         fontSize: 30,
@@ -89,11 +175,9 @@ export default StyleSheet.create({
     }),
   },
   button: {
-    width: "100%",
     paddingVertical: 14,
     borderRadius: 8,
     alignItems: "center",
-    justifyContent: "center",
     ...Platform.select({
       web: {
         width: "auto",
@@ -103,7 +187,8 @@ export default StyleSheet.create({
         marginBottom: 24, // Mantén este valor para espacio inferior
       },
       default: {
-        marginBottom: 12, // Espacio normal en móvil
+        width: width * 0.8,
+        marginBottom: 12,
       },
     }),
   },
@@ -173,51 +258,6 @@ export default StyleSheet.create({
       },
     }),
   },
-  circle: {
-    position: "absolute",
-    width: 220,
-    borderRadius: 110,
-    backgroundColor: "#22B5FF", // Fondo azul mantenido
-    ...Platform.select({
-      web: {
-        width: 550,
-        height: 550,
-        borderRadius: 275,
-        left: 100,
-        top: "20%",
-        // Efecto de contorno blanco:
-        boxShadow: `
-          0 0 10px #FFFFFF,
-          0 0 20px #FFFFFF,
-          0 0 30px rgba(255, 255, 255, 0.5)
-        `,
-        border: "3px solid rgba(255, 255, 255, 0.9)",
-        filter: "blur(0.3px)",
-      },
-      default: {
-        height: 220,
-        top: 60,
-        alignSelf: "center",
-      },
-    }),
-    zIndex: 1,
-    borderWidth: Platform.select({ web: 2, default: 1 }),
-    borderColor: "rgba(255, 255, 255, 0.7)",
-    // Efectos para móvil (se mantienen igual)
-    ...Platform.select({
-      ios: {
-        shadowColor: "#FFFFFF",
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.9,
-        shadowRadius: 15,
-      },
-      android: {
-        elevation: 15,
-        borderColor: "rgba(255, 255, 255, 0.9)",
-        borderWidth: 2,
-      },
-    }),
-  },
   modalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -266,24 +306,5 @@ export default StyleSheet.create({
     color: "#FFFFFF",
     fontWeight: "bold",
     fontSize: 16,
-  },
-  homeImage: {
-    position: "absolute",
-    resizeMode: "contain",
-    zIndex: 3,
-    ...Platform.select({
-      web: {
-        width: 1120,
-        height: 1120,
-        top: 20, // Puedes ajustar este valor para colocarlo más arriba/abajo
-        left: -170, // Ajusta en base a la posición del círculo en web
-      },
-      default: {
-        width: 450,
-        height: 450,
-        top: -30,
-        alignSelf: "center",
-      },
-    }),
   },
 });

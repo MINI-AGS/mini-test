@@ -12,10 +12,11 @@ import {
 } from "react-native";
 import styles from "./StyleHome";
 const HomePagePhoto = require("../../screens/HomeScreen/HomePagePhoto1.png");
-const { width } = Dimensions.get("window");
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [privacyModalVisible, setPrivacyModalVisible] = useState(false);
+  const { width } = Dimensions.get("window");
+  const isSmallScreen = width < 1200;
 
   const privacyText = `
     AVISO DE PRIVACIDAD\n\n
@@ -29,18 +30,25 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
+      <View
+        style={[
+          styles.container,
+          isSmallScreen ? styles.vertical : styles.horizontal,
+        ]}
+      >
         {/* Imagen en ambas plataformas */}
-        <Image
-          source={HomePagePhoto} // Usa la referencia importada
-          style={styles.homeImage}
-          resizeMode="contain"
-        />
-        {/* Círculo decorativo */}
-        <View style={styles.circle} />
+        <View style={styles.leftContainer}>
+          <Image
+            source={HomePagePhoto} // Usa la referencia importada
+            style={styles.homeImage}
+            resizeMode="contain"
+          />
+          {/* Círculo decorativo */}
+          <View style={styles.circle} />
+        </View>
 
         {/* Contenedor unificado */}
-        <View style={styles.unifiedContent}>
+        <View style={styles.rightContainer}>
           <Text style={styles.title}>Bienvenido a tu{"\n"}encuesta sana</Text>
 
           <Text style={styles.description}>

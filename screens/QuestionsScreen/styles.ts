@@ -1,121 +1,291 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#F5F5F5",
-  },
-  submitButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  submitButton: {
-    backgroundColor: "#007BFF",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-    marginVertical: 10,
+    backgroundColor: "#BCE9FF",
   },
   scrollContent: {
     paddingBottom: 100,
-    paddingHorizontal: 8,
-  },
-  required: {
-    color: "red",
-    fontWeight: "bold",
-  },
-  section: {
-    marginBottom: 20,
   },
   moduleGroup: {
+    borderRadius: 16,
     marginBottom: 16,
-    borderRadius: 12,
-    padding: 12,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
     overflow: "hidden",
+    backgroundColor: "black",
+    elevation: 4,
+
+    width: Platform.select({
+      web: "90%",
+      default: "100%",
+    }),
+    maxWidth: Platform.OS === "web" ? 1000 : "100%",
+    alignSelf: Platform.select({
+      web: "center",
+      default: "stretch",
+    }),
   },
   moduleGroupHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 8,
+    alignItems: "center", // clave para alinear verticalmente
+    height: Platform.select({
+      web: 60,
+      default: 56,
+    }),
+    paddingHorizontal: Platform.select({
+      web: 24,
+      default: 16,
+    }),
+    backgroundColor: "transparent", // o mantenlo como esté
   },
+
   moduleGroupTitle: {
-    fontSize: 18,
+    color: "white",
+    fontSize: Platform.select({
+      web: 22,
+      default: 16,
+    }),
     fontWeight: "bold",
+    flex: 1, // <- Esto es clave
+    includeFontPadding: false,
+    lineHeight: Platform.select({
+      web: 24,
+      default: 22,
+    }),
   },
+
   moduleGroupContent: {
-    paddingLeft: 8,
+    padding: Platform.select({
+      web: 30,
+      default: 12,
+    }),
+    backgroundColor: "#EDF9FF", // Fondo celeste claro uniforme
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 16,
   },
+  questionContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: Platform.select({
+      web: 30,
+      default: 16,
+    }),
+    alignItems: "center", // esto alinea verticalmente en web
+  },
+
   question: {
-    marginBottom: 12,
+    marginBottom: Platform.select({
+      web: 20,
+      default: 16,
+    }),
   },
+
   questionText: {
-    fontSize: 16,
-    fontWeight: "500",
-    marginBottom: 8,
+    fontSize: Platform.select({
+      web: 24,
+      default: 14,
+    }),
+    color: "#333",
+    flex: 1,
+    paddingRight: Platform.select({
+      web: 16,
+      default: 12,
+    }),
+    fontWeight: "bold", // Cambiado de "500" a "bold"
+    lineHeight: Platform.select({
+      web: 32,
+      default: 20,
+    }),
   },
+
+  answerContainer: {
+    width: Platform.select({
+      web: "25%",
+      default: "35%",
+    }),
+    justifyContent: "center",
+    alignItems: "flex-end", // Alinea a la derecha
+  },
+
+  optionsRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+
+  required: {
+    color: "red",
+    fontWeight: "bold",
+    fontSize: Platform.select({
+      web: 20,
+      default: undefined,
+    }),
+  },
+
   options: {
-    marginLeft: 8,
+    flexDirection: "column",
+    gap: Platform.select({
+      web: 16,
+      default: 8,
+    }),
+    marginTop: Platform.select({
+      web: 22,
+      default: 18,
+    }),
   },
+
   checkboxOption: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 4,
+    marginBottom: Platform.select({
+      web: 12,
+      default: 4,
+    }),
   },
-  optionLabel: {
-    marginLeft: 8,
-    fontSize: 15,
-  },
+
   radioOption: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 4,
+    marginBottom: Platform.select({
+      web: 12,
+      default: 4,
+    }),
   },
+
   radioLabel: {
-    marginLeft: 8,
-    fontSize: 15,
+    fontSize: Platform.select({
+      web: 20,
+      default: 14,
+    }),
+    color: "#333",
+    fontWeight: "bold", // Añadir esta línea
   },
+
+  arrowIcon: {
+    color: "white",
+    fontSize: Platform.select({
+      web: 28,
+      default: 18,
+    }),
+    marginLeft: 10,
+    includeFontPadding: false,
+  },
+  optionLabel: {
+    fontSize: Platform.select({
+      web: 20,
+      default: 14,
+    }),
+    color: "#333",
+  },
+
   input: {
-    borderWidth: 1,
-    borderColor: "#CCC",
-    borderRadius: 8,
-    padding: 8,
-    fontSize: 15,
     backgroundColor: "white",
-  },
-  diagnosis: {
-    backgroundColor: "#E0F7FA",
-    padding: 16,
+    padding: Platform.select({
+      web: 16,
+      default: 10,
+    }),
     borderRadius: 10,
-    marginVertical: 10,
+    fontSize: Platform.select({
+      web: 20,
+      default: 14,
+    }),
+    elevation: 2,
+    minHeight: Platform.select({
+      web: 50,
+      default: undefined,
+    }),
   },
+
+  submitButton: {
+    marginTop: Platform.select({
+      web: 40,
+      default: 24,
+    }),
+    backgroundColor: "#3F88C5",
+    padding: Platform.select({
+      web: 20,
+      default: 14,
+    }),
+    borderRadius: 12,
+    alignItems: "center",
+    width: Platform.select({
+      web: "50%",
+      default: "100%",
+    }),
+    alignSelf: "center",
+  },
+
+  submitButtonText: {
+    color: "white",
+    fontSize: Platform.select({
+      web: 24,
+      default: 16,
+    }),
+    fontWeight: "bold",
+  },
+
+  diagnosis: {
+    backgroundColor: "#fff",
+    padding: Platform.select({
+      web: 30,
+      default: 16,
+    }),
+    borderRadius: 12,
+    elevation: 3,
+    marginBottom: Platform.select({
+      web: 30,
+      default: 16,
+    }),
+    width: Platform.select({
+      web: "90%",
+      default: "100%",
+    }),
+    alignSelf: "center",
+  },
+
   diagnosisTitle: {
-    fontSize: 17,
-    fontWeight: "600",
-    color: "#00796B",
+    fontSize: Platform.select({
+      web: 28,
+      default: 16,
+    }),
+    fontWeight: "bold",
+    color: "#3F3F3F",
   },
+
   debug: {
-    marginTop: 24,
-    backgroundColor: "#F0F4C3",
-    padding: 16,
+    backgroundColor: "#eee",
+    padding: 12,
     borderRadius: 8,
+    marginTop: 20,
   },
+
   debugTitle: {
     fontWeight: "bold",
-    fontSize: 16,
-    marginBottom: 4,
+    marginBottom: 8,
   },
+
   debugText: {
-    fontFamily: "monospace",
-    fontSize: 13,
+    fontSize: 12,
+    color: "#333",
+  },
+  radioCircle: {
+    height: 30,
+    width: 30,
+    borderRadius: 22,
+    backgroundColor: "#BCC6E2", // Botón completamente blanco
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 8,
+    elevation: 2, // Opcional: da una sombra sutil
+  },
+  radioChecked: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: "#3F88C5",
   },
   modalOverlay: {
   flex: 1,
@@ -164,18 +334,3 @@ cancelButtonText: {
 });
 
 export default styles;
-
-export const getModuleGroupStyle = (groupId: string) => {
-  const groupColors: Record<string, string> = {
-    moduloData: "#E3F2FD",
-    moduloA: "#E8F5E9",
-    moduloB: "#FFF3E0",
-    moduloC: "#F3E5F5",
-    ungrouped: "#ECEFF1",
-  };
-
-  return {
-    ...styles.moduleGroup,
-    backgroundColor: groupColors[groupId] || groupColors["ungrouped"],
-  };
-};

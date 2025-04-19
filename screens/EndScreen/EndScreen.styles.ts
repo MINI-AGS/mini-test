@@ -1,15 +1,16 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
 
 const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "#BCE9FF",
   },
   scrollContainer: {
     flexGrow: 1,
     justifyContent: "center",
+    paddingBottom: 40,
   },
   container: {
     flex: 1,
@@ -26,20 +27,21 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    fontSize: 24,
-    fontWeight: "600",
-    color: "#2c3e50",
+    fontSize: Platform.select({ web: 32, default: 24 }),
+    fontWeight: "bold",
+    color: "#3F88C5",
     marginBottom: 10,
     textAlign: "center",
   },
   subtitle: {
-    fontSize: 16,
-    color: "#7f8c8d",
+    fontSize: Platform.select({ web: 20, default: 16 }),
+    color: "#2c3e50",
     marginBottom: 25,
     textAlign: "center",
+    fontWeight: "bold",
   },
   summaryBox: {
-    backgroundColor: "#e8f5e9",
+    backgroundColor: "#EDF9FF",
     padding: 20,
     borderRadius: 10,
     width: "100%",
@@ -48,16 +50,19 @@ const styles = StyleSheet.create({
   summaryText: {
     marginBottom: 10,
     textAlign: "center",
+    color: "#333",
+    fontWeight: "bold",
   },
   diagnosisSection: {
     marginTop: 20,
     width: "100%",
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: Platform.select({ web: 22, default: 18 }),
     fontWeight: "bold",
     marginBottom: 10,
     textAlign: "center",
+    color: "#3F3F3F",
   },
   diagnosisItem: {
     marginBottom: 15,
@@ -67,8 +72,9 @@ const styles = StyleSheet.create({
   },
   diagnosisName: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: "bold",
     marginBottom: 5,
+    color: "#333",
   },
   diagnosisResult: {
     fontSize: 14,
@@ -81,9 +87,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   homeButton: {
-    backgroundColor: "#4CAF50",
-    padding: 15,
-    borderRadius: 8,
+    backgroundColor: "#3F88C5",
+    padding: Platform.select({ web: 20, default: 15 }),
+    borderRadius: 12,
     marginTop: 20,
     width: "100%",
     alignItems: "center",
@@ -91,7 +97,7 @@ const styles = StyleSheet.create({
   homeButtonText: {
     color: "white",
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: Platform.select({ web: 20, default: 16 }),
   },
 });
 

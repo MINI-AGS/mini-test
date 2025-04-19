@@ -21,7 +21,7 @@ export interface Question {
 
 export interface Section {
   id: string;
-  title: string;
+  title?: string;
   questions: Question[];
   defaultAnswer?: string;
   dependsOn: (answers: any) => boolean | string;

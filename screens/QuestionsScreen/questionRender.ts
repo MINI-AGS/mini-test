@@ -52,15 +52,13 @@ const generateDrugQuestions = (selectedDrugs: string[]): Question[] => {
     {
       baseId: "K3a",
       text: (drug: string) =>
-        `¿Ha estado intoxicado o con resaca a causa de ${drug} en más de una ocasión, cuando tenía otras responsabilidades en la
-        escuela,en el trabajo o en el hogar? ¿Esto le ocasionó algún problema?`,
+        `¿Ha estado intoxicado o con resaca a causa de ${drug} en más de una ocasión, cuando tenía otras responsabilidades en la escuela,en el trabajo o en el hogar? ¿Esto le ocasionó algún problema?`,
       options: ["si", "no"],
     },
     {
       baseId: "K3b",
       text: (drug: string) =>
-        `¿Ha estado intoxicado con ${drug} en alguna situación en la que corriese un riesgo físico (p. ej., conducir un automóvil,
-        una motocicleta, una embarcación, o utilizar una máquina, etc.)?`,
+        `¿Ha estado intoxicado con ${drug} en alguna situación en la que corriese un riesgo físico (p. ej., conducir un automóvil, una motocicleta, una embarcación, o utilizar una máquina, etc.)?`,
       options: ["si", "no"],
     },
     {
@@ -72,19 +70,21 @@ const generateDrugQuestions = (selectedDrugs: string[]): Question[] => {
     {
       baseId: "K3d",
       text: (drug: string) =>
-        `¿Ha continuado usando  ${drug} a pesar NO SÍ 11
-        de saber que esto le causaba problemas con su familia u otras personas?`,
+        `¿Ha continuado usando  ${drug} a pesar de saber que esto le causaba problemas con su familia u otras personas? de saber que esto le causaba problemas con su familia u otras personas?`,
       options: ["si", "no"],
     },
   ];
 
   return selectedDrugs.flatMap((drug) =>
-    questionTemplates.map((template) => ({
-      id: `questionK_${drug.split(/\s+/)[0].replace(/[^a-zA-Z0-9]/g, "")}_${template.baseId}`,
-      text: template.text(drug),
-      options: template.options,
-      section: "sectionK2",
-    })),
+    questionTemplates.map((template) => {
+      const isK3 = template.baseId.startsWith("K3");
+      return {
+        id: `questionK_${drug.split(/\s+/)[0].replace(/[^a-zA-Z0-9]/g, "")}_${template.baseId}`,
+        text: template.text(drug),
+        options: template.options,
+        section: isK3 ? "sectionK3" : "sectionK2",
+      };
+    }),
   );
 };
 

@@ -174,7 +174,7 @@ export const questions: Question[] = [
   },
   {
     id: "questionB3a",
-    text: "\nDurante este periodo en el que se sintio deprimido la mayor parte del tiempo: \n\n¿Cambio su apetito notablemente?",
+    text: "\nDurante este periodo en el que se sintio deprimido la mayor parte del tiempo: \n\n¿Cambió su apetito notablemente?",
     options: ["si", "no"],
     section: "sectionB3",
   },

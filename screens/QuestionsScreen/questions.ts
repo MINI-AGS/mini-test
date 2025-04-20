@@ -174,9 +174,8 @@ export const questions: Question[] = [
   },
   {
     id: "questionB3a",
-    text: "¿Cambió su apetito notablemente?",
+    text: "\nDurante este periodo en el que se sintio deprimido la mayor parte del tiempo: \n\n¿Cambio su apetito notablemente?",
     options: ["si", "no"],
-
     section: "sectionB3",
   },
   {
@@ -218,7 +217,7 @@ export const questions: Question[] = [
   //modulo c
   {
     id: "questionC1",
-    text: "¿Ha pensado que estaría mejor muerto, o ha deseado estar muerto?",
+    text: "\nDurante este último mes:\n\n¿Ha pensado que estaría mejor muerto, o ha deseado estar muerto?",
     options: ["si", "no"],
     section: "sectionC",
   },
@@ -248,9 +247,9 @@ export const questions: Question[] = [
   },
   {
     id: "questionC6",
-    text: "¿Alguna vez ha intentado suicidarse?",
+    text: "\nA lo largo de su vida: \n\n¿Alguna vez ha intentado suicidarse?",
     options: ["si", "no"],
-    section: "sectionC",
+    section: "sectionC1",
   },
   //section d
   {
@@ -360,7 +359,7 @@ export const questions: Question[] = [
   },
   {
     id: "questionE4a",
-    text: "¿Sentía que su corazón le daba un vuelco, latía más fuerte o más rápido?",
+    text: "\nDurante la peor crisis que usted puede recordad: \n\n¿Sentía que su corazón le daba un vuelco, latía más fuerte o más rápido?",
     options: ["si", "no"],
     section: "sectionE4",
   },
@@ -536,7 +535,7 @@ export const questions: Question[] = [
   },
   {
     id: "questionI3a",
-    text: "¿Ha evitado usted pensar en este acontecimiento, o en todo aquello que se lo pudiese recordar?",
+    text: "\nEn el último mes: \n\n¿Ha evitado usted pensar en este acontecimiento, o en todo aquello que se lo pudiese recordar?",
     options: ["si", "no"],
     section: "sectionI3",
   },
@@ -572,7 +571,7 @@ export const questions: Question[] = [
   },
   {
     id: "questionI4a",
-    text: "¿Ha tenido usted dificultades para dormir?",
+    text: "\nDurante el último mes: \n\n¿Ha tenido usted dificultades para dormir?",
     options: ["si", "no"],
     section: "sectionI4",
   },
@@ -617,7 +616,7 @@ export const questions: Question[] = [
   },
   {
     id: "questionJ2a",
-    text: "¿Necesitaba beber más para conseguir los mismos efectos que cuando usted comenzó a beber?",
+    text: "\nEn los últimos 12 meses: \n\n¿Necesitaba beber más para conseguir los mismos efectos que cuando usted comenzó a beber?",
     options: ["si", "no"],
     section: "sectionJ2",
   },
@@ -659,7 +658,7 @@ export const questions: Question[] = [
   },
   {
     id: "questionJ3a",
-    text: "¿Ha estado usted varias veces intoxicado, embriagado, o con resaca en más de una ocasión, cuando tenía otras responsabilidades en la escuela, el trabajo o la casa? ¿Esto le ocasionó algún problema?",
+    text: "\nEn los últimos 12 meses: \n\n¿Ha estado usted varias veces intoxicado, embriagado, o con resaca en más de una ocasión, cuando tenía otras responsabilidades en la escuela, el trabajo o la casa? ¿Esto le ocasionó algún problema?",
     options: ["si", "no"],
     section: "sectionJ3",
   },
@@ -842,7 +841,7 @@ export const questions: Question[] = [
   },
   {
     id: "questionM2",
-    text: "¿A pesar de su bajo peso, evitaba engordar?",
+    text: "\nEn los últimos 3 meses: \n\n¿A pesar de su bajo peso, evitaba engordar?",
     options: ["si", "no"],
     section: "sectionM2",
   },
@@ -978,7 +977,7 @@ export const questions: Question[] = [
   },
   {
     id: "questionO3a",
-    text: "¿Se sentía inquieto, intranquilo o agitado?",
+    text: "\nEn los últimos 6 meses cuando estaba ansioso, casi todo el tiempo: \n\n¿Se sentía inquieto, intranquilo o agitado?",
     options: ["si", "no"],
     section: "sectionO3",
   },
@@ -1014,7 +1013,7 @@ export const questions: Question[] = [
   },
   {
     id: "questionP1a",
-    text: "¿Faltaba a la escuela o se escapaba y dormía fuera de casa con frecuencia?",
+    text: "\nAntes de cumplir los 15 años: \n\n¿Faltaba a la escuela o se escapaba y dormía fuera de casa con frecuencia?",
     options: ["si", "no"],
     section: "sectionP1",
   },

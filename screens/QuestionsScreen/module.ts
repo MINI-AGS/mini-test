@@ -139,6 +139,8 @@ export const sections: Section[] = [
   },
   {
     id: "sectionB3",
+    title:
+      "Durante este periodo en el que se sintio depreimido la mayor parte del tiempo:",
     moduleGroup: "moduloB",
     questions: questions.filter((q) => q.section === "sectionB3"),
     dependsOn: (answers) => {
@@ -164,11 +166,19 @@ export const sections: Section[] = [
   },
   {
     id: "sectionC",
-    title: "Riesgo de Suicidio      ",
+    title: "Riesgo de Suicidio",
     moduleGroup: "moduloC",
     questions: questions.filter((q) => q.section === "sectionC"),
     dependsOn: (answers) => true,
   },
+  {
+    id: "sectionC1",
+    title: "A lo largo de su vida:",
+    moduleGroup: "moduloC",
+    questions: questions.filter((q) => q.section === "sectionC1"),
+    dependsOn: (answers) => true,
+  },
+
   {
     id: "sectionD",
     title: "Episodio maníaco",
@@ -290,14 +300,6 @@ export const sections: Section[] = [
       const resultadoE6 = !resultadoE5 && hayAlgunaE4;
 
       resultadoDiagnostico["Crisis actual"] = resultadoE6;
-      //console.log(
-      //  "[Actualización E6] E5:",
-      //  resultadoE5,
-      //  "| Al menos un síntoma E4:",
-      //  hayAlgunaE4,
-      //  "| Resultado E6:",
-      //  resultadoE6
-      //);
       return resultadoE6;
     },
   },
@@ -306,18 +308,21 @@ export const sections: Section[] = [
     moduleGroup: "moduloE",
     questions: questions.filter((q) => q.section === "sectionE7"),
     dependsOn: (answers) => {
+      // Validar que sectionE4 fue respondido
+      const preguntasE4 = questions.filter((q) => q.section === "sectionE4");
+      const seccionE4Respondida = preguntasE4.some(
+        (q) => answers[q.id] !== undefined,
+      );
+
+      if (!seccionE4Respondida) return false;
+
       const resultadoE6 = resultadoDiagnostico["Crisis actual"];
       if (resultadoE6 === false) {
         const resultadoE7 = answers["questionE7"] === "si";
         resultadoDiagnostico["Trastorno de angustia actual"] = resultadoE7;
-        //console.log(
-        //  "[Actualización E7] Respuesta E7:",
-        //  answers["questionE7"],
-        //  "| Resultado E7:",
-        //  resultadoE7
-        //);
         return true;
       }
+
       return false;
     },
   },

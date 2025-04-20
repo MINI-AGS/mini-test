@@ -223,11 +223,11 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({
       setErrorModalVisible(true);
     }
   };
-
   const groupQuestionsByModule = (questions: Question[]) => {
     const groups: Record<string, { title: string; questions: Question[] }> = {};
 
     questions.forEach((question) => {
+      // Manejo especial para sectionK2
       if (question.section === "sectionK2") {
         const k2Section = sections.find((s) => s.id === "sectionK2");
         if (k2Section) {
@@ -243,6 +243,23 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({
         return;
       }
 
+      // Manejo especial para sectionK3
+      if (question.section === "sectionK3") {
+        const k3Section = sections.find((s) => s.id === "sectionK3");
+        if (k3Section) {
+          const groupKey = k3Section.moduleGroup || "moduloK3";
+          if (!groups[groupKey]) {
+            groups[groupKey] = {
+              title: k3Section.title || "Sección K3",
+              questions: [],
+            };
+          }
+          groups[groupKey].questions.push(question);
+        }
+        return;
+      }
+
+      // Resto de secciones
       const section = sections.find((s) =>
         s.questions?.some((q) => q.id === question.id),
       );
@@ -265,6 +282,8 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({
   const visibleQuestions = allDynamicQuestions.filter((question) => {
     if (question.section === "sectionK2")
       return visibleSections.includes("sectionK2");
+    if (question.section === "sectionK3")
+      return visibleSections.includes("sectionK3");
     const section = sections.find((s) =>
       s.questions?.some((q) => q.id === question.id),
     );
@@ -436,23 +455,6 @@ const QuestionPage: React.FC<{ navigation: any; route: any }> = ({
               </View>
             );
           },
-        )}
-
-        {myDiagnoses.map(
-          (diagnosis) =>
-            visibleSections.includes(diagnosis.id) && (
-              <View key={diagnosis.id} style={styles.diagnosis}>
-                <Text style={styles.diagnosisTitle}>
-                  {diagnosis.name}{" "}
-                  {diagnosis.result && (
-                    <>
-                      {" "}
-                      {(diagnosis.result as (answers: any) => string)(answers)}
-                    </>
-                  )}
-                </Text>
-              </View>
-            ),
         )}
 
         <TouchableOpacity style={styles.submitButton} onPress={handleUpload}>

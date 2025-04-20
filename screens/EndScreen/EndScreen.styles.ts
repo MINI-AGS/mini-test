@@ -23,9 +23,6 @@ const styles = StyleSheet.create({
     maxWidth: 400,
     alignItems: "center",
   },
-  iconContainer: {
-    marginBottom: 20,
-  },
   title: {
     fontSize: Platform.select({ web: 32, default: 24 }),
     fontWeight: "bold",

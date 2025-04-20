@@ -42,10 +42,6 @@ const EndScreen: React.FC<EndScreenProps> = ({ route }) => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.container}>
           <View style={styles.content}>
-            <View style={styles.iconContainer}>
-              <Icon name="check-circle" size={80} color="#4CAF50" />
-            </View>
-
             <Text style={styles.title}>¡Proceso Completado!</Text>
             <Text style={styles.subtitle}>
               Gracias por completar el cuestionario.

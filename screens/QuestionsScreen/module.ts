@@ -599,8 +599,6 @@ export const sections: Section[] = [
     moduleGroup: "moduloK",
     questions: questions.filter((q) => q.section === "sectionK3"),
     dependsOn: (answers): boolean => {
-      console.log("All answers:", answers);
-
       // Solo tomar respuestas que son de K2
       const k2Answers = Object.entries(answers).filter(
         ([key]) => key.includes("_K2") && !key.includes("_K3"),
